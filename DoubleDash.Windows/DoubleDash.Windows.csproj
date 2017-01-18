@@ -57,6 +57,12 @@
   <ItemGroup>
     <None Include="app.manifest" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\GLX\GLX\GLX.csproj">
+      <Project>{9c9d3584-f3dc-4364-953c-f529c15806c4}</Project>
+      <Name>GLX</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\DoubleDash.Shared\DoubleDash.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
