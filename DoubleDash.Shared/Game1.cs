@@ -91,9 +91,17 @@ namespace DoubleDash
         {
             world.UpdateCurrentCamera(gameTime);
             world.UpdateCamera("minimap", gameTime);
-            minimapCamera.Zoom = 0.1f;
 
             KeyboardState keyboardState = Keyboard.GetState();
+            if (keyboardState.IsKeyDown(Keys.OemPlus))
+            {
+                minimapCamera.Zoom += 0.01f;
+            }
+            else if (keyboardState.IsKeyDown(Keys.OemMinus))
+            {
+                minimapCamera.Zoom -= 0.01f;
+            }
+
             if (keyboardState.IsKeyDown(Keys.Left))
             {
                 testSquare.position.X -= 5;
