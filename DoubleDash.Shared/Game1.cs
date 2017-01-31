@@ -17,6 +17,7 @@ namespace DoubleDash
         GameTimeWrapper mainGameTime;
 
         Sprite testImage;
+        Sprite testSquare;
 
         VirtualResolutionRenderer vrr;
         Camera minimapCamera;
@@ -25,6 +26,9 @@ namespace DoubleDash
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            graphics.PreferredBackBufferWidth = 2000;
+            graphics.PreferredBackBufferHeight = 1000;
         }
 
         /// <summary>
@@ -48,12 +52,11 @@ namespace DoubleDash
         {
             world = new World(graphics);
             mainGameTime = new GameTimeWrapper(MainUpdate, this, 1);
-            world.AddGameState(MainGame);
-            world.gameStates[MainGame].AddTime(mainGameTime);
-            world.gameStates[MainGame].AddDraw(MainDraw);
+            world.AddGameState(MainGame, mainGameTime, MainDraw);
             world.ActivateGameState(MainGame);
             testImage = new Sprite(Content.Load<Texture2D>("test_image"));
             testImage.origin = Vector2.Zero;
+            testSquare = new Sprite(Content.Load<Texture2D>("test_square"));
 
             vrr = new VirtualResolutionRenderer(graphics, new Size(300, 300), new Size(300, 300));
             minimapCamera = new Camera(vrr, Camera.CameraFocus.TopLeft);
@@ -88,8 +91,28 @@ namespace DoubleDash
         {
             world.UpdateCurrentCamera(gameTime);
             world.UpdateCamera("minimap", gameTime);
-            minimapCamera.Zoom = 0.5f;
+            minimapCamera.Zoom = 0.1f;
+
+            KeyboardState keyboardState = Keyboard.GetState();
+            if (keyboardState.IsKeyDown(Keys.Left))
+            {
+                testSquare.position.X -= 5;
+            }
+            else if (keyboardState.IsKeyDown(Keys.Right))
+            {
+                testSquare.position.X += 5;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.Up))
+            {
+                testSquare.position.Y -= 5;
+            }
+            else if (keyboardState.IsKeyDown(Keys.Down))
+            {
+                testSquare.position.Y += 5;
+            }
             testImage.Update(gameTime);
+            testSquare.Update(gameTime);
         }
 
         /// <summary>
@@ -107,14 +130,16 @@ namespace DoubleDash
 
         public void MainDraw()
         {
+            world.CurrentCameraName = World.Camera1Name;
             world.BeginDraw();
             world.Draw(testImage.Draw);
+            world.Draw(testSquare.Draw);
             world.EndDraw();
             world.CurrentCameraName = "minimap";
             world.BeginDraw();
             world.Draw(testImage.Draw);
+            world.Draw(testSquare.Draw);
             world.EndDraw();
-            world.CurrentCameraName = World.Camera1Name;
         }
     }
 }
