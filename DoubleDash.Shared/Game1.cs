@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GLX;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -9,13 +10,26 @@ namespace DoubleDash
     /// </summary>
     public class Game1 : Game
     {
+        const string MainGame = "game1";
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        World world;
+        GameTimeWrapper mainGameTime;
+        KeyboardState previousKeyboardState;
+
+        Player player;
+        Walls walls;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+#if WINDOWS
+            Window.IsBorderless = true;
+#else
+            graphics.IsFullScreen = true;
+#endif
+            Window.Position = Point.Zero;
         }
 
         /// <summary>
@@ -26,7 +40,11 @@ namespace DoubleDash
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            graphics.PreferredBackBufferWidth = graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width;
+            graphics.PreferredBackBufferHeight = graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height;
+            graphics.ApplyChanges();
+
+            previousKeyboardState = Keyboard.GetState();
 
             base.Initialize();
         }
@@ -37,10 +55,37 @@ namespace DoubleDash
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            world = new World(graphics);
+            mainGameTime = new GameTimeWrapper(MainUpdate, this, 1);
+            world.AddGameState(MainGame, mainGameTime, MainDraw);
+            world.ActivateGameState(MainGame);
 
-            // TODO: use this.Content to load your game content here
+            player = new Player(Content.Load<Texture2D>("player"));
+            player.position = new Vector2(300, 400);
+
+            walls = new Walls(graphics);
+
+            // start floor
+            walls.Create(new Vector2(600, 100), new Vector2(0, 900));
+            // jump to other section floor
+            walls.Create(new Vector2(1000, 100), new Vector2(900, 900));
+            // right wall
+            walls.Create(new Vector2(500, 1000), new Vector2(1800, 0));
+            // end block
+            walls.Create(new Vector2(100, 300), new Vector2(1700, 600));
+            // mid block
+            walls.Create(new Vector2(100, 300), new Vector2(1600, 300));
+            // top block
+            walls.Create(new Vector2(100, 300), new Vector2(1700, 0));
+            // top right floor
+            walls.Create(new Vector2(1000, 25), new Vector2(900, 275));
+            // top left floor
+            walls.Create(new Vector2(600, 25), new Vector2(0, 275));
+            // shaft left wall
+            walls.Create(new Vector2(25, 550), new Vector2(1575, 300));
+            // death floor
+            walls.Create(new Vector2(300, 500), new Vector2(600, 1000));
+            walls.Create(new Vector2(25, 550), new Vector2(1425, 300));
         }
 
         /// <summary>
@@ -62,9 +107,46 @@ namespace DoubleDash
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            world.Update(gameTime);
 
             base.Update(gameTime);
+        }
+
+        void MainUpdate(GameTimeWrapper gameTime)
+        {
+            world.UpdateCurrentCamera(gameTime);
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            if (keyboardState.IsKeyDownAndUp(Keys.Tab, previousKeyboardState))
+            {
+                if (mainGameTime.GameSpeed == 1)
+                {
+                    mainGameTime.GameSpeed = 2;
+                }
+                else
+                {
+                    mainGameTime.GameSpeed = 1;
+                }
+            }
+
+            if (keyboardState.IsKeyDown(Keys.Left))
+            {
+                player.MoveLeft();
+            }
+            else if (keyboardState.IsKeyDown(Keys.Right))
+            {
+                player.MoveRight();
+            }
+
+            if (keyboardState.IsKeyDownAndUp(Keys.Space, previousKeyboardState))
+            {
+                player.Jump();
+            }
+
+            player.Update(gameTime);
+            walls.Update(gameTime, player);
+
+            previousKeyboardState = keyboardState;
         }
 
         /// <summary>
@@ -75,9 +157,17 @@ namespace DoubleDash
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            world.DrawWorld();
 
             base.Draw(gameTime);
+        }
+
+        void MainDraw()
+        {
+            world.BeginDraw();
+            world.Draw(walls.Draw);
+            world.Draw(player.Draw);
+            world.EndDraw();
         }
     }
 }

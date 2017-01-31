@@ -13,5 +13,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Game1.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameHelpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Player.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Wall.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Walls.cs" />
   </ItemGroup>
 </Project>
