@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GLX;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -9,8 +10,16 @@ namespace DoubleDash
     /// </summary>
     public class Game1 : Game
     {
+        const string MainGame = "game1";
+
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        World world;
+        GameTimeWrapper mainGameTime;
+
+        Sprite testImage;
+
+        VirtualResolutionRenderer vrr;
+        Camera minimapCamera;
 
         public Game1()
         {
@@ -37,10 +46,18 @@ namespace DoubleDash
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            world = new World(graphics);
+            mainGameTime = new GameTimeWrapper(MainUpdate, this, 1);
+            world.AddGameState(MainGame);
+            world.gameStates[MainGame].AddTime(mainGameTime);
+            world.gameStates[MainGame].AddDraw(MainDraw);
+            world.ActivateGameState(MainGame);
+            testImage = new Sprite(Content.Load<Texture2D>("test_image"));
+            testImage.origin = Vector2.Zero;
 
-            // TODO: use this.Content to load your game content here
+            vrr = new VirtualResolutionRenderer(graphics, new Size(300, 300), new Size(300, 300));
+            minimapCamera = new Camera(vrr, Camera.CameraFocus.TopLeft);
+            world.AddCamera("minimap", minimapCamera);
         }
 
         /// <summary>
@@ -62,9 +79,17 @@ namespace DoubleDash
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            world.Update(gameTime);
 
             base.Update(gameTime);
+        }
+
+        public void MainUpdate(GameTimeWrapper gameTime)
+        {
+            world.UpdateCurrentCamera(gameTime);
+            world.UpdateCamera("minimap", gameTime);
+            minimapCamera.Zoom = 0.5f;
+            testImage.Update(gameTime);
         }
 
         /// <summary>
@@ -75,9 +100,21 @@ namespace DoubleDash
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            world.DrawWorld();
 
             base.Draw(gameTime);
+        }
+
+        public void MainDraw()
+        {
+            world.BeginDraw();
+            world.Draw(testImage.Draw);
+            world.EndDraw();
+            world.CurrentCameraName = "minimap";
+            world.BeginDraw();
+            world.Draw(testImage.Draw);
+            world.EndDraw();
+            world.CurrentCameraName = World.Camera1Name;
         }
     }
 }
