@@ -16,8 +16,12 @@ namespace DoubleDash
         GameTimeWrapper mainGameTime;
         KeyboardState previousKeyboardState;
 
-        Player player;
+        //Player player;
         Walls walls;
+        //Wall wall;
+        Block block1;
+        Block block2;
+        Line line;
 
         public Game1()
         {
@@ -60,32 +64,40 @@ namespace DoubleDash
             world.AddGameState(MainGame, mainGameTime, MainDraw);
             world.ActivateGameState(MainGame);
 
-            player = new Player(Content.Load<Texture2D>("player"));
-            player.position = new Vector2(300, 400);
+            //player = new Player(Content.Load<Texture2D>("player"));
+            //player.position = new Vector2(300, 400);
 
-            walls = new Walls(graphics);
+            line = new Line(graphics);
+            block1 = new Block(new Vector2(100), new Size(100), graphics);
+            block2 = new Block(new Vector2(300), new Size(100), graphics);
 
-            // start floor
-            walls.Create(new Vector2(600, 100), new Vector2(0, 900));
-            // jump to other section floor
-            walls.Create(new Vector2(1000, 100), new Vector2(900, 900));
-            // right wall
-            walls.Create(new Vector2(500, 1000), new Vector2(1800, 0));
-            // end block
-            walls.Create(new Vector2(100, 300), new Vector2(1700, 600));
-            // mid block
-            walls.Create(new Vector2(100, 300), new Vector2(1600, 300));
-            // top block
-            walls.Create(new Vector2(100, 300), new Vector2(1700, 0));
-            // top right floor
-            walls.Create(new Vector2(1000, 25), new Vector2(900, 275));
-            // top left floor
-            walls.Create(new Vector2(600, 25), new Vector2(0, 275));
-            // shaft left wall
-            walls.Create(new Vector2(25, 550), new Vector2(1575, 300));
-            // death floor
-            walls.Create(new Vector2(300, 500), new Vector2(600, 1000));
-            walls.Create(new Vector2(25, 550), new Vector2(1425, 300));
+            //wall = new Wall(graphics);
+            //wall.DrawSize = new Size(100, 100);
+            //wall.position = new Vector2(500);
+
+            //walls = new Walls(graphics);
+
+            //// start floor
+            //walls.Create(new Vector2(600, 100), new Vector2(0, 900));
+            //// jump to other section floor
+            //walls.Create(new Vector2(1000, 100), new Vector2(900, 900));
+            //// right wall
+            //walls.Create(new Vector2(500, 1000), new Vector2(1800, 0));
+            //// end block
+            //walls.Create(new Vector2(100, 300), new Vector2(1700, 600));
+            //// mid block
+            //walls.Create(new Vector2(100, 300), new Vector2(1600, 300));
+            //// top block
+            //walls.Create(new Vector2(100, 300), new Vector2(1700, 0));
+            //// top right floor
+            //walls.Create(new Vector2(1000, 25), new Vector2(900, 275));
+            //// top left floor
+            //walls.Create(new Vector2(600, 25), new Vector2(0, 275));
+            //// shaft left wall
+            //walls.Create(new Vector2(25, 550), new Vector2(1575, 300));
+            //// death floor
+            //walls.Create(new Vector2(300, 500), new Vector2(600, 1000));
+            //walls.Create(new Vector2(25, 550), new Vector2(1425, 300));
         }
 
         /// <summary>
@@ -131,20 +143,41 @@ namespace DoubleDash
 
             if (keyboardState.IsKeyDown(Keys.Left))
             {
-                player.MoveLeft();
+                block2.position.X -= 5;
             }
             else if (keyboardState.IsKeyDown(Keys.Right))
             {
-                player.MoveRight();
+                block2.position.X += 5;
             }
 
-            if (keyboardState.IsKeyDownAndUp(Keys.Space, previousKeyboardState))
+            if (keyboardState.IsKeyDown(Keys.Up))
             {
-                player.Jump();
+                block2.position.Y -= 5;
+            }
+            else if (keyboardState.IsKeyDown(Keys.Down))
+            {
+                block2.position.Y += 5;
             }
 
-            player.Update(gameTime);
-            walls.Update(gameTime, player);
+            //if (keyboardState.IsKeyDown(Keys.Left))
+            //{
+            //    player.MoveLeft();
+            //}
+            //else if (keyboardState.IsKeyDown(Keys.Right))
+            //{
+            //    player.MoveRight();
+            //}
+
+            //if (keyboardState.IsKeyDownAndUp(Keys.Space, previousKeyboardState))
+            //{
+            //    player.Jump();
+            //}
+
+            //player.Update(gameTime);
+            //walls.Update(gameTime, player);
+            //wall.Update(gameTime);
+            block1.Update(gameTime);
+            block2.Update(gameTime);
 
             previousKeyboardState = keyboardState;
         }
@@ -155,7 +188,19 @@ namespace DoubleDash
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GLX.Collisions.MTV? mtv = GLX.Collisions.HelperMethods.Colliding(block1.polygon, block2.polygon);
+            if (mtv == null)
+            {
+                line.visible = false;
+                GraphicsDevice.Clear(Color.CornflowerBlue);
+            }
+            else
+            {
+                line.visible = true;
+                line.point1 = new Vector2(500);
+                line.point2 = new Vector2(500) + mtv.Value.vector * mtv.Value.magnitude;
+                GraphicsDevice.Clear(Color.Red);
+            }
 
             world.DrawWorld();
 
@@ -165,8 +210,15 @@ namespace DoubleDash
         void MainDraw()
         {
             world.BeginDraw();
-            world.Draw(walls.Draw);
-            world.Draw(player.Draw);
+            //world.Draw(walls.Draw);
+            //world.Draw(player.Draw);
+            //world.Draw(wall.Draw);
+            world.Draw(block1.Draw);
+            world.Draw(block2.Draw);
+            if (line.visible)
+            {
+                world.Draw(line.Draw);
+            }
             world.EndDraw();
         }
     }

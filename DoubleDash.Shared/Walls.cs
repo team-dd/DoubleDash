@@ -21,8 +21,8 @@ namespace DoubleDash
         public void Create(Size size, Vector2 position)
         {
             Wall wall = new Wall(graphics);
-            wall.sprite.DrawSize = size;
-            wall.sprite.position = position;
+            wall.DrawSize = size;
+            wall.position = position;
             walls.Add(wall);
         }
 
@@ -30,7 +30,7 @@ namespace DoubleDash
         {
             foreach (var wall in walls)
             {
-                wall.Update(gameTime, player);
+                //wall.Update(gameTime, player);
             }
         }
 
