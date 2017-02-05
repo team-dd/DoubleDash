@@ -1,5 +1,8 @@
-﻿using GLX;
+﻿using System;
+using System.Collections.Generic;
+using GLX;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -16,8 +19,7 @@ namespace DoubleDash
         GameTimeWrapper mainGameTime;
         KeyboardState previousKeyboardState;
 
-        Player player;
-        Walls walls;
+        RainManager rainManager;
 
         public Game1()
         {
@@ -59,33 +61,16 @@ namespace DoubleDash
             mainGameTime = new GameTimeWrapper(MainUpdate, this, 1);
             world.AddGameState(MainGame, mainGameTime, MainDraw);
             world.ActivateGameState(MainGame);
+            List<SoundEffect> rainSounds = new List<SoundEffect>()
+            {
+                Content.Load<SoundEffect>("rain1"),
+                Content.Load<SoundEffect>("rain2"),
+                Content.Load<SoundEffect>("rain3"),
+                Content.Load<SoundEffect>("rain4"),
+                Content.Load<SoundEffect>("rain5"),
+            };
 
-            player = new Player(Content.Load<Texture2D>("player"));
-            player.position = new Vector2(300, 400);
-
-            walls = new Walls(graphics);
-
-            // start floor
-            walls.Create(new Vector2(600, 100), new Vector2(0, 900));
-            // jump to other section floor
-            walls.Create(new Vector2(1000, 100), new Vector2(900, 900));
-            // right wall
-            walls.Create(new Vector2(500, 1000), new Vector2(1800, 0));
-            // end block
-            walls.Create(new Vector2(100, 300), new Vector2(1700, 600));
-            // mid block
-            walls.Create(new Vector2(100, 300), new Vector2(1600, 300));
-            // top block
-            walls.Create(new Vector2(100, 300), new Vector2(1700, 0));
-            // top right floor
-            walls.Create(new Vector2(1000, 25), new Vector2(900, 275));
-            // top left floor
-            walls.Create(new Vector2(600, 25), new Vector2(0, 275));
-            // shaft left wall
-            walls.Create(new Vector2(25, 550), new Vector2(1575, 300));
-            // death floor
-            walls.Create(new Vector2(300, 500), new Vector2(600, 1000));
-            walls.Create(new Vector2(25, 550), new Vector2(1425, 300));
+            rainManager = new RainManager(graphics, rainSounds);
         }
 
         /// <summary>
@@ -117,34 +102,11 @@ namespace DoubleDash
             world.UpdateCurrentCamera(gameTime);
             KeyboardState keyboardState = Keyboard.GetState();
 
-            if (keyboardState.IsKeyDownAndUp(Keys.Tab, previousKeyboardState))
+            for (int i = 0; i < 1; i++)
             {
-                if (mainGameTime.GameSpeed == 1)
-                {
-                    mainGameTime.GameSpeed = 2;
-                }
-                else
-                {
-                    mainGameTime.GameSpeed = 1;
-                }
+                rainManager.Spawn((int)world.virtualResolutionRenderer.VirtualResolution.Width);
             }
-
-            if (keyboardState.IsKeyDown(Keys.Left))
-            {
-                player.MoveLeft();
-            }
-            else if (keyboardState.IsKeyDown(Keys.Right))
-            {
-                player.MoveRight();
-            }
-
-            if (keyboardState.IsKeyDownAndUp(Keys.Space, previousKeyboardState))
-            {
-                player.Jump();
-            }
-
-            player.Update(gameTime);
-            walls.Update(gameTime, player);
+            rainManager.Update((int)world.virtualResolutionRenderer.VirtualResolution.Height);
 
             previousKeyboardState = keyboardState;
         }
@@ -155,7 +117,7 @@ namespace DoubleDash
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(new Color(56, 0, 94));
 
             world.DrawWorld();
 
@@ -165,8 +127,7 @@ namespace DoubleDash
         void MainDraw()
         {
             world.BeginDraw();
-            world.Draw(walls.Draw);
-            world.Draw(player.Draw);
+            world.Draw(rainManager.Draw);
             world.EndDraw();
         }
     }

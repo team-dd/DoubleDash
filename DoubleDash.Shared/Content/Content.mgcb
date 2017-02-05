@@ -25,3 +25,33 @@
 /processorParam:TextureFormat=Color
 /build:player.png
 
+#begin rain1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:rain1.wav
+
+#begin rain2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:rain2.wav
+
+#begin rain3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:rain3.wav
+
+#begin rain4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:rain4.wav
+
+#begin rain5.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:rain5.wav
+
