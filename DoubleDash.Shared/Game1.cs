@@ -177,6 +177,7 @@ namespace DoubleDash
                 block2.rotation += 1;
             }
 
+
             //if (keyboardState.IsKeyDown(Keys.Left))
             //{
             //    player.MoveLeft();
@@ -196,6 +197,35 @@ namespace DoubleDash
             //wall.Update(gameTime);
             block1.Update(gameTime);
             block2.Update(gameTime);
+            GLX.Collisions.MTV? mtv = GLX.Collisions.HelperMethods.Colliding(block1.polygon, block2.polygon);
+            if (mtv != null)
+            {
+                if (block2.position.X > block1.position.X ||
+                    block2.position.Y < block1.position.Y)
+                {
+                    if (mtv.Value.magnitude == 0)
+                    {
+                        block2.position += mtv.Value.vector;
+                    }
+                    else
+                    {
+                        block2.position += mtv.Value.vector * mtv.Value.magnitude;
+                    }
+                }
+                else if (block2.position.X < block1.position.X ||
+                    block2.position.Y > block1.position.Y)
+                {
+                    if (mtv.Value.magnitude == 0)
+                    {
+                        block2.position -= mtv.Value.vector;
+                    }
+                    else
+                    {
+                        block2.position -= mtv.Value.vector * mtv.Value.magnitude;
+                    }
+                }
+                block2.Update(gameTime);
+            }
 
             previousKeyboardState = keyboardState;
         }
