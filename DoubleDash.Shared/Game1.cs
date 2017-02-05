@@ -159,6 +159,24 @@ namespace DoubleDash
                 block2.position.Y += 5;
             }
 
+            if (keyboardState.IsKeyDown(Keys.Q))
+            {
+                block1.rotation -= 1;
+            }
+            else if (keyboardState.IsKeyDown(Keys.E))
+            {
+                block1.rotation += 1;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.A))
+            {
+                block2.rotation -= 1;
+            }
+            else if (keyboardState.IsKeyDown(Keys.D))
+            {
+                block2.rotation += 1;
+            }
+
             //if (keyboardState.IsKeyDown(Keys.Left))
             //{
             //    player.MoveLeft();
