@@ -10,27 +10,25 @@ namespace DoubleDash
     public class Walls
     {
         private GraphicsDeviceManager graphics;
-        public List<Wall> walls;
+        public List<Block> walls;
 
         public Walls(GraphicsDeviceManager graphics)
         {
             this.graphics = graphics;
-            walls = new List<Wall>();
+            walls = new List<Block>();
         }
 
         public void Create(Size size, Vector2 position)
         {
-            Wall wall = new Wall(graphics);
-            wall.DrawSize = size;
-            wall.position = position;
-            walls.Add(wall);
+            Block block = new Block(position, size, graphics);
+            walls.Add(block);
         }
 
-        public void Update(GameTimeWrapper gameTime, Player player)
+        public void Update(GameTimeWrapper gameTime)
         {
             foreach (var wall in walls)
             {
-                //wall.Update(gameTime, player);
+                wall.Update(gameTime);
             }
         }
 

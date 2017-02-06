@@ -25,3 +25,6 @@
 /processorParam:TextureFormat=Color
 /build:player.png
 
+#begin level1.json
+/copy:level1.json
+

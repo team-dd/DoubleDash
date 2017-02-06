@@ -13,9 +13,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Block.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BlockDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Game1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GameHelpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Level.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LevelReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Player.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TileDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Wall.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Walls.cs" />
   </ItemGroup>

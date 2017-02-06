@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using GLX;
+using GLX.Collisions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -16,6 +17,8 @@ namespace DoubleDash
             WallLeft,
             Air
         }
+
+        private Polygon polygon;
 
         public JumpStates jumpState;
         public float storedXVelocity;
@@ -58,7 +61,7 @@ namespace DoubleDash
         public override void Update(GameTimeWrapper gameTime)
         {
             // slow down player if they are not holding a direction
-            if (jumpState == Player.JumpStates.Ground)
+            if (jumpState == JumpStates.Ground)
             {
                 // ground friction
                 velocity.X *= 0.8f;
@@ -83,6 +86,49 @@ namespace DoubleDash
             velocity.Y = MathHelper.Clamp(velocity.Y, -50, 50);
 
             base.Update(gameTime);
+            UpdatePolygon();
+        }
+
+        private void UpdatePolygon()
+        {
+            List<Vector2> vertices = new List<Vector2>();
+            vertices.Add(position);
+            vertices.Add(new Vector2(position.X + tex.Width, position.Y));
+            vertices.Add(new Vector2(position.X + tex.Width, position.Y + tex.Height));
+            vertices.Add(new Vector2(position.X, position.Y + tex.Height));
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                vertices[i] = Vector2.Transform((vertices[i] - position), spriteTransform);
+            }
+            polygon = new Polygon(vertices);
+        }
+
+        public void CheckCollisions(List<Block> walls)
+        {
+            foreach (var wall in walls)
+            {
+                GLX.Collisions.MTV? mtv = GLX.Collisions.HelperMethods.Colliding(polygon, wall.polygon);
+                if (mtv != null)
+                {
+                    Vector2 vector = mtv.Value.vector;
+                    //if (position.X < wall.position.X ||
+                    //    position.Y > wall.position.Y)
+                    //{
+                    //    vector *= -1;
+                    //}
+
+                    if (mtv.Value.magnitude == 0)
+                    {
+                        position += vector;
+                    }
+                    else
+                    {
+                        position += vector * mtv.Value.magnitude;
+                    }
+                    jumpState = JumpStates.Ground;
+                    velocity.Y = 0;
+                }
+            }
         }
     }
 }
