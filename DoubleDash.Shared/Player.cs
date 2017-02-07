@@ -111,20 +111,33 @@ namespace DoubleDash
                 if (mtv != null)
                 {
                     Vector2 vector = mtv.Value.vector;
-                    //if (position.X < wall.position.X ||
-                    //    position.Y > wall.position.Y)
-                    //{
-                    //    vector *= -1;
-                    //}
+                    // you would think that you could just multiply vector by -1 if the second case
+                    // is true but for some reason that doesn't work...
+                    if (position.X > wall.position.X ||
+                        position.Y < wall.position.Y)
+                    {
+                        if (mtv.Value.magnitude == 0)
+                        {
+                            position += vector;
+                        }
+                        else
+                        {
+                            position += vector * mtv.Value.magnitude;
+                        }
+                    }
+                    else if (position.X < wall.position.X ||
+                        position.Y > wall.position.Y)
+                    {
+                        if (mtv.Value.magnitude == 0)
+                        {
+                            position -= vector;
+                        }
+                        else
+                        {
+                            position -= vector * mtv.Value.magnitude;
+                        }
+                    }
 
-                    if (mtv.Value.magnitude == 0)
-                    {
-                        position += vector;
-                    }
-                    else
-                    {
-                        position += vector * mtv.Value.magnitude;
-                    }
                     jumpState = JumpStates.Ground;
                     velocity.Y = 0;
                 }
