@@ -24,8 +24,8 @@ namespace DoubleDash
         {
             foreach (var blockDescription in blocksDescription)
             {
-                Block block = new Block(new Vector2(blockDescription.X, blockDescription.Y),
-                    new Size(blockDescription.Width, blockDescription.Height),
+                Block block = new Block(new Vector2(blockDescription.X * 4, blockDescription.Y * 4),
+                    new Size(blockDescription.Width * 4, blockDescription.Height * 4),
                     graphics);
                 blocks.Add(block);
             }

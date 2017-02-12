@@ -25,8 +25,8 @@
 /processorParam:TextureFormat=Color
 /build:player.png
 
-#begin level1.json
-/copy:level1.json
+#begin World 1 - Level 1 V2.1.json
+/copy:World 1 - Level 1 V2.1.json
 
 #begin testimage.png
 /importer:TextureImporter
