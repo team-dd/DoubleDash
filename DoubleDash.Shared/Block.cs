@@ -11,6 +11,7 @@ namespace DoubleDash
     public class Block : Sprite
     {
         public Polygon polygon;
+        public Vector2 center;
 
         private Line top;
         private Line right;
@@ -48,6 +49,8 @@ namespace DoubleDash
             {
                 vertices[i] = Vector2.Transform((vertices[i] - position), spriteTransform);
             }
+            center = new Vector2(position.X + DrawSize.Width / 2,
+                position.Y + DrawSize.Height / 2);
             top.point1 = vertices[0];
             top.point2 = vertices[1];
             right.point1 = top.point2;

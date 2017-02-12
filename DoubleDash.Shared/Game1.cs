@@ -1,5 +1,4 @@
-﻿using DoubleDash;
-using GLX;
+﻿using GLX;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -21,6 +20,7 @@ namespace DoubleDash
         Walls walls;
 
         Player player;
+        Sprite testImage;
 
         public Game1()
         {
@@ -62,36 +62,22 @@ namespace DoubleDash
             mainGameTime = new GameTimeWrapper(MainUpdate, this, 1);
             world.AddGameState(MainGame, mainGameTime, MainDraw);
             world.ActivateGameState(MainGame);
+            world.CurrentCamera.Focus = Camera.CameraFocus.Center;
 
             level = LevelReader.Load("Content/level1.json");
             level.FinishLoading(graphics);
 
-            player = new Player(Content.Load<Texture2D>("player"));
+            player = new Player(Content.Load<Texture2D>("circle_player"));
             player.position = new Vector2(300, 800);
+
+            testImage = new Sprite(Content.Load<Texture2D>("testimage"));
+            testImage.origin = Vector2.Zero;
 
             walls = new Walls(graphics);
 
             // start floor
-            walls.Create(new Vector2(600, 100), new Vector2(0, 900));
-            // jump to other section floor
-            walls.Create(new Vector2(1000, 100), new Vector2(900, 900));
-            // right wall
-            walls.Create(new Vector2(500, 1000), new Vector2(1800, 0));
-            // end block
-            walls.Create(new Vector2(100, 300), new Vector2(1700, 600));
-            // mid block
-            walls.Create(new Vector2(100, 300), new Vector2(1600, 300));
-            // top block
-            walls.Create(new Vector2(100, 300), new Vector2(1700, 0));
-            // top right floor
-            walls.Create(new Vector2(1000, 25), new Vector2(900, 275));
-            // top left floor
-            walls.Create(new Vector2(600, 25), new Vector2(0, 275));
-            // shaft left wall
-            walls.Create(new Vector2(25, 550), new Vector2(1575, 300));
-            // death floor
-            walls.Create(new Vector2(300, 500), new Vector2(600, 1000));
-            walls.Create(new Vector2(25, 550), new Vector2(1425, 300));
+            walls.Create(new Vector2(10000, 100), new Vector2(0, 900));
+            walls.Create(new Size(100, 1000), new Vector2(0, 0));
         }
 
         /// <summary>
@@ -120,7 +106,6 @@ namespace DoubleDash
 
         void MainUpdate(GameTimeWrapper gameTime)
         {
-            world.UpdateCurrentCamera(gameTime);
             KeyboardState keyboardState = Keyboard.GetState();
 
             if (keyboardState.IsKeyDownAndUp(Keys.Tab, previousKeyboardState))
@@ -135,6 +120,20 @@ namespace DoubleDash
                 }
             }
 
+            if (keyboardState.IsKeyDownAndUp(Keys.LeftControl, previousKeyboardState))
+            {
+                if (world.CurrentCamera.Focus == Camera.CameraFocus.Center)
+                {
+                    world.CurrentCamera.Focus = Camera.CameraFocus.TopLeft;
+                    world.CurrentCamera.Pan = Vector2.Zero;
+                }
+                else
+                {
+                    world.CurrentCamera.Focus = Camera.CameraFocus.Center;
+                    world.CurrentCamera.Pan = player.position;
+                }
+            }
+
 
             if (keyboardState.IsKeyDown(Keys.Left))
             {
@@ -144,15 +143,30 @@ namespace DoubleDash
             {
                 player.MoveRight();
             }
+            else
+            {
+                player.ResetXAcceleration();
+            }
 
-            if (keyboardState.IsKeyDownAndUp(Keys.Space, previousKeyboardState))
+            if (keyboardState.IsKeyDown(Keys.Z))
             {
                 player.Jump();
             }
+            else
+            {
+                player.CancelJump();
+            }
 
+            testImage.Update(gameTime);
             player.Update(gameTime);
             walls.Update(gameTime);
             player.CheckCollisions(walls.walls);
+
+            if (world.CurrentCamera.Focus == Camera.CameraFocus.Center)
+            {
+                world.CurrentCamera.Pan = player.position;
+            }
+            world.UpdateCurrentCamera(gameTime);
             //wall.Update(gameTime);
             //level.Update(gameTime);
 
@@ -175,6 +189,7 @@ namespace DoubleDash
         void MainDraw()
         {
             world.BeginDraw();
+            world.Draw(testImage.Draw);
             world.Draw(walls.Draw);
             world.Draw(player.Draw);
             //world.Draw(level.Draw);

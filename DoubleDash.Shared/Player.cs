@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using GLX;
 using GLX.Collisions;
@@ -18,44 +19,97 @@ namespace DoubleDash
             Air
         }
 
-        private Polygon polygon;
+        private const float GroundXMovement = 5;
 
+        private Polygon polygon;
         public JumpStates jumpState;
         public float storedXVelocity;
 
+        bool canJump;
+        bool hasLetGoOfJump;
+        TimeSpan maxJumpTime;
+        TimeSpan jumpTime;
+
         public Player(Texture2D loadedTex) : base(loadedTex)
         {
-            jumpState = JumpStates.Ground;
+            jumpState = JumpStates.Air;
             storedXVelocity = 0;
+            canJump = false;
+            hasLetGoOfJump = true;
+            maxJumpTime = TimeSpan.FromMilliseconds(400);
+            jumpTime = maxJumpTime;
         }
 
         public void MoveLeft()
         {
-            velocity.X -= 1.25f;
+            if (acceleration.X > 0)
+            {
+                ResetXAcceleration();
+            }
+
+            if (jumpState == JumpStates.Ground)
+            {
+                acceleration.X -= 0.1f;
+            }
+            else if (jumpState == JumpStates.Air)
+            {
+                acceleration.X -= 0.01f;
+            }
         }
 
         public void MoveRight()
         {
-            velocity.X += 1.25f;
+            if (acceleration.X < 0)
+            {
+                ResetXAcceleration();
+            }
+
+            if (jumpState == JumpStates.Ground)
+            {
+                acceleration.X += 0.1f;
+            }
+            else if (jumpState == JumpStates.Air)
+            {
+                acceleration.X += 0.01f;
+            }
+        }
+
+        public void ResetXAcceleration()
+        {
+            acceleration.X = 0;
         }
 
         public void Jump()
         {
-            if (jumpState == JumpStates.Ground)
+            hasLetGoOfJump = false;
+            if (canJump)
             {
-                velocity.Y -= 14.5f;
+                velocity.Y = -10f;
+                if (jumpState == JumpStates.WallLeft)
+                {
+                    velocity.X = 5;
+                }
+                else if (jumpState == JumpStates.WallRight)
+                {
+                    velocity.X = -5;
+                }
+                jumpState = JumpStates.Air;
             }
-            else if (jumpState == JumpStates.WallRight)
+        }
+
+        public void CancelJump()
+        {
+            canJump = false;
+            hasLetGoOfJump = true;
+        }
+
+        public void ResetJump()
+        {
+            if (hasLetGoOfJump)
             {
-                velocity.Y = -10;
-                velocity.X = -12;
+                canJump = true;
+                jumpTime = maxJumpTime;
             }
-            else if (jumpState == JumpStates.WallLeft)
-            {
-                velocity.Y = -10;
-                velocity.X = -12;
-            }
-            jumpState = JumpStates.Air;
         }
 
         public override void Update(GameTimeWrapper gameTime)
@@ -64,12 +118,23 @@ namespace DoubleDash
             if (jumpState == JumpStates.Ground)
             {
                 // ground friction
-                velocity.X *= 0.8f;
+                velocity.X *= 0.87f;
             }
             else
             {
                 // air friction
-                velocity.X *= 0.8f;
+                velocity.X *= 0.9f;
+            }
+
+            if (canJump &&
+                jumpState == JumpStates.Air)
+            {
+                jumpTime -= gameTime.ElapsedGameTime;
+            }
+
+            if (jumpTime <= TimeSpan.Zero)
+            {
+                canJump = false;
             }
 
             if (jumpState == JumpStates.WallLeft ||
@@ -82,8 +147,9 @@ namespace DoubleDash
                 velocity.Y += GameHelpers.Gravity;
             }
 
-            velocity.X = MathHelper.Clamp(velocity.X, -100, 100);
-            velocity.Y = MathHelper.Clamp(velocity.Y, -50, 50);
+            acceleration.X = MathHelper.Clamp(acceleration.X, -5, 5);
+            velocity.X = MathHelper.Clamp(velocity.X, -33, 33);
+            //velocity.Y = MathHelper.Clamp(velocity.Y, -50, 50);
 
             base.Update(gameTime);
             UpdatePolygon();
@@ -138,8 +204,28 @@ namespace DoubleDash
                         }
                     }
 
-                    jumpState = JumpStates.Ground;
-                    velocity.Y = 0;
+                    if (mtv.Value.vector.Y == 0)
+                    {
+                        canJump = false;
+                        velocity = Vector2.Zero;
+                        acceleration = Vector2.Zero;
+                        if (position.X > wall.center.X)
+                        {
+                            jumpState = JumpStates.WallLeft;
+                        }
+                        else if (position.X < wall.center.X)
+                        {
+                            jumpState = JumpStates.WallRight;
+                        }
+                        ResetJump();
+                    }
+                    else
+                    {
+                        jumpState = JumpStates.Ground;
+                        velocity.Y = 0;
+                        acceleration.Y = 0;
+                        ResetJump();
+                    }
                 }
             }
         }
