@@ -1,4 +1,5 @@
-﻿using GLX;
+﻿using System.Diagnostics;
+using GLX;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -95,8 +96,22 @@ namespace DoubleDash
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            KeyboardState keyboardState = Keyboard.GetState();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            if (keyboardState.IsKeyDownAndUp(Keys.D1, previousKeyboardState))
+            {
+                mainGameTime.GameSpeed = 0.5m;
+            }
+            else if (keyboardState.IsKeyDownAndUp(Keys.D2, previousKeyboardState))
+            {
+                mainGameTime.GameSpeed = 1m;
+            }
+            else if (keyboardState.IsKeyDownAndUp(Keys.D3, previousKeyboardState))
+            {
+                mainGameTime.GameSpeed = 2m;
+            }
 
             world.Update(gameTime);
 
@@ -106,18 +121,6 @@ namespace DoubleDash
         void MainUpdate(GameTimeWrapper gameTime)
         {
             KeyboardState keyboardState = Keyboard.GetState();
-
-            if (keyboardState.IsKeyDownAndUp(Keys.Tab, previousKeyboardState))
-            {
-                if (mainGameTime.GameSpeed == 1)
-                {
-                    mainGameTime.GameSpeed = 2;
-                }
-                else
-                {
-                    mainGameTime.GameSpeed = 1;
-                }
-            }
 
             if (keyboardState.IsKeyDownAndUp(Keys.LeftControl, previousKeyboardState))
             {
