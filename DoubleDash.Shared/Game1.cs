@@ -16,7 +16,7 @@ namespace DoubleDash
         GameTimeWrapper mainGameTime;
         KeyboardState previousKeyboardState;
 
-        Level level;
+        //Level level;
         Walls walls;
 
         Player player;
@@ -64,10 +64,10 @@ namespace DoubleDash
             world.ActivateGameState(MainGame);
             world.CurrentCamera.Focus = Camera.CameraFocus.Center;
 
-            level = LevelReader.Load("Content/World 1 - Level 1 V2.1.json");
-            level.FinishLoading(graphics);
+            //level = LevelReader.Load("Content/World 1 - Level 1 V2.1.json");
+            //level.FinishLoading(graphics);
 
-            player = new Player(Content.Load<Texture2D>("circle_player"));
+            player = new Player(Content.Load<Texture2D>("circle_player"), graphics);
             player.position = new Vector2(300, 800);
             testImage = new Sprite(Content.Load<Texture2D>("testimage"));
             testImage.origin = Vector2.Zero;
@@ -156,6 +156,11 @@ namespace DoubleDash
                 player.CancelJump();
             }
 
+            if (keyboardState.IsKeyDownAndUp(Keys.X, previousKeyboardState))
+            {
+                player.Dash();
+            }
+
             testImage.Update(gameTime);
             player.Update(gameTime);
             walls.Update(gameTime);
@@ -190,7 +195,7 @@ namespace DoubleDash
             world.Draw(testImage.Draw);
             world.Draw(walls.Draw);
             world.Draw(player.Draw);
-            world.Draw(level.Draw);
+            //world.Draw(level.Draw);
             world.EndDraw();
         }
     }

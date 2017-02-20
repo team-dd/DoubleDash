@@ -14,6 +14,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Block.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BlockDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DashBar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Game1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GameHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Level.cs" />

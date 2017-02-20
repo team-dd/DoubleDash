@@ -30,7 +30,13 @@ namespace DoubleDash
         TimeSpan maxJumpTime;
         TimeSpan jumpTime;
 
-        public Player(Texture2D loadedTex) : base(loadedTex)
+        private const int MaxDashes = 2;
+        int dashes;
+        TimeSpan dashTimer;
+        TimeSpan dashRefreshTime;
+        DashBar dashBar;
+
+        public Player(Texture2D loadedTex, GraphicsDeviceManager graphics) : base(loadedTex)
         {
             jumpState = JumpStates.Air;
             storedXVelocity = 0;
@@ -38,6 +44,12 @@ namespace DoubleDash
             hasLetGoOfJump = true;
             maxJumpTime = TimeSpan.FromMilliseconds(400);
             jumpTime = maxJumpTime;
+            dashes = MaxDashes;
+            dashRefreshTime = TimeSpan.FromSeconds(5);
+            dashTimer = dashRefreshTime;
+            dashBar = new DashBar(graphics);
+            dashBar.CurrentDashPercent = (float)dashes / MaxDashes;
+            dashBar.CooldownBarPercent = (float)dashTimer.Ticks / dashRefreshTime.Ticks;
         }
 
         public void MoveLeft()
@@ -49,11 +61,11 @@ namespace DoubleDash
 
             if (jumpState == JumpStates.Ground)
             {
-                acceleration.X -= 0.1f;
+                acceleration.X -= 0.3f;
             }
             else if (jumpState == JumpStates.Air)
             {
-                acceleration.X -= 0.01f;
+                acceleration.X -= 0.1f;
             }
         }
 
@@ -66,11 +78,11 @@ namespace DoubleDash
 
             if (jumpState == JumpStates.Ground)
             {
-                acceleration.X += 0.1f;
+                acceleration.X += 0.3f;
             }
             else if (jumpState == JumpStates.Air)
             {
-                acceleration.X += 0.01f;
+                acceleration.X += 0.1f;
             }
         }
 
@@ -112,8 +124,34 @@ namespace DoubleDash
             }
         }
 
+        public void Dash()
+        {
+            if (dashes > 0)
+            {
+                dashes--;
+                position += Vector2.Normalize(velocity) * 200;
+            }
+        }
+
         public override void Update(GameTimeWrapper gameTime)
         {
+            if (dashes < MaxDashes)
+            {
+                dashTimer -= gameTime.ElapsedGameTime;
+            }
+
+            if (dashTimer <= TimeSpan.Zero)
+            {
+                if (dashes < MaxDashes)
+                {
+                    dashes++;
+                }
+                dashTimer = dashRefreshTime;
+            }
+
+            dashBar.CurrentDashPercent = (float)dashes / MaxDashes;
+            dashBar.CooldownBarPercent = (1 - (float)dashTimer.Ticks / dashRefreshTime.Ticks) * (1f / MaxDashes);
+
             // slow down player if they are not holding a direction
             if (jumpState == JumpStates.Ground)
             {
@@ -147,12 +185,14 @@ namespace DoubleDash
                 velocity.Y += GameHelpers.Gravity;
             }
 
-            acceleration.X = MathHelper.Clamp(acceleration.X, -5, 5);
-            velocity.X = MathHelper.Clamp(velocity.X, -33, 33);
+            acceleration.X = MathHelper.Clamp(acceleration.X, -10, 10);
+            velocity.X = MathHelper.Clamp(velocity.X, -15, 15);
             //velocity.Y = MathHelper.Clamp(velocity.Y, -50, 50);
 
             base.Update(gameTime);
             UpdatePolygon();
+            dashBar.Position = new Vector2(position.X - 500, position.Y - 500);
+            dashBar.Update(gameTime);
         }
 
         private void UpdatePolygon()
@@ -228,6 +268,12 @@ namespace DoubleDash
                     }
                 }
             }
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+            dashBar.Draw(spriteBatch);
         }
     }
 }
