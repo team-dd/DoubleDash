@@ -22,6 +22,9 @@ namespace DoubleDash
 
         Player player;
         Sprite testImage;
+        CurrentTime currentTime;
+
+        Sprite testCircle;
 
         public Game1()
         {
@@ -64,6 +67,7 @@ namespace DoubleDash
             world.AddGameState(MainGame, mainGameTime, MainDraw);
             world.ActivateGameState(MainGame);
             world.CurrentCamera.Focus = Camera.CameraFocus.Center;
+            currentTime = new CurrentTime(mainGameTime, Content.Load<SpriteFont>("Fonts/Arial_24"));
 
             //level = LevelReader.Load("Content/World 1 - Level 1 V2.1.json");
             //level.FinishLoading(graphics);
@@ -72,6 +76,8 @@ namespace DoubleDash
             player.position = new Vector2(300, 800);
             testImage = new Sprite(Content.Load<Texture2D>("testimage"));
             testImage.origin = Vector2.Zero;
+
+            testCircle = new Sprite(Content.Load<Texture2D>("testcircle"));
 
             walls = new Walls(graphics);
 
@@ -102,15 +108,15 @@ namespace DoubleDash
 
             if (keyboardState.IsKeyDownAndUp(Keys.D1, previousKeyboardState))
             {
-                mainGameTime.GameSpeed = 0.5m;
+                currentTime.SetToSlow();
             }
             else if (keyboardState.IsKeyDownAndUp(Keys.D2, previousKeyboardState))
             {
-                mainGameTime.GameSpeed = 1m;
+                currentTime.SetToNormal();
             }
             else if (keyboardState.IsKeyDownAndUp(Keys.D3, previousKeyboardState))
             {
-                mainGameTime.GameSpeed = 2m;
+                currentTime.SetToFast();
             }
 
             world.Update(gameTime);
@@ -173,6 +179,18 @@ namespace DoubleDash
                 world.CurrentCamera.Pan = player.position;
             }
             world.UpdateCurrentCamera(gameTime);
+
+            // GUI stuff
+            player.dashBar.Position = Vector2.Transform(
+                new Vector2(world.virtualResolutionRenderer.VirtualResolution.Width - DashBar.BarWidth - 50,
+                world.virtualResolutionRenderer.VirtualResolution.Height - DashBar.BarHeight - 100),
+                world.CurrentCamera.InverseTransform);
+            player.dashBar.Update(gameTime);
+
+            currentTime.text.position = Vector2.Transform(
+                new Vector2(100),
+                world.CurrentCamera.InverseTransform);
+            testCircle.position = Vector2.Transform(new Vector2(100), world.CurrentCamera.InverseTransform);
             //wall.Update(gameTime);
             //level.Update(gameTime);
 
@@ -198,6 +216,8 @@ namespace DoubleDash
             world.Draw(testImage.Draw);
             world.Draw(walls.Draw);
             world.Draw(player.Draw);
+            world.Draw(testCircle.Draw);
+            world.Draw(currentTime.Draw);
             //world.Draw(level.Draw);
             world.EndDraw();
         }

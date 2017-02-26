@@ -34,7 +34,7 @@ namespace DoubleDash
         int dashes;
         TimeSpan dashTimer;
         TimeSpan dashRefreshTime;
-        DashBar dashBar;
+        public DashBar dashBar;
 
         public Player(Texture2D loadedTex, GraphicsDeviceManager graphics) : base(loadedTex)
         {
@@ -191,8 +191,6 @@ namespace DoubleDash
 
             base.Update(gameTime);
             UpdatePolygon();
-            dashBar.Position = new Vector2(position.X - 500, position.Y - 500);
-            dashBar.Update(gameTime);
         }
 
         private void UpdatePolygon()

@@ -9,8 +9,8 @@ namespace DoubleDash
 {
     public class DashBar
     {
-        private const int BarWidth = 500;
-        private const int BarHeight = 25;
+        public const int BarWidth = 500;
+        public const int BarHeight = 25;
 
         private Sprite fullBar;
         private Sprite currentDashBar;
