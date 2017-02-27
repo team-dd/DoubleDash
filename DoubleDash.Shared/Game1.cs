@@ -198,7 +198,7 @@ namespace DoubleDash
             player.CheckCollisions(level.blocks);
             if (world.CurrentCamera.Focus == Camera.CameraFocus.Center)
             {
-                world.CurrentCamera.Pan = player.position;
+                world.CurrentCamera.Pan = Vector2.Lerp(world.CurrentCamera.Pan, player.position, .1f);
             }
             world.UpdateCurrentCamera(gameTime);
 
