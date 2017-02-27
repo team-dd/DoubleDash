@@ -17,11 +17,12 @@ namespace DoubleDash
             text = new TextItem(spriteFont, "1.0x");
             text.color = Color.Black;
             this.gameTime = gameTime;
+            gameTime.GameSpeed = 2m;
         }
 
         public void SetToSlow()
         {
-            gameTime.GameSpeed = 0.5m;
+            gameTime.GameSpeed = 1.5m;
             text.text = "0.5x";
             text.alpha = 1;
             text.visible = true;
@@ -29,7 +30,7 @@ namespace DoubleDash
 
         public void SetToNormal()
         {
-            gameTime.GameSpeed = 1m;
+            gameTime.GameSpeed = 2m;
             text.text = "1.0x";
             text.alpha = 1;
             text.visible = true;
@@ -37,7 +38,7 @@ namespace DoubleDash
 
         public void SetToFast()
         {
-            gameTime.GameSpeed = 2m;
+            gameTime.GameSpeed = 3m;
             text.text = "2.0x";
             text.alpha = 1;
             text.visible = true;

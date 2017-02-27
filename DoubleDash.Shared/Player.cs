@@ -78,11 +78,11 @@ namespace DoubleDash
 
             if (jumpState == JumpStates.Ground)
             {
-                acceleration.X -= 0.3f;
+                acceleration.X -= 0.02f;
             }
             else if (jumpState == JumpStates.Air)
             {
-                acceleration.X -= 0.1f;
+                acceleration.X -= 0.01f;
             }
         }
 
@@ -95,11 +95,11 @@ namespace DoubleDash
 
             if (jumpState == JumpStates.Ground)
             {
-                acceleration.X += 0.3f;
+                acceleration.X += 0.02f;
             }
             else if (jumpState == JumpStates.Air)
             {
-                acceleration.X += 0.1f;
+                acceleration.X += 0.01f;
             }
         }
 
@@ -113,14 +113,14 @@ namespace DoubleDash
             hasLetGoOfJump = false;
             if (canJump)
             {
-                velocity.Y = -10f;
+                velocity.Y = -7f;
                 if (jumpState == JumpStates.WallLeft)
                 {
-                    velocity.X = 5;
+                    velocity.X = 10;
                 }
                 else if (jumpState == JumpStates.WallRight)
                 {
-                    velocity.X = -5;
+                    velocity.X = -10;
                 }
                 jumpState = JumpStates.Air;
             }
@@ -219,8 +219,8 @@ namespace DoubleDash
                 velocity.Y += GameHelpers.Gravity;
             }
 
-            acceleration.X = MathHelper.Clamp(acceleration.X, -10, 10);
-            velocity.X = MathHelper.Clamp(velocity.X, -15, 15);
+            acceleration.X = MathHelper.Clamp(acceleration.X, -1f, 1f);
+            velocity.X = MathHelper.Clamp(velocity.X, -10, 10);
             //velocity.Y = MathHelper.Clamp(velocity.Y, -50, 50);
 
             base.Update(gameTime);
@@ -261,18 +261,12 @@ namespace DoubleDash
                     if (position.X > wall.position.X ||
                         position.Y < wall.position.Y)
                     {
-                        if (mtv.Value.magnitude != 0)
-                        {
-                            position += vector * mtv.Value.magnitude;
-                        }
+                       position += vector * mtv.Value.magnitude;
                     }
                     else if (position.X < wall.position.X ||
                         position.Y > wall.position.Y)
                     {
-                        if (mtv.Value.magnitude != 0)
-                        {
-                            position -= vector * mtv.Value.magnitude;
-                        }
+                        position -= vector * mtv.Value.magnitude;
                     }
 
                     if (mtv.Value.vector.Y == 0)
