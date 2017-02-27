@@ -291,15 +291,22 @@ namespace DoubleDash
                     Vector2 vector = mtv.Value.vector;
                     // you would think that you could just multiply vector by -1 if the second case
                     // is true but for some reason that doesn't work...
-                    if (position.X > wall.position.X ||
-                        position.Y < wall.position.Y)
+                    if (position.X > wall.position.X)
                     {
-                       position += vector * mtv.Value.magnitude;
+                       position.X += vector.X * mtv.Value.magnitude;
                     }
-                    else if (position.X < wall.position.X ||
-                        position.Y > wall.position.Y)
+                    else if (position.X < wall.position.X)
                     {
-                        position -= vector * mtv.Value.magnitude;
+                        position.X -= vector.X * mtv.Value.magnitude;
+                    }
+
+                    if (position.Y < wall.position.Y)
+                    {
+                        position.Y += vector.Y * mtv.Value.magnitude;
+                    }
+                    else if (position.Y > wall.position.Y)
+                    {
+                        position.Y -= vector.Y * mtv.Value.magnitude;
                     }
 
                     if (mtv.Value.vector.Y == 0)
