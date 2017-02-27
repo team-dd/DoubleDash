@@ -65,10 +65,10 @@ namespace DoubleDash
         public void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            top.Draw(spriteBatch);
-            right.Draw(spriteBatch);
-            bottom.Draw(spriteBatch);
-            left.Draw(spriteBatch);
+            //top.Draw(spriteBatch);
+            //right.Draw(spriteBatch);
+            //bottom.Draw(spriteBatch);
+            //left.Draw(spriteBatch);
         }
     }
 }

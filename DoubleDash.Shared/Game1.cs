@@ -75,7 +75,7 @@ namespace DoubleDash
             world.CurrentCamera.Focus = Camera.CameraFocus.Center;
             currentTime = new CurrentTime(mainGameTime, Content.Load<SpriteFont>("Fonts/Arial_24"));
 
-            level = LevelReader.Load("Content/triallevel.json");
+            level = LevelReader.Load("Content/level1.json");
             level.FinishLoading(graphics);
 
             player = new Player(Content.Load<Texture2D>("circle_player"),
