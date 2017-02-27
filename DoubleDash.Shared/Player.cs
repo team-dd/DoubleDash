@@ -86,11 +86,11 @@ namespace DoubleDash
 
             if (jumpState == JumpStates.Ground)
             {
-                acceleration.X -= 0.02f;
+                acceleration.X -= 0.01f;
             }
             else if (jumpState == JumpStates.Air)
             {
-                acceleration.X -= 0.01f;
+                acceleration.X -= 0.005f;
             }
             else if (jumpState == JumpStates.WallRight)
             {
@@ -116,11 +116,11 @@ namespace DoubleDash
 
             if (jumpState == JumpStates.Ground)
             {
-                acceleration.X += 0.02f;
+                acceleration.X += 0.01f;
             }
             else if (jumpState == JumpStates.Air)
             {
-                acceleration.X += 0.01f;
+                acceleration.X += 0.005f;
             }
             else if (jumpState == JumpStates.WallLeft)
             {
@@ -148,7 +148,7 @@ namespace DoubleDash
             hasLetGoOfJump = false;
             if (canJump)
             {
-                velocity.Y = -4.5f;
+                velocity.Y = -7f;
                 if (jumpState == JumpStates.WallLeft)
                 {
                     velocity.X = 5;
@@ -261,7 +261,7 @@ namespace DoubleDash
 
             velocity.Y += GameHelpers.Gravity;
 
-            acceleration.X = MathHelper.Clamp(acceleration.X, -.75f, .75f);
+            acceleration.X = MathHelper.Clamp(acceleration.X, -1f, 1f);
             velocity.X = MathHelper.Clamp(velocity.X, -7, 7);
 
             base.Update(gameTime);
