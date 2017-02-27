@@ -20,6 +20,7 @@ namespace DoubleDash
         }
 
         private const float GroundXMovement = 5;
+        private const int WALL_JUMP_BUFFER = 25;
 
         private Polygon polygon;
         public JumpStates jumpState;
@@ -42,6 +43,8 @@ namespace DoubleDash
         TextItem hasLetGoOfJumpText;
         TextItem jumpTimeText;
 
+        int wallJumpCounter;
+
         public Player(Texture2D loadedTex, Texture2D dashIndicatorTex, GraphicsDeviceManager graphics) : base(loadedTex)
         {
             jumpState = JumpStates.Air;
@@ -57,6 +60,7 @@ namespace DoubleDash
             dashBar = new DashBar(graphics);
             dashBar.CurrentDashPercent = (float)dashes / MaxDashes;
             dashBar.CooldownBarPercent = (float)dashTimer.Ticks / dashRefreshTime.Ticks;
+            wallJumpCounter = 0;
 
             LoadDebugTexts();
         }
@@ -84,6 +88,19 @@ namespace DoubleDash
             {
                 acceleration.X -= 0.01f;
             }
+            else if (jumpState == JumpStates.WallRight)
+            {
+                if (wallJumpCounter < WALL_JUMP_BUFFER)
+                {
+                    wallJumpCounter += 1;
+                }
+                else
+                {
+                    jumpState = JumpStates.Air;
+                    acceleration.X -= 0.01f;
+                    wallJumpCounter = 0;
+                }
+            }
         }
 
         public void MoveRight()
@@ -101,11 +118,25 @@ namespace DoubleDash
             {
                 acceleration.X += 0.01f;
             }
+            else if (jumpState == JumpStates.WallLeft)
+            {
+                if (wallJumpCounter < WALL_JUMP_BUFFER)
+                {
+                    wallJumpCounter += 1;
+                }
+                else
+                {
+                    jumpState = JumpStates.Air;
+                    acceleration.X += 0.01f;
+                    wallJumpCounter = 0;
+                }
+            }
         }
 
         public void ResetXAcceleration()
         {
             acceleration.X = 0;
+            wallJumpCounter = 0;
         }
 
         public void Jump()
@@ -116,11 +147,13 @@ namespace DoubleDash
                 velocity.Y = -7f;
                 if (jumpState == JumpStates.WallLeft)
                 {
-                    velocity.X = 10;
+                    velocity.X = 5;
+                    acceleration.X = .1f;
                 }
                 else if (jumpState == JumpStates.WallRight)
                 {
-                    velocity.X = -10;
+                    velocity.X = -5;
+                    acceleration.X = -.1f;
                 }
                 jumpState = JumpStates.Air;
             }

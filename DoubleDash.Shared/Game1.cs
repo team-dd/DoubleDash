@@ -73,7 +73,7 @@ namespace DoubleDash
             world.CurrentCamera.Focus = Camera.CameraFocus.Center;
             currentTime = new CurrentTime(mainGameTime, Content.Load<SpriteFont>("Fonts/Arial_24"));
 
-            level = LevelReader.Load("Content/emptyspace.json");
+            level = LevelReader.Load("Content/triallevel.json");
             level.FinishLoading(graphics);
 
             player = new Player(Content.Load<Texture2D>("circle_player"),
@@ -156,15 +156,16 @@ namespace DoubleDash
             if (keyboardState.IsKeyDown(Keys.Left))
             {
                 player.MoveLeft();
-                starBackgroundManager.MoveLeft(5);
+                starBackgroundManager.MoveRight(5);
             }
             else if (keyboardState.IsKeyDown(Keys.Right))
             {
                 player.MoveRight();
-                starBackgroundManager.MoveRight(5);
+                starBackgroundManager.MoveLeft(5);
             }
             else
             {
+                starBackgroundManager.MoveLeft(2);
                 player.ResetXAcceleration();
             }
             
