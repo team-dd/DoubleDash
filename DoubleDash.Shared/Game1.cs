@@ -185,7 +185,7 @@ namespace DoubleDash
 
             if (keyboardState.IsKeyDownAndUp(Keys.X, previousKeyboardState))
             {
-                player.Dash();
+                //player.Dash();
             }
 
             if (keyboardState.IsKeyDown(Keys.W))

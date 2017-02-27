@@ -346,11 +346,11 @@ namespace DoubleDash
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            dashBar.Draw(spriteBatch);
+            /*dashBar.Draw(spriteBatch);
             if (dashIndicator.visible)
             {
                 dashIndicator.Draw(spriteBatch);
-            }
+            }*/
         }
     }
 }
