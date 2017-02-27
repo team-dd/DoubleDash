@@ -17,7 +17,7 @@ namespace DoubleDash
         GameTimeWrapper mainGameTime;
         KeyboardState previousKeyboardState;
 
-        //Level level;
+        Level level;
         Walls walls;
 
         Player player;
@@ -73,13 +73,13 @@ namespace DoubleDash
             world.CurrentCamera.Focus = Camera.CameraFocus.Center;
             currentTime = new CurrentTime(mainGameTime, Content.Load<SpriteFont>("Fonts/Arial_24"));
 
-            //level = LevelReader.Load("Content/World 1 - Level 1 V2.1.json");
-            //level.FinishLoading(graphics);
+            level = LevelReader.Load("Content/samplelevel3.json");
+            level.FinishLoading(graphics);
 
             player = new Player(Content.Load<Texture2D>("circle_player"),
                 Content.Load<Texture2D>("dash_indicator"),
                 graphics);
-            player.position = new Vector2(300, 800);
+            player.position = level.start;
             testImage = new Sprite(Content.Load<Texture2D>("testimage"));
             testImage.origin = Vector2.Zero;
             testCircleText = new TextItem(DebugText.spriteFont);
@@ -91,7 +91,7 @@ namespace DoubleDash
             walls = new Walls(graphics);
 
             // start floor
-            walls.Create(new Vector2(10000, 100), new Vector2(0, 900));
+            //walls.Create(new Vector2(10000, 100), new Vector2(0, 900));
             //walls.Create(new Size(100, 1000), new Vector2(0, 0));
 
             starBackgroundManager = new StarBackgroundManager(graphics);

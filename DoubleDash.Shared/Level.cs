@@ -13,11 +13,15 @@ namespace DoubleDash
     {
         internal readonly List<BlockDescription> blocksDescription;
         public readonly List<Block> blocks;
+        public Vector2 start;
+        public Vector2 end;
 
         public Level()
         {
             blocksDescription = new List<BlockDescription>();
             blocks = new List<Block>();
+            start = new Vector2();
+            end = new Vector2();
         }
 
         public void FinishLoading(GraphicsDeviceManager graphics)

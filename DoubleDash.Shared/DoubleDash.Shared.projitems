@@ -18,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DashBar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Game1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GameHelpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameSave.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Level.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LevelReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Player.cs" />

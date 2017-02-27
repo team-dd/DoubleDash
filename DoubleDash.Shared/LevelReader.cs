@@ -13,36 +13,38 @@ namespace DoubleDash
     {
         protected override Level Read(ContentReader input, Level existingInstance)
         {
-            using (var streamReader = new StreamReader(input.BaseStream))
+            using (var streamReader = new FileStream(filename, FileMode.Open))
             {
-                JArray a = JArray.Load(new JsonTextReader(streamReader));
+                int levelSize = (int)streamReader.Length;
+                Byte[] levelDataRaw = new Byte[levelSize];
+                streamReader.Read(levelDataRaw, 0, (int)levelSize);
+                GameSave save = JsonConvert.DeserializeObject<GameSave>(System.Text.Encoding.Default.GetString(levelDataRaw));
                 Level level = new Level();
-                foreach (JObject o in a)
+                foreach (BlockDescription block in save.blocks)
                 {
-                    level.blocksDescription.Add(new BlockDescription(
-                        (int)o["X"],
-                        (int)o["Y"],
-                        (int)o["Width"],
-                        (int)o["Height"]));
+                    level.blocksDescription.Add(block);
                 }
+                level.start = save.start * 4;
+                level.end = save.end * 4;
                 return level;
             }
         }
 
         public static Level Load(string filename)
         {
-            using (var streamReader = new StreamReader(filename))
+            using (var streamReader = new FileStream(filename, FileMode.Open))
             {
-                JArray a = JArray.Load(new JsonTextReader(streamReader));
+                int levelSize = (int) streamReader.Length;
+                Byte[] levelDataRaw = new Byte[levelSize];
+                streamReader.Read(levelDataRaw, 0, (int)levelSize);
+                GameSave save = JsonConvert.DeserializeObject<GameSave>(System.Text.Encoding.Default.GetString(levelDataRaw));
                 Level level = new Level();
-                foreach (JObject o in a)
+                foreach (BlockDescription block in save.blocks)
                 {
-                    level.blocksDescription.Add(new BlockDescription(
-                        (int)o["X"],
-                        (int)o["Y"],
-                        (int)o["Width"],
-                        (int)o["Height"]));
+                    level.blocksDescription.Add(block);
                 }
+                level.start = save.start * 4;
+                level.end = save.end * 4;
                 return level;
             }
         }
