@@ -88,8 +88,6 @@ namespace DoubleDash
             testCircle = new Sprite(Content.Load<Texture2D>("testcircle"));
             testCirclePos = new Vector2(100);
 
-            walls = new Walls(graphics);
-
             // start floor
             //walls.Create(new Vector2(10000, 100), new Vector2(0, 900));
             //walls.Create(new Size(100, 1000), new Vector2(0, 0));
@@ -195,8 +193,8 @@ namespace DoubleDash
 
             testImage.Update(gameTime);
             player.Update(gameTime);
-            walls.Update(gameTime);
-            player.CheckCollisions(walls.walls);
+            level.Update(gameTime);
+            player.CheckCollisions(level.blocks);
             if (world.CurrentCamera.Focus == Camera.CameraFocus.Center)
             {
                 world.CurrentCamera.Pan = player.position;
@@ -244,11 +242,11 @@ namespace DoubleDash
             world.BeginDraw();
             //world.Draw(testImage.Draw);
             world.Draw(starBackgroundManager.Draw);
-            world.Draw(walls.Draw);
+            //world.Draw(walls.Draw);
             world.Draw(player.Draw);
             world.Draw(testCircle.Draw);
             world.Draw(currentTime.Draw);
-            //world.Draw(level.Draw);
+            world.Draw(level.Draw);
             world.Draw(DebugText.Draw);
             world.EndDraw();
         }
