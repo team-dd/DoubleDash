@@ -70,7 +70,7 @@ namespace DoubleDash
         {
             DebugText.Initialize(Content.Load<SpriteFont>("Fonts/Courier_New_12"));
             world = new World(graphics);
-            mainGameTime = new GameTimeWrapper(MainUpdate, this, 1);
+            mainGameTime = new GameTimeWrapper(MainUpdate, this, 2);
             world.AddGameState(MainGame, mainGameTime, MainDraw);
             world.ActivateGameState(MainGame);
             world.CurrentCamera.Focus = Camera.CameraFocus.Center;
@@ -251,9 +251,9 @@ namespace DoubleDash
             world.Draw(starBackgroundManager.Draw);
             //world.Draw(walls.Draw);
             world.Draw(player.Draw);
+            world.Draw(level.Draw);
             world.Draw(testCircle.Draw);
             world.Draw(currentTime.Draw);
-            world.Draw(level.Draw);
             world.Draw(DebugText.Draw);
             world.EndDraw();
         }
