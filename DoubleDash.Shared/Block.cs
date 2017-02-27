@@ -18,6 +18,9 @@ namespace DoubleDash
         private Line bottom;
         private Line left;
 
+        int currentRed;
+        bool redAscending;
+
         public Block(Vector2 position, Size size, GraphicsDeviceManager graphics) : base(graphics)
         {
             color = Color.Black;
@@ -29,13 +32,40 @@ namespace DoubleDash
             bottom = new Line(graphics);
             left = new Line(graphics);
 
+            currentRed = 0;
+            redAscending = true;
+
             UpdatePolygon();
         }
 
         public void Update(GameTimeWrapper gameTime)
         {
+            UpdateColor(gameTime);
             base.Update(gameTime);
             UpdatePolygon();
+        }
+
+        public void UpdateColor(GameTimeWrapper gameTime)
+        {
+            if (redAscending)
+            {
+                currentRed++;
+
+                if (currentRed == 110)
+                {
+                    redAscending = false;
+                }
+            }
+            else
+            {
+                currentRed--;
+
+                if (currentRed == 1)
+                {
+                    redAscending = true;
+                }
+            }
+            color = new Color((220 - currentRed) % 220, 100, 255);
         }
 
         private void UpdatePolygon()

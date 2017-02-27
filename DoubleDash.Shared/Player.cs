@@ -43,9 +43,11 @@ namespace DoubleDash
         TextItem hasLetGoOfJumpText;
         TextItem jumpTimeText;
 
+        Vector2 spawnPoint;
+
         int wallJumpCounter;
 
-        public Player(Texture2D loadedTex, Texture2D dashIndicatorTex, GraphicsDeviceManager graphics) : base(loadedTex)
+        public Player(Texture2D loadedTex, Texture2D dashIndicatorTex, GraphicsDeviceManager graphics, Vector2 spawnPoint) : base(loadedTex)
         {
             jumpState = JumpStates.Air;
             storedXVelocity = 0;
@@ -61,6 +63,8 @@ namespace DoubleDash
             dashBar.CurrentDashPercent = (float)dashes / MaxDashes;
             dashBar.CooldownBarPercent = (float)dashTimer.Ticks / dashRefreshTime.Ticks;
             wallJumpCounter = 0;
+            position = spawnPoint;
+            this.spawnPoint = spawnPoint;
 
             LoadDebugTexts();
         }
@@ -190,8 +194,21 @@ namespace DoubleDash
             jumpTimeText.text = $"{nameof(jumpTime)}: {jumpTime.ToString()}";
         }
 
+        private bool isOutOfBounds()
+        {
+            return position.Y > 5000;
+        }
+
         public override void Update(GameTimeWrapper gameTime)
         {
+            if (isOutOfBounds())
+            {
+                velocity = Vector2.Zero;
+                acceleration = Vector2.Zero;
+                position = spawnPoint;
+                jumpState = JumpStates.Ground;
+            }
+
             if (dashes < MaxDashes)
             {
                 dashTimer -= gameTime.ElapsedGameTime;
