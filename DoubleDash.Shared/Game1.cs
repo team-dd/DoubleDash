@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using GLX;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -161,12 +162,12 @@ namespace DoubleDash
             if (keyboardState.IsKeyDown(Keys.Left))
             {
                 player.MoveLeft();
-                starBackgroundManager.MoveRight(5);
+                starBackgroundManager.MoveLeft(9 - Math.Min(7, Math.Max(2, Math.Abs(player.velocity.X))));
             }
             else if (keyboardState.IsKeyDown(Keys.Right))
             {
                 player.MoveRight();
-                starBackgroundManager.MoveLeft(5);
+                starBackgroundManager.MoveLeft(Math.Min(7, Math.Max(2, Math.Abs(player.velocity.X))));
             }
             else
             {
