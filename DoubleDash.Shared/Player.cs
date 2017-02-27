@@ -139,7 +139,15 @@ namespace DoubleDash
 
         public void ResetXAcceleration()
         {
-            acceleration.X = 0;
+            if (acceleration.X >= 0)
+            {
+                acceleration.X = Math.Max(0, acceleration.X - .0175f);
+            }
+            else
+            {
+                acceleration.X = Math.Min(0, acceleration.X + .0175f);
+            }
+            
             wallJumpCounter = 0;
         }
 
