@@ -30,7 +30,7 @@ namespace DoubleDash
 
         public void SetToNormal()
         {
-            gameTime.GameSpeed = 2m;
+            gameTime.GameSpeed = 2.5m;
             text.text = "1.0x";
             text.alpha = 1;
             text.visible = true;
