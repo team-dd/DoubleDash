@@ -22,7 +22,7 @@ namespace DoubleDash
 
         public void SetToSlow()
         {
-            gameTime.GameSpeed = 1.5m;
+            gameTime.GameSpeed = 1m;
             text.text = "0.5x";
             text.alpha = 1;
             text.visible = true;
@@ -38,7 +38,7 @@ namespace DoubleDash
 
         public void SetToFast()
         {
-            gameTime.GameSpeed = 3m;
+            gameTime.GameSpeed = 2.5m;
             text.text = "2.0x";
             text.alpha = 1;
             text.visible = true;
@@ -46,12 +46,12 @@ namespace DoubleDash
 
         public void Update(GameTimeWrapper gameTime)
         {
-            text.alpha -= 0.01f;
+            /*text.alpha -= 0.01f;
             if (text.alpha <= 0)
             {
                 text.visible = false;
                 text.alpha = 0;
-            }
+            }*/
         }
 
         public void Draw(SpriteBatch spriteBatch)

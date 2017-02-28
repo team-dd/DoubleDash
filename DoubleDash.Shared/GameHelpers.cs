@@ -8,6 +8,6 @@ namespace DoubleDash
 {
     public static class GameHelpers
     {
-        public const float Gravity = 0.2f;
+        public const float Gravity = 0.15f;
     }
 }

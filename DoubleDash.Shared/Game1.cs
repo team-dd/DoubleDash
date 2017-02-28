@@ -3,6 +3,7 @@ using GLX;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace DoubleDash
 {
@@ -28,6 +29,7 @@ namespace DoubleDash
         Vector2 testCirclePos;
         Sprite testCircle;
         TextItem testCircleText;
+        Song song;
 
         public Game1()
         {
@@ -67,19 +69,18 @@ namespace DoubleDash
         {
             DebugText.Initialize(Content.Load<SpriteFont>("Fonts/Courier_New_12"));
             world = new World(graphics);
-            mainGameTime = new GameTimeWrapper(MainUpdate, this, 1);
+            mainGameTime = new GameTimeWrapper(MainUpdate, this, 2);
             world.AddGameState(MainGame, mainGameTime, MainDraw);
             world.ActivateGameState(MainGame);
             world.CurrentCamera.Focus = Camera.CameraFocus.Center;
             currentTime = new CurrentTime(mainGameTime, Content.Load<SpriteFont>("Fonts/Arial_24"));
 
-            level = LevelReader.Load("Content/emptyspace.json");
+            level = LevelReader.Load("Content/testlevel5.json");
             level.FinishLoading(graphics);
 
             player = new Player(Content.Load<Texture2D>("circle_player"),
                 Content.Load<Texture2D>("dash_indicator"),
-                graphics);
-            player.position = level.start;
+                graphics, level.start);
             testImage = new Sprite(Content.Load<Texture2D>("testimage"));
             testImage.origin = Vector2.Zero;
             testCircleText = new TextItem(DebugText.spriteFont);
@@ -94,6 +95,10 @@ namespace DoubleDash
 
             starBackgroundManager = new StarBackgroundManager(graphics);
             starBackgroundManager.Create(5, world.virtualResolutionRenderer);
+
+            song = Content.Load<Song>("music");
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(song);
         }
 
         /// <summary>
@@ -156,15 +161,16 @@ namespace DoubleDash
             if (keyboardState.IsKeyDown(Keys.Left))
             {
                 player.MoveLeft();
-                starBackgroundManager.MoveLeft(5);
+                starBackgroundManager.MoveRight(5);
             }
             else if (keyboardState.IsKeyDown(Keys.Right))
             {
                 player.MoveRight();
-                starBackgroundManager.MoveRight(5);
+                starBackgroundManager.MoveLeft(5);
             }
             else
             {
+                starBackgroundManager.MoveLeft(2);
                 player.ResetXAcceleration();
             }
             
@@ -179,7 +185,7 @@ namespace DoubleDash
 
             if (keyboardState.IsKeyDownAndUp(Keys.X, previousKeyboardState))
             {
-                player.Dash();
+                //player.Dash();
             }
 
             if (keyboardState.IsKeyDown(Keys.W))
@@ -197,7 +203,7 @@ namespace DoubleDash
             player.CheckCollisions(level.blocks);
             if (world.CurrentCamera.Focus == Camera.CameraFocus.Center)
             {
-                world.CurrentCamera.Pan = player.position;
+                world.CurrentCamera.Pan = Vector2.Lerp(world.CurrentCamera.Pan, player.position, .075f);
             }
             world.UpdateCurrentCamera(gameTime);
 
@@ -244,9 +250,9 @@ namespace DoubleDash
             world.Draw(starBackgroundManager.Draw);
             //world.Draw(walls.Draw);
             world.Draw(player.Draw);
+            world.Draw(level.Draw);
             world.Draw(testCircle.Draw);
             world.Draw(currentTime.Draw);
-            world.Draw(level.Draw);
             world.Draw(DebugText.Draw);
             world.EndDraw();
         }

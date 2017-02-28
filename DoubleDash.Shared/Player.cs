@@ -20,6 +20,7 @@ namespace DoubleDash
         }
 
         private const float GroundXMovement = 5;
+        private const int WALL_JUMP_BUFFER = 25;
 
         private Polygon polygon;
         public JumpStates jumpState;
@@ -42,7 +43,11 @@ namespace DoubleDash
         TextItem hasLetGoOfJumpText;
         TextItem jumpTimeText;
 
-        public Player(Texture2D loadedTex, Texture2D dashIndicatorTex, GraphicsDeviceManager graphics) : base(loadedTex)
+        Vector2 spawnPoint;
+
+        int wallJumpCounter;
+
+        public Player(Texture2D loadedTex, Texture2D dashIndicatorTex, GraphicsDeviceManager graphics, Vector2 spawnPoint) : base(loadedTex)
         {
             jumpState = JumpStates.Air;
             storedXVelocity = 0;
@@ -57,6 +62,9 @@ namespace DoubleDash
             dashBar = new DashBar(graphics);
             dashBar.CurrentDashPercent = (float)dashes / MaxDashes;
             dashBar.CooldownBarPercent = (float)dashTimer.Ticks / dashRefreshTime.Ticks;
+            wallJumpCounter = 0;
+            position = spawnPoint;
+            this.spawnPoint = spawnPoint;
 
             LoadDebugTexts();
         }
@@ -78,11 +86,24 @@ namespace DoubleDash
 
             if (jumpState == JumpStates.Ground)
             {
-                acceleration.X -= 0.02f;
+                acceleration.X -= 0.01f;
             }
             else if (jumpState == JumpStates.Air)
             {
-                acceleration.X -= 0.01f;
+                acceleration.X -= 0.005f;
+            }
+            else if (jumpState == JumpStates.WallRight)
+            {
+                if (wallJumpCounter < WALL_JUMP_BUFFER)
+                {
+                    wallJumpCounter += 1;
+                }
+                else
+                {
+                    jumpState = JumpStates.Air;
+                    acceleration.X -= 0.01f;
+                    wallJumpCounter = 0;
+                }
             }
         }
 
@@ -95,17 +116,39 @@ namespace DoubleDash
 
             if (jumpState == JumpStates.Ground)
             {
-                acceleration.X += 0.02f;
+                acceleration.X += 0.01f;
             }
             else if (jumpState == JumpStates.Air)
             {
-                acceleration.X += 0.01f;
+                acceleration.X += 0.005f;
+            }
+            else if (jumpState == JumpStates.WallLeft)
+            {
+                if (wallJumpCounter < WALL_JUMP_BUFFER)
+                {
+                    wallJumpCounter += 1;
+                }
+                else
+                {
+                    jumpState = JumpStates.Air;
+                    acceleration.X += 0.01f;
+                    wallJumpCounter = 0;
+                }
             }
         }
 
         public void ResetXAcceleration()
         {
-            acceleration.X = 0;
+            if (acceleration.X >= 0)
+            {
+                acceleration.X = Math.Max(0, acceleration.X - .0175f);
+            }
+            else
+            {
+                acceleration.X = Math.Min(0, acceleration.X + .0175f);
+            }
+            
+            wallJumpCounter = 0;
         }
 
         public void Jump()
@@ -116,11 +159,13 @@ namespace DoubleDash
                 velocity.Y = -7f;
                 if (jumpState == JumpStates.WallLeft)
                 {
-                    velocity.X = 10;
+                    velocity.X = 5;
+                    acceleration.X = .5f;
                 }
                 else if (jumpState == JumpStates.WallRight)
                 {
-                    velocity.X = -10;
+                    velocity.X = -5;
+                    acceleration.X = -.5f;
                 }
                 jumpState = JumpStates.Air;
             }
@@ -157,8 +202,21 @@ namespace DoubleDash
             jumpTimeText.text = $"{nameof(jumpTime)}: {jumpTime.ToString()}";
         }
 
+        private bool isOutOfBounds()
+        {
+            return position.Y > 5000;
+        }
+
         public override void Update(GameTimeWrapper gameTime)
         {
+            if (isOutOfBounds())
+            {
+                velocity = Vector2.Zero;
+                acceleration = Vector2.Zero;
+                position = spawnPoint;
+                jumpState = JumpStates.Ground;
+            }
+
             if (dashes < MaxDashes)
             {
                 dashTimer -= gameTime.ElapsedGameTime;
@@ -209,19 +267,10 @@ namespace DoubleDash
                 canJump = false;
             }
 
-            if (jumpState == JumpStates.WallLeft ||
-                jumpState == JumpStates.WallRight)
-            {
-                velocity.Y += GameHelpers.Gravity / 1.5f;
-            }
-            else
-            {
-                velocity.Y += GameHelpers.Gravity;
-            }
+            velocity.Y += GameHelpers.Gravity;
 
             acceleration.X = MathHelper.Clamp(acceleration.X, -1f, 1f);
-            velocity.X = MathHelper.Clamp(velocity.X, -10, 10);
-            //velocity.Y = MathHelper.Clamp(velocity.Y, -50, 50);
+            velocity.X = MathHelper.Clamp(velocity.X, -7, 7);
 
             base.Update(gameTime);
             UpdatePolygon();
@@ -258,15 +307,22 @@ namespace DoubleDash
                     Vector2 vector = mtv.Value.vector;
                     // you would think that you could just multiply vector by -1 if the second case
                     // is true but for some reason that doesn't work...
-                    if (position.X > wall.position.X ||
-                        position.Y < wall.position.Y)
+                    if (position.X > wall.position.X)
                     {
-                       position += vector * mtv.Value.magnitude;
+                       position.X += vector.X * mtv.Value.magnitude;
                     }
-                    else if (position.X < wall.position.X ||
-                        position.Y > wall.position.Y)
+                    else if (position.X < wall.position.X)
                     {
-                        position -= vector * mtv.Value.magnitude;
+                        position.X -= vector.X * mtv.Value.magnitude;
+                    }
+
+                    if (position.Y < wall.position.Y)
+                    {
+                        position.Y += vector.Y * mtv.Value.magnitude;
+                    }
+                    else if (position.Y > wall.position.Y)
+                    {
+                        position.Y -= vector.Y * mtv.Value.magnitude;
                     }
 
                     if (mtv.Value.vector.Y == 0)
@@ -298,11 +354,11 @@ namespace DoubleDash
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            dashBar.Draw(spriteBatch);
+            /*dashBar.Draw(spriteBatch);
             if (dashIndicator.visible)
             {
                 dashIndicator.Draw(spriteBatch);
-            }
+            }*/
         }
     }
 }
