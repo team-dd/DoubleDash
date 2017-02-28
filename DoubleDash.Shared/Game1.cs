@@ -72,7 +72,9 @@ namespace DoubleDash
             //level = LevelReader.Load("Content/World 1 - Level 1 V2.1.json");
             //level.FinishLoading(graphics);
 
-            player = new Player(Content.Load<Texture2D>("circle_player"), graphics);
+            player = new Player(Content.Load<Texture2D>("circle_player"),
+                Content.Load<Texture2D>("dash_indicator"),
+                graphics);
             player.position = new Vector2(300, 800);
             testImage = new Sprite(Content.Load<Texture2D>("testimage"));
             testImage.origin = Vector2.Zero;

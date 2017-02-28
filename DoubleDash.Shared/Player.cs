@@ -31,12 +31,14 @@ namespace DoubleDash
         TimeSpan jumpTime;
 
         private const int MaxDashes = 2;
+        private const int DashDistance = 200;
+        Sprite dashIndicator;
         int dashes;
         TimeSpan dashTimer;
         TimeSpan dashRefreshTime;
         public DashBar dashBar;
 
-        public Player(Texture2D loadedTex, GraphicsDeviceManager graphics) : base(loadedTex)
+        public Player(Texture2D loadedTex, Texture2D dashIndicatorTex, GraphicsDeviceManager graphics) : base(loadedTex)
         {
             jumpState = JumpStates.Air;
             storedXVelocity = 0;
@@ -44,6 +46,7 @@ namespace DoubleDash
             hasLetGoOfJump = true;
             maxJumpTime = TimeSpan.FromMilliseconds(400);
             jumpTime = maxJumpTime;
+            dashIndicator = new Sprite(dashIndicatorTex);
             dashes = MaxDashes;
             dashRefreshTime = TimeSpan.FromSeconds(5);
             dashTimer = dashRefreshTime;
@@ -129,7 +132,7 @@ namespace DoubleDash
             if (dashes > 0)
             {
                 dashes--;
-                position += Vector2.Normalize(velocity) * 200;
+                position += Vector2.Normalize(velocity) * DashDistance;
             }
         }
 
@@ -138,6 +141,11 @@ namespace DoubleDash
             if (dashes < MaxDashes)
             {
                 dashTimer -= gameTime.ElapsedGameTime;
+
+                if (dashes <= 0)
+                {
+                    dashIndicator.visible = false;
+                }
             }
 
             if (dashTimer <= TimeSpan.Zero)
@@ -147,6 +155,11 @@ namespace DoubleDash
                     dashes++;
                 }
                 dashTimer = dashRefreshTime;
+
+                if (dashes > 0)
+                {
+                    dashIndicator.visible = true;
+                }
             }
 
             dashBar.CurrentDashPercent = (float)dashes / MaxDashes;
@@ -191,6 +204,11 @@ namespace DoubleDash
 
             base.Update(gameTime);
             UpdatePolygon();
+
+            if (dashIndicator.visible)
+            {
+                dashIndicator.position = position + Vector2.Normalize(velocity) * DashDistance;
+            }
         }
 
         private void UpdatePolygon()
@@ -272,6 +290,10 @@ namespace DoubleDash
         {
             base.Draw(spriteBatch);
             dashBar.Draw(spriteBatch);
+            if (dashIndicator.visible)
+            {
+                dashIndicator.Draw(spriteBatch);
+            }
         }
     }
 }
