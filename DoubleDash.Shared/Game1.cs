@@ -75,7 +75,7 @@ namespace DoubleDash
             world.CurrentCamera.Focus = Camera.CameraFocus.Center;
             currentTime = new CurrentTime(mainGameTime, Content.Load<SpriteFont>("Fonts/Arial_24"));
 
-            level = LevelReader.Load("Content/testlevel5.json");
+            level = LevelReader.Load("Content/Levels/Test Levels/testlevel5.json");
             level.FinishLoading(graphics);
 
             player = new Player(Content.Load<Texture2D>("circle_player"),
@@ -94,7 +94,7 @@ namespace DoubleDash
             //walls.Create(new Size(100, 1000), new Vector2(0, 0));
 
             starBackgroundManager = new StarBackgroundManager(graphics);
-            starBackgroundManager.Create(5, world.virtualResolutionRenderer);
+            starBackgroundManager.Create(2, world.virtualResolutionRenderer);
 
             song = Content.Load<Song>("music");
             MediaPlayer.IsRepeating = true;

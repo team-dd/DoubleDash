@@ -26,8 +26,8 @@ namespace DoubleDash
             while (stars.Count < MaxStars)
             {
                 Sprite star = new Sprite(graphics);
-                star.position = new Vector2(World.random.Next(0, (int)vrr.VirtualResolution.Width),
-                    World.random.Next(0, (int)vrr.VirtualResolution.Height));
+                star.position = new Vector2(World.random.Next(0, (int)vrr.WindowResolution.Width),
+                    World.random.Next(0, (int)vrr.WindowResolution.Height));
                 star.DrawSize = new Size(World.random.Next(1, 5));
                 star.position = Vector2.Transform(star.position, camera.InverseTransform);
                 star.color = Color.Black;

@@ -132,3 +132,13 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:music.mp3
+
+#begin Levels/Test Levels/testlevel1.json
+/copy:Levels/Test Levels/testlevel1.json
+
+#begin Levels/Test Levels/testlevel5.json
+/copy:Levels/Test Levels/testlevel5.json
+
+#begin Levels/Test Levels/triallevel.json
+/copy:Levels/Test Levels/triallevel.json
+
