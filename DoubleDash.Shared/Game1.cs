@@ -62,6 +62,7 @@ namespace DoubleDash
         /// </summary>
         protected override void LoadContent()
         {
+            DebugText.Initialize(Content.Load<SpriteFont>("Fonts/Courier_New_12"));
             world = new World(graphics);
             mainGameTime = new GameTimeWrapper(MainUpdate, this, 1);
             world.AddGameState(MainGame, mainGameTime, MainDraw);
@@ -157,7 +158,7 @@ namespace DoubleDash
             {
                 player.ResetXAcceleration();
             }
-
+            
             if (keyboardState.IsKeyDown(Keys.Z))
             {
                 player.Jump();
@@ -188,6 +189,7 @@ namespace DoubleDash
                 world.virtualResolutionRenderer.VirtualResolution.Height - DashBar.BarHeight - 100),
                 world.CurrentCamera.InverseTransform);
             player.dashBar.Update(gameTime);
+            DebugText.position = Vector2.Transform(Vector2.Zero, world.CurrentCamera.InverseTransform);
 
             currentTime.text.position = Vector2.Transform(
                 new Vector2(100),
@@ -222,6 +224,7 @@ namespace DoubleDash
             //world.Draw(testCircle.Draw);
             world.Draw(currentTime.Draw);
             //world.Draw(level.Draw);
+            world.Draw(DebugText.Draw);
             world.EndDraw();
         }
     }

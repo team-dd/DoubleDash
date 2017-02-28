@@ -107,3 +107,10 @@
 /processorParam:TextureFormat=Color
 /build:dash_indicator.png
 
+#begin Fonts/Courier_New_12.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Courier_New_12.spritefont
+

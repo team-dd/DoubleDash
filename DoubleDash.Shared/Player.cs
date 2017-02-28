@@ -38,6 +38,10 @@ namespace DoubleDash
         TimeSpan dashRefreshTime;
         public DashBar dashBar;
 
+        TextItem canJumpText;
+        TextItem hasLetGoOfJumpText;
+        TextItem jumpTimeText;
+
         public Player(Texture2D loadedTex, Texture2D dashIndicatorTex, GraphicsDeviceManager graphics) : base(loadedTex)
         {
             jumpState = JumpStates.Air;
@@ -53,6 +57,16 @@ namespace DoubleDash
             dashBar = new DashBar(graphics);
             dashBar.CurrentDashPercent = (float)dashes / MaxDashes;
             dashBar.CooldownBarPercent = (float)dashTimer.Ticks / dashRefreshTime.Ticks;
+
+            LoadDebugTexts();
+        }
+
+        public void LoadDebugTexts()
+        {
+            canJumpText = new TextItem(DebugText.spriteFont);
+            hasLetGoOfJumpText = new TextItem(DebugText.spriteFont);
+            jumpTimeText = new TextItem(DebugText.spriteFont);
+            DebugText.Add(canJumpText, hasLetGoOfJumpText, jumpTimeText);
         }
 
         public void MoveLeft()
@@ -136,6 +150,13 @@ namespace DoubleDash
             }
         }
 
+        private void UpdateDebugTexts(GameTimeWrapper gameTime)
+        {
+            canJumpText.text = $"{nameof(canJump)}: {canJump.ToString()}";
+            hasLetGoOfJumpText.text = $"{nameof(hasLetGoOfJump)}: {hasLetGoOfJump.ToString()}";
+            jumpTimeText.text = $"{nameof(jumpTime)}: {jumpTime.ToString()}";
+        }
+
         public override void Update(GameTimeWrapper gameTime)
         {
             if (dashes < MaxDashes)
@@ -209,6 +230,8 @@ namespace DoubleDash
             {
                 dashIndicator.position = position + Vector2.Normalize(velocity) * DashDistance;
             }
+
+            UpdateDebugTexts(gameTime);
         }
 
         private void UpdatePolygon()
@@ -238,11 +261,7 @@ namespace DoubleDash
                     if (position.X > wall.position.X ||
                         position.Y < wall.position.Y)
                     {
-                        if (mtv.Value.magnitude == 0)
-                        {
-                            position += vector;
-                        }
-                        else
+                        if (mtv.Value.magnitude != 0)
                         {
                             position += vector * mtv.Value.magnitude;
                         }
@@ -250,11 +269,7 @@ namespace DoubleDash
                     else if (position.X < wall.position.X ||
                         position.Y > wall.position.Y)
                     {
-                        if (mtv.Value.magnitude == 0)
-                        {
-                            position -= vector;
-                        }
-                        else
+                        if (mtv.Value.magnitude != 0)
                         {
                             position -= vector * mtv.Value.magnitude;
                         }
