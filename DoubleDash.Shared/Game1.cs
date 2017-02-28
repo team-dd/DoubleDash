@@ -24,7 +24,7 @@ namespace DoubleDash
         Sprite testImage;
         CurrentTime currentTime;
 
-        Sprite testCircle;
+        //Sprite testCircle;
 
         public Game1()
         {
@@ -79,7 +79,7 @@ namespace DoubleDash
             testImage = new Sprite(Content.Load<Texture2D>("testimage"));
             testImage.origin = Vector2.Zero;
 
-            testCircle = new Sprite(Content.Load<Texture2D>("testcircle"));
+            //testCircle = new Sprite(Content.Load<Texture2D>("testcircle"));
 
             walls = new Walls(graphics);
 
@@ -192,7 +192,8 @@ namespace DoubleDash
             currentTime.text.position = Vector2.Transform(
                 new Vector2(100),
                 world.CurrentCamera.InverseTransform);
-            testCircle.position = Vector2.Transform(new Vector2(100), world.CurrentCamera.InverseTransform);
+            currentTime.Update(gameTime);
+            //testCircle.position = Vector2.Transform(new Vector2(100), world.CurrentCamera.InverseTransform);
             //wall.Update(gameTime);
             //level.Update(gameTime);
 
@@ -218,7 +219,7 @@ namespace DoubleDash
             world.Draw(testImage.Draw);
             world.Draw(walls.Draw);
             world.Draw(player.Draw);
-            world.Draw(testCircle.Draw);
+            //world.Draw(testCircle.Draw);
             world.Draw(currentTime.Draw);
             //world.Draw(level.Draw);
             world.EndDraw();
