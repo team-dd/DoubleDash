@@ -23,8 +23,11 @@ namespace DoubleDash
         Player player;
         Sprite testImage;
         CurrentTime currentTime;
+        StarBackgroundManager starBackgroundManager;
 
-        //Sprite testCircle;
+        Vector2 testCirclePos;
+        Sprite testCircle;
+        TextItem testCircleText;
 
         public Game1()
         {
@@ -79,14 +82,20 @@ namespace DoubleDash
             player.position = new Vector2(300, 800);
             testImage = new Sprite(Content.Load<Texture2D>("testimage"));
             testImage.origin = Vector2.Zero;
+            testCircleText = new TextItem(DebugText.spriteFont);
+            DebugText.Add(testCircleText);
 
-            //testCircle = new Sprite(Content.Load<Texture2D>("testcircle"));
+            testCircle = new Sprite(Content.Load<Texture2D>("testcircle"));
+            testCirclePos = new Vector2(100);
 
             walls = new Walls(graphics);
 
             // start floor
             walls.Create(new Vector2(10000, 100), new Vector2(0, 900));
-            walls.Create(new Size(100, 1000), new Vector2(0, 0));
+            //walls.Create(new Size(100, 1000), new Vector2(0, 0));
+
+            starBackgroundManager = new StarBackgroundManager(graphics);
+            starBackgroundManager.Create(5, world.virtualResolutionRenderer);
         }
 
         /// <summary>
@@ -149,10 +158,12 @@ namespace DoubleDash
             if (keyboardState.IsKeyDown(Keys.Left))
             {
                 player.MoveLeft();
+                starBackgroundManager.MoveLeft(5);
             }
             else if (keyboardState.IsKeyDown(Keys.Right))
             {
                 player.MoveRight();
+                starBackgroundManager.MoveRight(5);
             }
             else
             {
@@ -173,6 +184,15 @@ namespace DoubleDash
                 player.Dash();
             }
 
+            if (keyboardState.IsKeyDown(Keys.W))
+            {
+                testCirclePos.Y -= 5;
+            }
+            else if (keyboardState.IsKeyDown(Keys.S))
+            {
+                testCirclePos.Y += 5;
+            }
+
             testImage.Update(gameTime);
             player.Update(gameTime);
             walls.Update(gameTime);
@@ -182,6 +202,8 @@ namespace DoubleDash
                 world.CurrentCamera.Pan = player.position;
             }
             world.UpdateCurrentCamera(gameTime);
+
+            starBackgroundManager.Update(gameTime, world.CurrentCamera);
 
             // GUI stuff
             player.dashBar.Position = Vector2.Transform(
@@ -195,8 +217,10 @@ namespace DoubleDash
                 new Vector2(100),
                 world.CurrentCamera.InverseTransform);
             currentTime.Update(gameTime);
-            //testCircle.position = Vector2.Transform(new Vector2(100), world.CurrentCamera.InverseTransform);
-            //wall.Update(gameTime);
+            testCircle.position = Vector2.Transform(testCirclePos, world.CurrentCamera.InverseTransform);
+            testCircle.Update(gameTime);
+
+            testCircleText.text = $"Test circle visible by camera: {world.CurrentCamera.Contains(testCircle.rectangle)}";
             //level.Update(gameTime);
 
             previousKeyboardState = keyboardState;
@@ -208,7 +232,7 @@ namespace DoubleDash
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(new Color(216, 216, 216));
 
             world.DrawWorld();
 
@@ -218,10 +242,11 @@ namespace DoubleDash
         void MainDraw()
         {
             world.BeginDraw();
-            world.Draw(testImage.Draw);
+            //world.Draw(testImage.Draw);
+            world.Draw(starBackgroundManager.Draw);
             world.Draw(walls.Draw);
             world.Draw(player.Draw);
-            //world.Draw(testCircle.Draw);
+            world.Draw(testCircle.Draw);
             world.Draw(currentTime.Draw);
             //world.Draw(level.Draw);
             world.Draw(DebugText.Draw);
