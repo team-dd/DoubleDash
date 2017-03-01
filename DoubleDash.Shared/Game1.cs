@@ -18,7 +18,7 @@ namespace DoubleDash
         GameTimeWrapper mainGameTime;
         KeyboardState previousKeyboardState;
 
-        Level level;
+        LevelManager levelManager;
         Walls walls;
 
         Player player;
@@ -53,7 +53,8 @@ namespace DoubleDash
         protected override void Initialize()
         {
             graphics.PreferredBackBufferWidth = graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width;
-            graphics.PreferredBackBufferHeight = graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height;
+            //graphics.PreferredBackBufferHeight = graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height;
+            graphics.PreferredBackBufferHeight = 1688;
             graphics.ApplyChanges();
 
             previousKeyboardState = Keyboard.GetState();
@@ -75,16 +76,20 @@ namespace DoubleDash
             world.CurrentCamera.Focus = Camera.CameraFocus.Center;
             currentTime = new CurrentTime(mainGameTime, Content.Load<SpriteFont>("Fonts/Arial_24"));
 
-            level = LevelReader.Load("Content/Levels/Test Levels/testlevel5.json");
-            level.FinishLoading(graphics);
+            levelManager = new LevelManager(Content.Load<Texture2D>("end_point_indicator"), graphics);
+            levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testlevel1.json"),
+                //LevelReader.Load("Content/Levels/Test Levels/triallevel.json"),
+                LevelReader.Load("Content/Levels/World 1/Level 1/level1.json"),
+                LevelReader.Load("Content/Levels/Test Levels/testlevel5.json"));
+            levelManager.FinishLoading();
 
             player = new Player(Content.Load<Texture2D>("circle_player"),
                 Content.Load<Texture2D>("dash_indicator"),
-                graphics, level.start);
+                graphics);
             testImage = new Sprite(Content.Load<Texture2D>("testimage"));
             testImage.origin = Vector2.Zero;
             testCircleText = new TextItem(DebugText.spriteFont);
-            DebugText.Add(testCircleText);
+            //DebugText.Add(testCircleText);
 
             testCircle = new Sprite(Content.Load<Texture2D>("testcircle"));
             testCirclePos = new Vector2(100);
@@ -94,11 +99,13 @@ namespace DoubleDash
             //walls.Create(new Size(100, 1000), new Vector2(0, 0));
 
             starBackgroundManager = new StarBackgroundManager(graphics);
-            starBackgroundManager.Create(2, world.virtualResolutionRenderer);
+            starBackgroundManager.Create(5, world.virtualResolutionRenderer);
 
             song = Content.Load<Song>("music");
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(song);
+
+            levelManager.Start(player);
         }
 
         /// <summary>
@@ -157,6 +164,10 @@ namespace DoubleDash
                 }
             }
 
+            if (keyboardState.IsKeyDownAndUp(Keys.OemTilde, previousKeyboardState))
+            {
+                levelManager.Start(player);
+            }
 
             if (keyboardState.IsKeyDown(Keys.Left))
             {
@@ -199,8 +210,8 @@ namespace DoubleDash
 
             testImage.Update(gameTime);
             player.Update(gameTime);
-            level.Update(gameTime);
-            player.CheckCollisions(level.blocks);
+            levelManager.Update(gameTime, player);
+            player.CheckCollisions(levelManager.levels[levelManager.currentLevel].blocks);
             if (world.CurrentCamera.Focus == Camera.CameraFocus.Center)
             {
                 world.CurrentCamera.Pan = Vector2.Lerp(world.CurrentCamera.Pan, player.position, .075f);
@@ -250,8 +261,8 @@ namespace DoubleDash
             world.Draw(starBackgroundManager.Draw);
             //world.Draw(walls.Draw);
             world.Draw(player.Draw);
-            world.Draw(level.Draw);
-            world.Draw(testCircle.Draw);
+            world.Draw(levelManager.Draw);
+            //world.Draw(testCircle.Draw);
             world.Draw(currentTime.Draw);
             world.Draw(DebugText.Draw);
             world.EndDraw();

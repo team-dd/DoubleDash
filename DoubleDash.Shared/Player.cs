@@ -43,30 +43,19 @@ namespace DoubleDash
         TextItem hasLetGoOfJumpText;
         TextItem jumpTimeText;
 
-        Vector2 spawnPoint;
+        public Vector2 spawnPoint;
 
         int wallJumpCounter;
 
-        public Player(Texture2D loadedTex, Texture2D dashIndicatorTex, GraphicsDeviceManager graphics, Vector2 spawnPoint) : base(loadedTex)
+        public Player(Texture2D loadedTex, Texture2D dashIndicatorTex, GraphicsDeviceManager graphics) : base(loadedTex)
         {
-            jumpState = JumpStates.Air;
-            storedXVelocity = 0;
-            canJump = false;
-            hasLetGoOfJump = true;
             maxJumpTime = TimeSpan.FromMilliseconds(400);
-            jumpTime = maxJumpTime;
             dashIndicator = new Sprite(dashIndicatorTex);
-            dashes = MaxDashes;
             dashRefreshTime = TimeSpan.FromSeconds(5);
-            dashTimer = dashRefreshTime;
             dashBar = new DashBar(graphics);
-            dashBar.CurrentDashPercent = (float)dashes / MaxDashes;
-            dashBar.CooldownBarPercent = (float)dashTimer.Ticks / dashRefreshTime.Ticks;
-            wallJumpCounter = 0;
-            position = spawnPoint;
-            this.spawnPoint = spawnPoint;
+            Reset();
 
-            LoadDebugTexts();
+            //LoadDebugTexts();
         }
 
         public void LoadDebugTexts()
@@ -75,6 +64,23 @@ namespace DoubleDash
             hasLetGoOfJumpText = new TextItem(DebugText.spriteFont);
             jumpTimeText = new TextItem(DebugText.spriteFont);
             DebugText.Add(canJumpText, hasLetGoOfJumpText, jumpTimeText);
+        }
+
+        public void Reset()
+        {
+            position = spawnPoint;
+            velocity = Vector2.Zero;
+            acceleration = Vector2.Zero;
+            jumpState = JumpStates.Air;
+            storedXVelocity = 0;
+            canJump = false;
+            hasLetGoOfJump = true;
+            jumpTime = maxJumpTime;
+            dashes = MaxDashes;
+            dashTimer = dashRefreshTime;
+            dashBar.CurrentDashPercent = (float)dashes / MaxDashes;
+            dashBar.CooldownBarPercent = (float)dashTimer.Ticks / dashRefreshTime.Ticks;
+            wallJumpCounter = 0;
         }
 
         public void MoveLeft()
@@ -90,7 +96,7 @@ namespace DoubleDash
             }
             else if (jumpState == JumpStates.Air)
             {
-                acceleration.X -= 0.005f;
+                acceleration.X -= 0.0075f;
             }
             else if (jumpState == JumpStates.WallRight)
             {
@@ -120,7 +126,7 @@ namespace DoubleDash
             }
             else if (jumpState == JumpStates.Air)
             {
-                acceleration.X += 0.005f;
+                acceleration.X += 0.0075f;
             }
             else if (jumpState == JumpStates.WallLeft)
             {
@@ -280,7 +286,7 @@ namespace DoubleDash
                 dashIndicator.position = position + Vector2.Normalize(velocity) * DashDistance;
             }
 
-            UpdateDebugTexts(gameTime);
+            //UpdateDebugTexts(gameTime);
         }
 
         private void UpdatePolygon()
@@ -328,7 +334,15 @@ namespace DoubleDash
                     if (mtv.Value.vector.Y == 0)
                     {
                         canJump = false;
-                        velocity = Vector2.Zero;
+                        velocity.X = 0;
+                        if (velocity.Y < 0)
+                        {
+                            velocity.Y += .02f;
+                        }
+                        else if (velocity.Y > 0)
+                        {
+                            velocity.Y = Math.Min(velocity.Y, 2);
+                        }
                         acceleration = Vector2.Zero;
                         if (position.X > wall.center.X)
                         {

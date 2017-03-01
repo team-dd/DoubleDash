@@ -142,3 +142,30 @@
 #begin Levels/Test Levels/triallevel.json
 /copy:Levels/Test Levels/triallevel.json
 
+#begin end_point_indicator.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:end_point_indicator.png
+
+#begin Levels/World 1/Level 1/level1.json
+/copy:Levels/World 1/Level 1/level1.json
+
+#begin Levels/World 1/Level 1/World 1 - Level 1 V1.0.json
+/copy:Levels/World 1/Level 1/World 1 - Level 1 V1.0.json
+
+#begin Levels/World 1/Level 1/World 1 - Level 1 V2.0.json
+/copy:Levels/World 1/Level 1/World 1 - Level 1 V2.0.json
+
+#begin Levels/World 1/Level 1/World 1 - Level 1 V2.1.json
+/copy:Levels/World 1/Level 1/World 1 - Level 1 V2.1.json
+
+#begin Levels/World 1/Level 1/World 1 - Level 1.json
+/copy:Levels/World 1/Level 1/World 1 - Level 1.json
+

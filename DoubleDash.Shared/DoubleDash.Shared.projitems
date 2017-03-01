@@ -20,6 +20,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)GameHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GameSave.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Level.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LevelManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LevelReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Player.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StarBackground.cs" />

@@ -15,17 +15,18 @@ namespace DoubleDash
         public readonly List<Block> blocks;
         public Vector2 start;
         public Vector2 end;
+        public Sprite endPointIndicator;
 
         public Level()
         {
             blocksDescription = new List<BlockDescription>();
             blocks = new List<Block>();
-            start = new Vector2();
-            end = new Vector2();
         }
 
-        public void FinishLoading(GraphicsDeviceManager graphics)
+        public void FinishLoading(Texture2D endPointTex, GraphicsDeviceManager graphics)
         {
+            endPointIndicator = new Sprite(endPointTex);
+            endPointIndicator.position = end;
             foreach (var blockDescription in blocksDescription)
             {
                 Block block = new Block(new Vector2(blockDescription.X * 4, blockDescription.Y * 4),
@@ -41,6 +42,7 @@ namespace DoubleDash
             {
                 block.Update(gameTime);
             }
+            endPointIndicator.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -48,6 +50,11 @@ namespace DoubleDash
             foreach (var block in blocks)
             {
                 block.Draw(spriteBatch);
+            }
+
+            if (end != Vector2.Zero)
+            {
+                endPointIndicator.Draw(spriteBatch);
             }
         }
     }

@@ -26,13 +26,26 @@ namespace DoubleDash
             while (stars.Count < MaxStars)
             {
                 Sprite star = new Sprite(graphics);
-                star.position = new Vector2(World.random.Next(0, (int)vrr.WindowResolution.Width),
-                    World.random.Next(0, (int)vrr.WindowResolution.Height));
-                star.DrawSize = new Size(World.random.Next(1, 5));
-                star.position = Vector2.Transform(star.position, camera.InverseTransform);
-                star.color = Color.Black;
+                SetUpStar(star, camera);
                 stars.Add(star);
             }
+            foreach (var star in stars)
+            {
+                if (!star.visible)
+                {
+                    SetUpStar(star, camera);
+                }
+            }
+        }
+
+        private void SetUpStar(Sprite star, Camera camera)
+        {
+            star.position = new Vector2(World.random.Next(0, (int)vrr.WindowResolution.Width),
+                    World.random.Next(0, (int)vrr.WindowResolution.Height));
+            star.DrawSize = new Size(World.random.Next(1, 5));
+            star.position = Vector2.Transform(star.position, camera.InverseTransform);
+            star.color = Color.Black;
+            star.visible = true;
         }
 
         public void MoveUp(float distance)
@@ -71,8 +84,7 @@ namespace DoubleDash
                 stars[i].Update(gameTime);
                 if (!camera.Contains(stars[i].position))
                 {
-                    stars.RemoveAt(i);
-                    i--;
+                    stars[i].visible = false;
                 }
             }
         }
@@ -81,7 +93,10 @@ namespace DoubleDash
         {
             foreach (var star in stars)
             {
-                star.Draw(spriteBatch);
+                if (star.visible)
+                {
+                    star.Draw(spriteBatch);
+                }
             }
         }
     }
