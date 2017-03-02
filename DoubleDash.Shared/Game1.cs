@@ -53,8 +53,8 @@ namespace DoubleDash
         protected override void Initialize()
         {
             graphics.PreferredBackBufferWidth = graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width;
-            //graphics.PreferredBackBufferHeight = graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height;
-            graphics.PreferredBackBufferHeight = 1688;
+            graphics.PreferredBackBufferHeight = graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height;
+            //graphics.PreferredBackBufferHeight = 1688;
             graphics.ApplyChanges();
 
             previousKeyboardState = Keyboard.GetState();
