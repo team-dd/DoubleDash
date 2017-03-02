@@ -20,7 +20,7 @@ namespace DoubleDash
         }
 
         private const float GroundXMovement = 5;
-        private const int WALL_JUMP_BUFFER = 25;
+        private const int WALL_JUMP_BUFFER = 15;
 
         private Polygon polygon;
         public JumpStates jumpState;
@@ -92,7 +92,14 @@ namespace DoubleDash
 
             if (jumpState == JumpStates.Ground)
             {
-                acceleration.X -= 0.01f;
+                if (acceleration.X > 0)
+                {
+                    acceleration.X -= 0.05f;
+                }
+                else
+                {
+                    acceleration.X -= 0.02f;
+                }
             }
             else if (jumpState == JumpStates.Air)
             {
@@ -107,7 +114,7 @@ namespace DoubleDash
                 else
                 {
                     jumpState = JumpStates.Air;
-                    acceleration.X -= 0.01f;
+                    acceleration.X -= 0.015f;
                     wallJumpCounter = 0;
                 }
             }
@@ -122,7 +129,14 @@ namespace DoubleDash
 
             if (jumpState == JumpStates.Ground)
             {
-                acceleration.X += 0.01f;
+                if (acceleration.X < 0)
+                {
+                    acceleration.X += .05f;
+                }
+                else
+                {
+                    acceleration.X += 0.02f;
+                }
             }
             else if (jumpState == JumpStates.Air)
             {
@@ -137,7 +151,7 @@ namespace DoubleDash
                 else
                 {
                     jumpState = JumpStates.Air;
-                    acceleration.X += 0.01f;
+                    acceleration.X += 0.015f;
                     wallJumpCounter = 0;
                 }
             }
@@ -147,11 +161,11 @@ namespace DoubleDash
         {
             if (acceleration.X >= 0)
             {
-                acceleration.X = Math.Max(0, acceleration.X - .0175f);
+                acceleration.X = Math.Max(0, acceleration.X - .02f);
             }
             else
             {
-                acceleration.X = Math.Min(0, acceleration.X + .0175f);
+                acceleration.X = Math.Min(0, acceleration.X + .02f);
             }
             
             wallJumpCounter = 0;
@@ -273,8 +287,22 @@ namespace DoubleDash
                 canJump = false;
             }
 
-            velocity.Y += GameHelpers.Gravity;
-
+            if (jumpState == JumpStates.WallLeft || jumpState == JumpStates.WallRight)
+            {
+                if (velocity.Y <= 1.5f)
+                {
+                    velocity.Y += GameHelpers.Gravity / 1.5f;
+                }
+                else
+                {
+                    velocity.Y = 1.5f;
+                }
+            }
+            else
+            {
+                velocity.Y += GameHelpers.Gravity;
+            }
+            
             acceleration.X = MathHelper.Clamp(acceleration.X, -1f, 1f);
             velocity.X = MathHelper.Clamp(velocity.X, -7, 7);
 
@@ -305,11 +333,13 @@ namespace DoubleDash
 
         public void CheckCollisions(List<Block> walls)
         {
+            bool anyCollision = false;
             foreach (var wall in walls)
             {
                 GLX.Collisions.MTV? mtv = GLX.Collisions.HelperMethods.Colliding(polygon, wall.polygon);
                 if (mtv != null)
                 {
+                    anyCollision = true;
                     Vector2 vector = mtv.Value.vector;
                     // you would think that you could just multiply vector by -1 if the second case
                     // is true but for some reason that doesn't work...
@@ -341,7 +371,7 @@ namespace DoubleDash
                         }
                         else if (velocity.Y > 0)
                         {
-                            velocity.Y = Math.Min(velocity.Y, 2);
+                            velocity.Y = Math.Min(velocity.Y, 1.5f);
                         }
                         acceleration = Vector2.Zero;
                         if (position.X > wall.center.X)
@@ -362,6 +392,11 @@ namespace DoubleDash
                         ResetJump();
                     }
                 }
+            }
+
+            if (!anyCollision)
+            {
+                jumpState = JumpStates.Air;
             }
         }
 
