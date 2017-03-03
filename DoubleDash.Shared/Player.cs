@@ -20,7 +20,7 @@ namespace DoubleDash
         }
 
         private const float GroundXMovement = 5;
-        private const int WALL_JUMP_BUFFER = 15;
+        private const int WALL_JUMP_BUFFER = 10;
 
         private Polygon polygon;
         public JumpStates jumpState;
@@ -85,10 +85,6 @@ namespace DoubleDash
 
         public void MoveLeft()
         {
-            if (acceleration.X > 0)
-            {
-                ResetXAcceleration();
-            }
 
             if (jumpState == JumpStates.Ground)
             {
@@ -103,7 +99,7 @@ namespace DoubleDash
             }
             else if (jumpState == JumpStates.Air)
             {
-                acceleration.X -= 0.0075f;
+                acceleration.X -= 0.015f;
             }
             else if (jumpState == JumpStates.WallRight)
             {
@@ -140,7 +136,7 @@ namespace DoubleDash
             }
             else if (jumpState == JumpStates.Air)
             {
-                acceleration.X += 0.0075f;
+                acceleration.X += 0.015f;
             }
             else if (jumpState == JumpStates.WallLeft)
             {
@@ -159,13 +155,16 @@ namespace DoubleDash
 
         public void ResetXAcceleration()
         {
-            if (acceleration.X >= 0)
+            if (jumpState == JumpStates.Ground)
             {
-                acceleration.X = Math.Max(0, acceleration.X - .02f);
-            }
-            else
-            {
-                acceleration.X = Math.Min(0, acceleration.X + .02f);
+                if (acceleration.X >= 0)
+                {
+                    acceleration.X = Math.Max(0, acceleration.X - .02f);
+                }
+                else
+                {
+                    acceleration.X = Math.Min(0, acceleration.X + .02f);
+                }
             }
             
             wallJumpCounter = 0;

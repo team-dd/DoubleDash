@@ -103,7 +103,7 @@ namespace DoubleDash
 
             song = Content.Load<Song>("music");
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(song);
+            //MediaPlayer.Play(song);
 
             levelManager.Start(player);
         }
