@@ -74,6 +74,8 @@ namespace DoubleDash
             world.AddGameState(MainGame, mainGameTime, MainDraw);
             world.ActivateGameState(MainGame);
             world.CurrentCamera.Focus = Camera.CameraFocus.Center;
+            world.CurrentCamera.Zoom = 0.75f;
+            world.CurrentCamera.Origin *= 1 / .75f;
             currentTime = new CurrentTime(mainGameTime, Content.Load<SpriteFont>("Fonts/Arial_24"));
 
             levelManager = new LevelManager(Content.Load<Texture2D>("end_point_indicator"), graphics);
