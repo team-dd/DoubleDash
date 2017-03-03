@@ -165,6 +165,16 @@ namespace DoubleDash
                 {
                     acceleration.X = Math.Min(0, acceleration.X + .02f);
                 }
+            } else if (jumpState == JumpStates.Air)
+            {
+                if (acceleration.X >= 0)
+                {
+                    acceleration.X = Math.Max(0, acceleration.X - .001f);
+                }
+                else
+                {
+                    acceleration.X = Math.Min(0, acceleration.X + .001f);
+                }
             }
             
             wallJumpCounter = 0;

@@ -77,10 +77,11 @@ namespace DoubleDash
             currentTime = new CurrentTime(mainGameTime, Content.Load<SpriteFont>("Fonts/Arial_24"));
 
             levelManager = new LevelManager(Content.Load<Texture2D>("end_point_indicator"), graphics);
-            levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testlevel1.json"),
+            /*levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testlevel1.json"),
                 //LevelReader.Load("Content/Levels/Test Levels/triallevel.json"),
                 LevelReader.Load("Content/Levels/World 1/Level 1/level1.json"),
-                LevelReader.Load("Content/Levels/Test Levels/testlevel5.json"));
+                LevelReader.Load("Content/Levels/Test Levels/testlevel5.json"));*/
+            levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/newphysicstesting.json"));
             levelManager.FinishLoading();
 
             player = new Player(Content.Load<Texture2D>("circle_player"),
