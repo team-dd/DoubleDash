@@ -20,7 +20,7 @@ namespace DoubleDash
         }
 
         private const float GroundXMovement = 5;
-        private const int WALL_JUMP_BUFFER = 10;
+        private const int WALL_JUMP_BUFFER = 15;
 
         private Polygon polygon;
         public JumpStates jumpState;
