@@ -31,6 +31,9 @@ namespace DoubleDash
         TextItem testCircleText;
         Song song;
 
+        SpriteSheet spriteSheet;
+        SpriteSheetInfo spriteSheetInfo;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -83,12 +86,16 @@ namespace DoubleDash
                 //LevelReader.Load("Content/Levels/Test Levels/triallevel.json"),
                 LevelReader.Load("Content/Levels/World 1/Level 1/level1.json"),
                 LevelReader.Load("Content/Levels/Test Levels/testlevel5.json"));*/
-            levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/newphysicstesting.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/longtest.json"));
             levelManager.FinishLoading();
 
-            player = new Player(Content.Load<Texture2D>("circle_player"),
+            spriteSheetInfo = new SpriteSheetInfo(30, 32);
+
+            player = new Player(spriteSheetInfo,
                 Content.Load<Texture2D>("dash_indicator"),
                 graphics);
+            player.animations.AddSpriteSheet(Content.Load<Texture2D>("demoanimation"), spriteSheetInfo, 2, 2, 1, SpriteSheet.Direction.LeftToRight, 2, true);
+            player.Ready();
             testImage = new Sprite(Content.Load<Texture2D>("testimage"));
             testImage.origin = Vector2.Zero;
             testCircleText = new TextItem(DebugText.spriteFont);
@@ -175,12 +182,12 @@ namespace DoubleDash
             if (keyboardState.IsKeyDown(Keys.Left))
             {
                 player.MoveLeft();
-                starBackgroundManager.MoveRight(5);
+                starBackgroundManager.MoveRight(10);
             }
             else if (keyboardState.IsKeyDown(Keys.Right))
             {
                 player.MoveRight();
-                starBackgroundManager.MoveLeft(5);
+                starBackgroundManager.MoveLeft(10);
             }
             else
             {

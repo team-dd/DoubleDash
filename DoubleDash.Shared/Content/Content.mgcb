@@ -91,6 +91,7 @@
 #begin Fonts/Arial_24.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Arial_24.spritefont
 
@@ -109,6 +110,7 @@
 #begin Fonts/Courier_New_12.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Courier_New_12.spritefont
 
@@ -168,4 +170,25 @@
 
 #begin Levels/World 1/Level 1/World 1 - Level 1.json
 /copy:Levels/World 1/Level 1/World 1 - Level 1.json
+
+#begin demoanimation.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:demoanimation.png
+
+#begin Levels/Test Levels/newlevel1.json
+/copy:Levels/Test Levels/newlevel1.json
+
+#begin Levels/Test Levels/test.json
+/copy:Levels/Test Levels/test.json
+
+#begin Levels/Test Levels/longtest.json
+/copy:Levels/Test Levels/longtest.json
 

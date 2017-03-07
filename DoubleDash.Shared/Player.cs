@@ -20,7 +20,7 @@ namespace DoubleDash
         }
 
         private const float GroundXMovement = 5;
-        private const int WALL_JUMP_BUFFER = 15;
+        private const int WALL_JUMP_BUFFER = 10;
 
         private Polygon polygon;
         public JumpStates jumpState;
@@ -47,7 +47,7 @@ namespace DoubleDash
 
         int wallJumpCounter;
 
-        public Player(Texture2D loadedTex, Texture2D dashIndicatorTex, GraphicsDeviceManager graphics) : base(loadedTex)
+        public Player(SpriteSheetInfo info, Texture2D dashIndicatorTex, GraphicsDeviceManager graphics) : base(info, graphics)
         {
             maxJumpTime = TimeSpan.FromMilliseconds(400);
             dashIndicator = new Sprite(dashIndicatorTex);
@@ -85,21 +85,18 @@ namespace DoubleDash
 
         public void MoveLeft()
         {
-
-            if (jumpState == JumpStates.Ground)
+            if (acceleration.X > 0)
             {
-                if (acceleration.X > 0)
-                {
-                    acceleration.X -= 0.05f;
-                }
-                else
-                {
-                    acceleration.X -= 0.02f;
-                }
+                ResetXAcceleration();
+            }
+
+            else if (jumpState == JumpStates.Ground)
+            {
+                acceleration.X -= 0.15f;
             }
             else if (jumpState == JumpStates.Air)
             {
-                acceleration.X -= 0.015f;
+                acceleration.X -= 0.15f;
             }
             else if (jumpState == JumpStates.WallRight)
             {
@@ -110,7 +107,7 @@ namespace DoubleDash
                 else
                 {
                     jumpState = JumpStates.Air;
-                    acceleration.X -= 0.015f;
+                    acceleration.X -= 0.5f;
                     wallJumpCounter = 0;
                 }
             }
@@ -125,18 +122,11 @@ namespace DoubleDash
 
             if (jumpState == JumpStates.Ground)
             {
-                if (acceleration.X < 0)
-                {
-                    acceleration.X += .05f;
-                }
-                else
-                {
-                    acceleration.X += 0.02f;
-                }
+                acceleration.X += 0.15f;
             }
             else if (jumpState == JumpStates.Air)
             {
-                acceleration.X += 0.015f;
+                acceleration.X += 0.15f;
             }
             else if (jumpState == JumpStates.WallLeft)
             {
@@ -147,7 +137,7 @@ namespace DoubleDash
                 else
                 {
                     jumpState = JumpStates.Air;
-                    acceleration.X += 0.015f;
+                    acceleration.X += 0.5f;
                     wallJumpCounter = 0;
                 }
             }
@@ -159,21 +149,21 @@ namespace DoubleDash
             {
                 if (acceleration.X >= 0)
                 {
-                    acceleration.X = Math.Max(0, acceleration.X - .02f);
+                    acceleration.X = Math.Max(0, acceleration.X - .5f);
                 }
                 else
                 {
-                    acceleration.X = Math.Min(0, acceleration.X + .02f);
+                    acceleration.X = Math.Min(0, acceleration.X + .5f);
                 }
             } else if (jumpState == JumpStates.Air)
             {
                 if (acceleration.X >= 0)
                 {
-                    acceleration.X = Math.Max(0, acceleration.X - .001f);
+                    acceleration.X = Math.Max(0, acceleration.X - .25f);
                 }
                 else
                 {
-                    acceleration.X = Math.Min(0, acceleration.X + .001f);
+                    acceleration.X = Math.Min(0, acceleration.X + .25f);
                 }
             }
             
@@ -183,9 +173,10 @@ namespace DoubleDash
         public void Jump()
         {
             hasLetGoOfJump = false;
-            if (canJump)
+            if (canJump && jumpTime == maxJumpTime)
             {
-                velocity.Y = -7f;
+                velocity.Y = -15f;
+                
                 if (jumpState == JumpStates.WallLeft)
                 {
                     velocity.X = 5;
@@ -233,7 +224,7 @@ namespace DoubleDash
 
         private bool isOutOfBounds()
         {
-            return position.Y > 5000;
+            return position.Y > 8000;
         }
 
         public override void Update(GameTimeWrapper gameTime)
@@ -300,7 +291,7 @@ namespace DoubleDash
             {
                 if (velocity.Y <= 1.5f)
                 {
-                    velocity.Y += GameHelpers.Gravity / 1.5f;
+                    velocity.Y += GameHelpers.Gravity / 1.2f;
                 }
                 else
                 {
@@ -309,11 +300,18 @@ namespace DoubleDash
             }
             else
             {
-                velocity.Y += GameHelpers.Gravity;
+                if (!hasLetGoOfJump && canJump)
+                {
+                    velocity.Y += GameHelpers.Gravity / 3f;
+                }
+                else
+                {
+                    velocity.Y += GameHelpers.Gravity;
+                }
             }
             
-            acceleration.X = MathHelper.Clamp(acceleration.X, -1f, 1f);
-            velocity.X = MathHelper.Clamp(velocity.X, -7, 7);
+            acceleration.X = MathHelper.Clamp(acceleration.X, -2f, 2f);
+            velocity.X = MathHelper.Clamp(velocity.X, -15f, 15f);
 
             base.Update(gameTime);
             UpdatePolygon();
@@ -411,6 +409,29 @@ namespace DoubleDash
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            if (jumpState == JumpStates.Ground && acceleration.X != 0) {
+                if (acceleration.X > 0)
+                {
+                    animations.active = true;
+                    spriteEffects = SpriteEffects.None;
+                } else if (acceleration.X < 0)
+                {
+                    animations.active = true;
+                    spriteEffects = SpriteEffects.FlipHorizontally;
+                }
+            }
+            else
+            {
+                animations.active = false;
+
+                if (jumpState == JumpStates.Ground)
+                {
+                    animations.currentFrame = 0;
+                } else if (jumpState == JumpStates.Air)
+                {
+                    animations.currentFrame = 1;
+                }
+            }
             base.Draw(spriteBatch);
             /*dashBar.Draw(spriteBatch);
             if (dashIndicator.visible)
