@@ -85,6 +85,11 @@ namespace DoubleDash
 
         public void MoveLeft()
         {
+            MoveLeft(1);
+        }
+
+        public void MoveLeft(float multiplier)
+        {
             if (acceleration.X > 0)
             {
                 ResetXAcceleration();
@@ -92,11 +97,11 @@ namespace DoubleDash
 
             else if (jumpState == JumpStates.Ground)
             {
-                acceleration.X -= 0.15f;
+                acceleration.X -= 0.15f * multiplier;
             }
             else if (jumpState == JumpStates.Air)
             {
-                acceleration.X -= 0.15f;
+                acceleration.X -= 0.15f * multiplier;
             }
             else if (jumpState == JumpStates.WallRight)
             {
@@ -107,13 +112,18 @@ namespace DoubleDash
                 else
                 {
                     jumpState = JumpStates.Air;
-                    acceleration.X -= 0.5f;
+                    acceleration.X -= 0.5f * multiplier;
                     wallJumpCounter = 0;
                 }
             }
         }
 
         public void MoveRight()
+        {
+            MoveRight(1);
+        }
+
+        public void MoveRight(float multiplier)
         {
             if (acceleration.X < 0)
             {
@@ -122,11 +132,11 @@ namespace DoubleDash
 
             if (jumpState == JumpStates.Ground)
             {
-                acceleration.X += 0.15f;
+                acceleration.X += 0.15f * multiplier;
             }
             else if (jumpState == JumpStates.Air)
             {
-                acceleration.X += 0.15f;
+                acceleration.X += 0.15f * multiplier;
             }
             else if (jumpState == JumpStates.WallLeft)
             {
@@ -137,7 +147,7 @@ namespace DoubleDash
                 else
                 {
                     jumpState = JumpStates.Air;
-                    acceleration.X += 0.5f;
+                    acceleration.X += 0.5f * multiplier;
                     wallJumpCounter = 0;
                 }
             }

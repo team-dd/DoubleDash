@@ -17,6 +17,7 @@ namespace DoubleDash
         World world;
         GameTimeWrapper mainGameTime;
         KeyboardState previousKeyboardState;
+        GamePadState previousGamePadState;
 
         LevelManager levelManager;
         Walls walls;
@@ -61,6 +62,7 @@ namespace DoubleDash
             graphics.ApplyChanges();
 
             previousKeyboardState = Keyboard.GetState();
+            previousGamePadState = GamePad.GetState(PlayerIndex.One);
 
             base.Initialize();
         }
@@ -139,6 +141,8 @@ namespace DoubleDash
         protected override void Update(GameTime gameTime)
         {
             KeyboardState keyboardState = Keyboard.GetState();
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
@@ -155,6 +159,15 @@ namespace DoubleDash
                 currentTime.SetToFast();
             }
 
+            if (gamePadState.IsButtonDownAndUp(Buttons.LeftShoulder, previousGamePadState))
+            {
+                currentTime.SetSlower();
+            }
+            else if (gamePadState.IsButtonDownAndUp(Buttons.RightShoulder, previousGamePadState))
+            {
+                currentTime.SetFaster();
+            }
+
             world.Update(gameTime);
 
             base.Update(gameTime);
@@ -163,50 +176,76 @@ namespace DoubleDash
         void MainUpdate(GameTimeWrapper gameTime)
         {
             KeyboardState keyboardState = Keyboard.GetState();
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
 
-            if (keyboardState.IsKeyDownAndUp(Keys.LeftControl, previousKeyboardState))
-            {
-                if (world.CurrentCamera.Focus == Camera.CameraFocus.Center)
-                {
-                    world.CurrentCamera.Focus = Camera.CameraFocus.TopLeft;
-                    world.CurrentCamera.Pan = Vector2.Zero;
-                }
-                else
-                {
-                    world.CurrentCamera.Focus = Camera.CameraFocus.Center;
-                    world.CurrentCamera.Pan = player.position;
-                }
-            }
-
-            if (keyboardState.IsKeyDownAndUp(Keys.OemTilde, previousKeyboardState))
+            if (keyboardState.IsKeyDownAndUp(Keys.OemTilde, previousKeyboardState) ||
+                gamePadState.IsButtonDownAndUp(Buttons.Start, previousGamePadState))
             {
                 levelManager.Start(player);
             }
 
-            if (keyboardState.IsKeyDown(Keys.Left))
+            if (gamePadState.IsConnected)
             {
-                player.MoveLeft();
-                starBackgroundManager.MoveRight(10);
-            }
-            else if (keyboardState.IsKeyDown(Keys.Right))
-            {
-                player.MoveRight();
-                starBackgroundManager.MoveLeft(10);
+                if (gamePadState.ThumbSticks.Left.X < 0)
+                {
+                    player.MoveLeft(gamePadState.ThumbSticks.Left.X * -1);
+                    starBackgroundManager.MoveRight(10);
+                }
+                else if (gamePadState.ThumbSticks.Left.X > 0)
+                {
+                    player.MoveRight(gamePadState.ThumbSticks.Left.X);
+                    starBackgroundManager.MoveLeft(10);
+                }
+                else
+                {
+                    starBackgroundManager.MoveLeft(2);
+                    player.ResetXAcceleration();
+                }
             }
             else
             {
-                starBackgroundManager.MoveLeft(2);
-                player.ResetXAcceleration();
+                if (keyboardState.IsKeyDown(Keys.Left))
+                {
+                    player.MoveLeft();
+                    starBackgroundManager.MoveRight(10);
+                }
+                else if (keyboardState.IsKeyDown(Keys.Right))
+                {
+                    player.MoveRight();
+                    starBackgroundManager.MoveLeft(10);
+                }
+                else
+                {
+                    starBackgroundManager.MoveLeft(2);
+                    player.ResetXAcceleration();
+                }
+            }
+
+            
+            
+            if (gamePadState.IsConnected)
+            {
+                if (gamePadState.IsButtonDown(Buttons.A))
+                {
+                    player.Jump();
+                }
+                else
+                {
+                    player.CancelJump();
+                }
+            }
+            else
+            {
+                if (keyboardState.IsKeyDown(Keys.Z))
+                {
+                    player.Jump();
+                }
+                else
+                {
+                    player.CancelJump();
+                }
             }
             
-            if (keyboardState.IsKeyDown(Keys.Z))
-            {
-                player.Jump();
-            }
-            else
-            {
-                player.CancelJump();
-            }
 
             if (keyboardState.IsKeyDownAndUp(Keys.X, previousKeyboardState))
             {
@@ -253,6 +292,7 @@ namespace DoubleDash
             //level.Update(gameTime);
 
             previousKeyboardState = keyboardState;
+            previousGamePadState = gamePadState;
         }
 
         /// <summary>
