@@ -86,7 +86,11 @@ namespace DoubleDash
                 //LevelReader.Load("Content/Levels/Test Levels/triallevel.json"),
                 LevelReader.Load("Content/Levels/World 1/Level 1/level1.json"),
                 LevelReader.Load("Content/Levels/Test Levels/testlevel5.json"));*/
-            levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/longtest.json"));
+            //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/longtest.json"));
+
+
+            //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testlevel1V2.1.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testlevel2V1.2.json"));
             levelManager.FinishLoading();
 
             spriteSheetInfo = new SpriteSheetInfo(30, 32);

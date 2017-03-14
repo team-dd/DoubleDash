@@ -192,3 +192,12 @@
 #begin Levels/Test Levels/longtest.json
 /copy:Levels/Test Levels/longtest.json
 
+#begin Levels/Test Levels/testlevel1V2.1.json
+/copy:Levels/Test Levels/testlevel1V2.1.json
+
+#begin Levels/Test Levels/testlevel2V1.1.json
+/copy:Levels/Test Levels/testlevel2V1.1.json
+
+#begin Levels/Test Levels/testlevel2V1.2.json
+/copy:Levels/Test Levels/testlevel2V1.2.json
+
