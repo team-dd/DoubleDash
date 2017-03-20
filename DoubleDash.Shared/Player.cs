@@ -83,12 +83,12 @@ namespace DoubleDash
             wallJumpCounter = 0;
         }
 
-        public void MoveLeft()
+        public void MoveLeft(GameTimeWrapper gameTime)
         {
-            MoveLeft(1);
+            MoveLeft(1, gameTime);
         }
 
-        public void MoveLeft(float multiplier)
+        public void MoveLeft(float multiplier, GameTimeWrapper gameTime)
         {
             if (acceleration.X > 0)
             {
@@ -118,12 +118,12 @@ namespace DoubleDash
             }
         }
 
-        public void MoveRight()
+        public void MoveRight(GameTimeWrapper gameTime)
         {
-            MoveRight(1);
+            MoveRight(1, gameTime);
         }
 
-        public void MoveRight(float multiplier)
+        public void MoveRight(float multiplier, GameTimeWrapper gameTime)
         {
             if (acceleration.X < 0)
             {
@@ -278,12 +278,12 @@ namespace DoubleDash
             if (jumpState == JumpStates.Ground)
             {
                 // ground friction
-                velocity.X *= 0.87f;
+                //velocity.X *= 0.87f * (float)gameTime.GameSpeed;
             }
             else
             {
                 // air friction
-                velocity.X *= 0.9f;
+                //velocity.X *= 0.9f * (float)gameTime.GameSpeed;
             }
 
             if (canJump &&
@@ -301,7 +301,7 @@ namespace DoubleDash
             {
                 if (velocity.Y <= 1.5f)
                 {
-                    velocity.Y += GameHelpers.Gravity / 1.2f;
+                    velocity.Y += (GameHelpers.Gravity / 1.2f) * (float)gameTime.GameSpeed;
                 }
                 else
                 {
@@ -312,11 +312,11 @@ namespace DoubleDash
             {
                 if (!hasLetGoOfJump && canJump)
                 {
-                    velocity.Y += GameHelpers.Gravity / 3f;
+                    velocity.Y += (GameHelpers.Gravity / 3f) * (float)gameTime.GameSpeed;
                 }
                 else
                 {
-                    velocity.Y += GameHelpers.Gravity;
+                    velocity.Y += GameHelpers.Gravity * (float)gameTime.GameSpeed;
                 }
             }
             

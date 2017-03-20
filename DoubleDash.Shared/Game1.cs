@@ -13,9 +13,14 @@ namespace DoubleDash
     public class Game1 : Game
     {
         const string MainGame = "game1";
+        const string CollisionGameState = "collision";
+        const string EndGameTimeState = "end";
+
         GraphicsDeviceManager graphics;
         World world;
         GameTimeWrapper mainGameTime;
+        GameTimeWrapper collisionGameTime;
+        GameTimeWrapper endGameTime;
         KeyboardState previousKeyboardState;
         GamePadState previousGamePadState;
 
@@ -23,7 +28,6 @@ namespace DoubleDash
         Walls walls;
 
         Player player;
-        Sprite testImage;
         CurrentTime currentTime;
         StarBackgroundManager starBackgroundManager;
 
@@ -75,9 +79,16 @@ namespace DoubleDash
         {
             DebugText.Initialize(Content.Load<SpriteFont>("Fonts/Courier_New_12"));
             world = new World(graphics);
-            mainGameTime = new GameTimeWrapper(MainUpdate, this, 2);
+            mainGameTime = new GameTimeWrapper(MainUpdate, this, 1);
+            collisionGameTime = new GameTimeWrapper(CollisionUpdate, this, 0.1m);
+            collisionGameTime.NormalUpdate = false;
+            endGameTime = new GameTimeWrapper(EndUpdate, this, 1);
             world.AddGameState(MainGame, mainGameTime, MainDraw);
+            world.AddGameState(CollisionGameState, collisionGameTime);
+            world.AddGameState(EndGameTimeState, endGameTime);
             world.ActivateGameState(MainGame);
+            world.ActivateGameState(CollisionGameState);
+            world.ActivateGameState(EndGameTimeState);
             world.CurrentCamera.Focus = Camera.CameraFocus.Center;
             world.CurrentCamera.Zoom = 0.75f;
             world.CurrentCamera.Origin *= 1 / .75f;
@@ -102,8 +113,6 @@ namespace DoubleDash
                 graphics);
             player.animations["demoanimation"] = player.animations.AddSpriteSheet(Content.Load<Texture2D>("demoanimation"), spriteSheetInfo, 2, 2, 1, SpriteSheet.Direction.LeftToRight, 2, true);
             player.Ready();
-            testImage = new Sprite(Content.Load<Texture2D>("testimage"));
-            testImage.origin = Vector2.Zero;
             testCircleText = new TextItem(DebugText.spriteFont);
             //DebugText.Add(testCircleText);
 
@@ -188,17 +197,60 @@ namespace DoubleDash
             {
                 if (gamePadState.ThumbSticks.Left.X < 0)
                 {
-                    player.MoveLeft(gamePadState.ThumbSticks.Left.X * -1);
                     starBackgroundManager.MoveRight(10);
                 }
                 else if (gamePadState.ThumbSticks.Left.X > 0)
                 {
-                    player.MoveRight(gamePadState.ThumbSticks.Left.X);
                     starBackgroundManager.MoveLeft(10);
                 }
                 else
                 {
                     starBackgroundManager.MoveLeft(2);
+                }
+            }
+            else
+            {
+                if (keyboardState.IsKeyDown(Keys.Left))
+                {
+                    starBackgroundManager.MoveRight(10);
+                }
+                else if (keyboardState.IsKeyDown(Keys.Right))
+                {
+                    starBackgroundManager.MoveLeft(10);
+                }
+                else
+                {
+                    starBackgroundManager.MoveLeft(2);
+                }
+            }
+
+            if (keyboardState.IsKeyDown(Keys.W))
+            {
+                testCirclePos.Y -= 5;
+            }
+            else if (keyboardState.IsKeyDown(Keys.S))
+            {
+                testCirclePos.Y += 5;
+            }
+        }
+
+        void CollisionUpdate(GameTimeWrapper gameTime)
+        {
+            KeyboardState keyboardState = Keyboard.GetState();
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+
+            if (gamePadState.IsConnected)
+            {
+                if (gamePadState.ThumbSticks.Left.X < 0)
+                {
+                    player.MoveLeft(gamePadState.ThumbSticks.Left.X * -1, gameTime);
+                }
+                else if (gamePadState.ThumbSticks.Left.X > 0)
+                {
+                    player.MoveRight(gamePadState.ThumbSticks.Left.X, gameTime);
+                }
+                else
+                {
                     player.ResetXAcceleration();
                 }
             }
@@ -206,23 +258,20 @@ namespace DoubleDash
             {
                 if (keyboardState.IsKeyDown(Keys.Left))
                 {
-                    player.MoveLeft();
-                    starBackgroundManager.MoveRight(10);
+                    player.MoveLeft(gameTime);
                 }
                 else if (keyboardState.IsKeyDown(Keys.Right))
                 {
-                    player.MoveRight();
-                    starBackgroundManager.MoveLeft(10);
+                    player.MoveRight(gameTime);
                 }
                 else
                 {
-                    starBackgroundManager.MoveLeft(2);
                     player.ResetXAcceleration();
                 }
             }
 
-            
-            
+
+
             if (gamePadState.IsConnected)
             {
                 if (gamePadState.IsButtonDown(Buttons.A))
@@ -245,26 +294,22 @@ namespace DoubleDash
                     player.CancelJump();
                 }
             }
-            
 
             if (keyboardState.IsKeyDownAndUp(Keys.X, previousKeyboardState))
             {
                 //player.Dash();
             }
 
-            if (keyboardState.IsKeyDown(Keys.W))
-            {
-                testCirclePos.Y -= 5;
-            }
-            else if (keyboardState.IsKeyDown(Keys.S))
-            {
-                testCirclePos.Y += 5;
-            }
-
-            testImage.Update(gameTime);
             player.Update(gameTime);
             levelManager.Update(gameTime, player);
             player.CheckCollisions(levelManager.levels[levelManager.currentLevel].blocks);
+        }
+
+        void EndUpdate(GameTimeWrapper gameTime)
+        {
+            KeyboardState keyboardState = Keyboard.GetState();
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+
             if (world.CurrentCamera.Focus == Camera.CameraFocus.Center)
             {
                 world.CurrentCamera.Pan = Vector2.Lerp(world.CurrentCamera.Pan, player.position, .075f);
@@ -289,7 +334,6 @@ namespace DoubleDash
             testCircle.Update(gameTime);
 
             testCircleText.text = $"Test circle visible by camera: {world.CurrentCamera.Contains(testCircle.rectangle)}";
-            //level.Update(gameTime);
 
             previousKeyboardState = keyboardState;
             previousGamePadState = gamePadState;
@@ -311,7 +355,6 @@ namespace DoubleDash
         void MainDraw()
         {
             world.BeginDraw();
-            //world.Draw(testImage.Draw);
             world.Draw(starBackgroundManager.Draw);
             //world.Draw(walls.Draw);
             world.Draw(player.Draw);
