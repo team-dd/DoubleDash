@@ -13,14 +13,13 @@ namespace DoubleDash
     public class Game1 : Game
     {
         const string MainGame = "game1";
-        const string CollisionGameState = "collision";
-        const string EndGameTimeState = "end";
 
         GraphicsDeviceManager graphics;
         World world;
         GameTimeWrapper mainGameTime;
         GameTimeWrapper collisionGameTime;
         GameTimeWrapper endGameTime;
+        GameState mainGameState;
         KeyboardState previousKeyboardState;
         GamePadState previousGamePadState;
 
@@ -83,12 +82,13 @@ namespace DoubleDash
             collisionGameTime = new GameTimeWrapper(CollisionUpdate, this, 0.1m);
             collisionGameTime.NormalUpdate = false;
             endGameTime = new GameTimeWrapper(EndUpdate, this, 1);
-            world.AddGameState(MainGame, mainGameTime, MainDraw);
-            world.AddGameState(CollisionGameState, collisionGameTime);
-            world.AddGameState(EndGameTimeState, endGameTime);
+            mainGameState = new GameState(MainGame, graphics);
+            mainGameState.AddTime(mainGameTime);
+            mainGameState.AddTime(collisionGameTime);
+            mainGameState.AddTime(endGameTime);
+            mainGameState.AddDraw(MainDraw);
+            world.AddGameState(mainGameState);
             world.ActivateGameState(MainGame);
-            world.ActivateGameState(CollisionGameState);
-            world.ActivateGameState(EndGameTimeState);
             world.CurrentCamera.Focus = Camera.CameraFocus.Center;
             world.CurrentCamera.Zoom = 0.75f;
             world.CurrentCamera.Origin *= 1 / .75f;
