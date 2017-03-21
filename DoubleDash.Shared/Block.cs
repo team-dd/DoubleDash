@@ -18,8 +18,11 @@ namespace DoubleDash
         private Line bottom;
         private Line left;
 
-        int currentRed;
         bool redAscending;
+        TimeSpan blockColorSwitchTime;
+        TimeSpan colorSwitchTime;
+        Color lowColor;
+        Color highColor;
 
         public Block(Vector2 position, Size size, GraphicsDeviceManager graphics) : base(graphics)
         {
@@ -32,8 +35,11 @@ namespace DoubleDash
             bottom = new Line(graphics);
             left = new Line(graphics);
 
-            currentRed = 0;
-            redAscending = true;
+            colorSwitchTime = TimeSpan.FromMilliseconds(1000);
+            blockColorSwitchTime = colorSwitchTime;
+            redAscending = false;
+            lowColor = new Color(0, 100, 255);
+            highColor = new Color(220, 100, 255);
 
             UpdatePolygon();
         }
@@ -49,23 +55,23 @@ namespace DoubleDash
         {
             if (redAscending)
             {
-                currentRed++;
-
-                if (currentRed == 110)
+                blockColorSwitchTime += gameTime.ElapsedGameTime;
+                if (blockColorSwitchTime >= colorSwitchTime)
                 {
+                    blockColorSwitchTime = colorSwitchTime;
                     redAscending = false;
                 }
             }
             else
             {
-                currentRed--;
-
-                if (currentRed == 1)
+                blockColorSwitchTime -= gameTime.ElapsedGameTime;
+                if (blockColorSwitchTime <= TimeSpan.Zero)
                 {
+                    blockColorSwitchTime = TimeSpan.Zero;
                     redAscending = true;
                 }
             }
-            color = new Color((220 - currentRed) % 220, 100, 255);
+            color = Color.Lerp(lowColor, highColor, (float)blockColorSwitchTime.Ticks / colorSwitchTime.Ticks);
         }
 
         private void UpdatePolygon()

@@ -16,23 +16,30 @@ namespace DoubleDash
             Fast
         }
 
-        private GameTimeWrapper gameTime;
+        private List<(GameTimeWrapper, decimal)> gameTimes;
         public TextItem text;
         private Speeds speed;
         
-        public CurrentTime(GameTimeWrapper gameTime, SpriteFont spriteFont)
+        public CurrentTime(SpriteFont spriteFont)
         {
+            gameTimes = new List<(GameTimeWrapper, decimal)>();
             text = new TextItem(spriteFont, "1.0x");
             text.color = Color.Black;
-            this.gameTime = gameTime;
-            gameTime.GameSpeed = 1m;
             speed = Speeds.Normal;
+        }
+
+        public void AddGameTime(GameTimeWrapper gameTime, decimal baseTime)
+        {
+            gameTimes.Add((gameTime, baseTime));
         }
 
         public void SetToSlow()
         {
             speed = Speeds.Slow;
-            gameTime.GameSpeed = 0.5m;
+            foreach (var time in gameTimes)
+            {
+                time.Item1.GameSpeed = time.Item2 * 0.5m;
+            }
             text.text = "0.5x";
             text.alpha = 1;
             text.visible = true;
@@ -41,7 +48,10 @@ namespace DoubleDash
         public void SetToNormal()
         {
             speed = Speeds.Normal;
-            gameTime.GameSpeed = 1m;
+            foreach (var time in gameTimes)
+            {
+                time.Item1.GameSpeed = time.Item2;
+            }
             text.text = "1.0x";
             text.alpha = 1;
             text.visible = true;
@@ -50,7 +60,10 @@ namespace DoubleDash
         public void SetToFast()
         {
             speed = Speeds.Fast;
-            gameTime.GameSpeed = 1.75m;
+            foreach (var time in gameTimes)
+            {
+                time.Item1.GameSpeed = time.Item2 * 1.75m;
+            }
             text.text = "2.0x";
             text.alpha = 1;
             text.visible = true;

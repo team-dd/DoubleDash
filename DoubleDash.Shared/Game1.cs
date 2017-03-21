@@ -92,13 +92,16 @@ namespace DoubleDash
             world.CurrentCamera.Focus = Camera.CameraFocus.Center;
             world.CurrentCamera.Zoom = 0.75f;
             world.CurrentCamera.Origin *= 1 / .75f;
-            currentTime = new CurrentTime(mainGameTime, Content.Load<SpriteFont>("Fonts/Arial_24"));
+            currentTime = new CurrentTime(Content.Load<SpriteFont>("Fonts/Arial_24"));
+            currentTime.AddGameTime(mainGameTime, 1);
+            currentTime.AddGameTime(collisionGameTime, 0.1m);
+            currentTime.AddGameTime(endGameTime, 1);
 
             levelManager = new LevelManager(Content.Load<Texture2D>("end_point_indicator"), graphics);
-            /*levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testlevel1.json"),
-                //LevelReader.Load("Content/Levels/Test Levels/triallevel.json"),
+            levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testlevel1.json"),
+                LevelReader.Load("Content/Levels/Test Levels/triallevel.json"),
                 LevelReader.Load("Content/Levels/World 1/Level 1/level1.json"),
-                LevelReader.Load("Content/Levels/Test Levels/testlevel5.json"));*/
+                LevelReader.Load("Content/Levels/Test Levels/testlevel5.json"));
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/longtest.json"));
 
 
@@ -251,7 +254,7 @@ namespace DoubleDash
                 }
                 else
                 {
-                    player.ResetXAcceleration();
+                    player.LetGo();
                 }
             }
             else
@@ -266,7 +269,7 @@ namespace DoubleDash
                 }
                 else
                 {
-                    player.ResetXAcceleration();
+                    player.LetGo();
                 }
             }
 
@@ -295,10 +298,20 @@ namespace DoubleDash
                 }
             }
 
-            if (keyboardState.IsKeyDownAndUp(Keys.X, previousKeyboardState))
-            {
-                //player.Dash();
-            }
+            //if (gamePadState.IsConnected)
+            //{
+            //    if (gamePadState.IsButtonDownAndUp(Buttons.B, previousGamePadState))
+            //    {
+            //        player.Dash();
+            //    }
+            //}
+            //else
+            //{
+            //    if (keyboardState.IsKeyDownAndUp(Keys.X, previousKeyboardState))
+            //    {
+            //        player.Dash();
+            //    }
+            //}
 
             player.Update(gameTime);
             levelManager.Update(gameTime, player);
@@ -357,8 +370,8 @@ namespace DoubleDash
             world.BeginDraw();
             world.Draw(starBackgroundManager.Draw);
             //world.Draw(walls.Draw);
-            world.Draw(player.Draw);
             world.Draw(levelManager.Draw);
+            world.Draw(player.Draw);
             //world.Draw(testCircle.Draw);
             world.Draw(currentTime.Draw);
             world.Draw(DebugText.Draw);
