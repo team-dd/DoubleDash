@@ -278,12 +278,12 @@ namespace DoubleDash
             if (jumpState == JumpStates.Ground)
             {
                 // ground friction
-                //velocity.X *= 0.87f * (float)gameTime.GameSpeed;
+                velocity.X *= 0.99f;
             }
             else
             {
                 // air friction
-                //velocity.X *= 0.9f * (float)gameTime.GameSpeed;
+                velocity.X *= 0.9995f;
             }
 
             if (canJump &&

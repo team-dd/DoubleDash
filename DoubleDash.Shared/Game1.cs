@@ -111,7 +111,7 @@ namespace DoubleDash
             player = new Player(spriteSheetInfo,
                 Content.Load<Texture2D>("dash_indicator"),
                 graphics);
-            player.animations["demoanimation"] = player.animations.AddSpriteSheet(Content.Load<Texture2D>("demoanimation"), spriteSheetInfo, 2, 2, 1, SpriteSheet.Direction.LeftToRight, 2, true);
+            player.animations["demoanimation"] = player.animations.AddSpriteSheet(Content.Load<Texture2D>("demoanimation"), spriteSheetInfo, 2, 2, 1, SpriteSheet.Direction.LeftToRight, 10, true);
             player.Ready();
             testCircleText = new TextItem(DebugText.spriteFont);
             //DebugText.Add(testCircleText);
