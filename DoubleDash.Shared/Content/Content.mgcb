@@ -201,18 +201,6 @@
 #begin Levels/Test Levels/testlevel2V1.2.json
 /copy:Levels/Test Levels/testlevel2V1.2.json
 
-#begin end2.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:end2.png
-
 #begin door.png
 /importer:TextureImporter
 /processor:TextureProcessor
