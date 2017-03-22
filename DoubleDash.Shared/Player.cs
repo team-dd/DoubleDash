@@ -20,7 +20,7 @@ namespace DoubleDash
         }
 
         private const float GroundXMovement = 5;
-        private const int WALL_JUMP_BUFFER = 15 * 10; // change to a timer
+        private const int WALL_JUMP_BUFFER = 10 * 10; // change to a timer
 
         private Polygon polygon;
         public JumpStates jumpState;
@@ -43,6 +43,8 @@ namespace DoubleDash
         TextItem hasLetGoOfJumpText;
         TextItem jumpTimeText;
 
+        private bool justHitWall;
+
         public Vector2 spawnPoint;
 
         int wallJumpCounter;
@@ -53,6 +55,7 @@ namespace DoubleDash
             dashIndicator = new Sprite(dashIndicatorTex);
             dashRefreshTime = TimeSpan.FromSeconds(5);
             dashBar = new DashBar(graphics);
+            justHitWall = false;
             Reset();
 
             //LoadDebugTexts();
@@ -97,7 +100,7 @@ namespace DoubleDash
 
             else if (jumpState == JumpStates.Ground)
             {
-                acceleration.X -= 0.15f * multiplier;
+                acceleration.X -= 0.01f * multiplier;
             }
             else if (jumpState == JumpStates.Air)
             {
@@ -112,7 +115,7 @@ namespace DoubleDash
                 else
                 {
                     jumpState = JumpStates.Air;
-                    acceleration.X -= 0.5f * multiplier;
+                    acceleration.X -= 0.25f * multiplier;
                     wallJumpCounter = 0;
                 }
             }
@@ -132,11 +135,11 @@ namespace DoubleDash
 
             if (jumpState == JumpStates.Ground)
             {
-                acceleration.X += 0.15f * multiplier;
+                acceleration.X += 0.01f * multiplier;
             }
             else if (jumpState == JumpStates.Air)
             {
-                acceleration.X += 0.005f * multiplier;
+                acceleration.X += 0.0075f * multiplier;
             }
             else if (jumpState == JumpStates.WallLeft)
             {
@@ -147,7 +150,7 @@ namespace DoubleDash
                 else
                 {
                     jumpState = JumpStates.Air;
-                    acceleration.X += 0.5f * multiplier;
+                    acceleration.X += 0.25f * multiplier;
                     wallJumpCounter = 0;
                 }
             }
@@ -159,21 +162,21 @@ namespace DoubleDash
             {
                 if (acceleration.X >= 0)
                 {
-                    acceleration.X = Math.Max(0, acceleration.X - .5f);
+                    acceleration.X = Math.Max(0, acceleration.X - .1f);
                 }
                 else
                 {
-                    acceleration.X = Math.Min(0, acceleration.X + .5f);
+                    acceleration.X = Math.Min(0, acceleration.X + .1f);
                 }
             } else if (jumpState == JumpStates.Air)
             {
                 if (acceleration.X >= 0)
                 {
-                    acceleration.X = Math.Max(0, acceleration.X - .35f);
+                    acceleration.X = Math.Max(0, acceleration.X - .02f);
                 }
                 else
                 {
-                    acceleration.X = Math.Min(0, acceleration.X + .35f);
+                    acceleration.X = Math.Min(0, acceleration.X + .02f);
                 }
             }
             
@@ -186,22 +189,22 @@ namespace DoubleDash
             {
                 if (acceleration.X >= 0)
                 {
-                    acceleration.X = Math.Max(0, acceleration.X - 1f);
+                    acceleration.X = Math.Max(0, acceleration.X - .1f);
                 }
                 else
                 {
-                    acceleration.X = Math.Min(0, acceleration.X + 1f);
+                    acceleration.X = Math.Min(0, acceleration.X + .1f);
                 }
             }
             else if (jumpState == JumpStates.Air)
             {
                 if (acceleration.X >= 0)
                 {
-                    acceleration.X = Math.Max(0, acceleration.X - .5f);
+                    acceleration.X = Math.Max(0, acceleration.X - .0025f);
                 }
                 else
                 {
-                    acceleration.X = Math.Min(0, acceleration.X + .5f);
+                    acceleration.X = Math.Min(0, acceleration.X + .0025f);
                 }
             }
 
@@ -217,12 +220,12 @@ namespace DoubleDash
                 
                 if (jumpState == JumpStates.WallLeft)
                 {
-                    velocity.X = 7;
+                    velocity.X = 6;
                     acceleration.X = .5f;
                 }
                 else if (jumpState == JumpStates.WallRight)
                 {
-                    velocity.X = -7;
+                    velocity.X = -6;
                     acceleration.X = -.5f;
                 }
                 jumpState = JumpStates.Air;
@@ -311,7 +314,7 @@ namespace DoubleDash
             else
             {
                 // air friction
-                velocity.X *= 0.9995f;
+                velocity.X *= 0.99f;
             }
 
             if (canJump &&
@@ -327,10 +330,10 @@ namespace DoubleDash
 
             if (jumpState == JumpStates.WallLeft || jumpState == JumpStates.WallRight)
             {
-                float lowestWallSlideSpeed = 10;
+                float lowestWallSlideSpeed = 20;
                 if (velocity.Y <= lowestWallSlideSpeed)
                 {
-                    velocity.Y += (GameHelpers.Gravity / 1.2f) * (float)gameTime.GameSpeed;
+                    velocity.Y += (GameHelpers.Gravity / 1.7f) * (float)gameTime.GameSpeed;
                 }
                 else
                 {
@@ -349,8 +352,9 @@ namespace DoubleDash
                 }
             }
             
-            acceleration.X = MathHelper.Clamp(acceleration.X, -2f, 2f);
-            velocity.X = MathHelper.Clamp(velocity.X, -15f, 15f);
+            acceleration.X = MathHelper.Clamp(acceleration.X, -1.5f, 1.5f);
+
+            velocity.X = MathHelper.Clamp(velocity.X, -14f, 14f);
 
             base.Update(gameTime);
             UpdatePolygon();
@@ -380,6 +384,7 @@ namespace DoubleDash
         public void CheckCollisions(List<Block> walls)
         {
             bool anyCollision = false;
+            bool onGround = false;
             foreach (var wall in walls)
             {
                 GLX.Collisions.MTV? mtv = GLX.Collisions.HelperMethods.Colliding(polygon, wall.polygon);
@@ -407,19 +412,8 @@ namespace DoubleDash
                         position.Y -= vector.Y * mtv.Value.magnitude;
                     }
 
-                    if (mtv.Value.vector.Y == 0)
+                    if (mtv.Value.vector.Y == 0 && !onGround)
                     {
-                        canJump = false;
-                        velocity.X = 0;
-                        if (velocity.Y < 0)
-                        {
-                            velocity.Y += .02f;
-                        }
-                        else if (velocity.Y > 0)
-                        {
-                            //velocity.Y = Math.Min(velocity.Y, 8);
-                        }
-                        acceleration = Vector2.Zero;
                         if (position.X > wall.center.X)
                         {
                             jumpState = JumpStates.WallLeft;
@@ -428,10 +422,11 @@ namespace DoubleDash
                         {
                             jumpState = JumpStates.WallRight;
                         }
-                        ResetJump();
                     }
                     else
                     {
+                        justHitWall = false;
+                        onGround = true;
                         jumpState = JumpStates.Ground;
                         velocity.Y = 0;
                         acceleration.Y = 0;
@@ -442,7 +437,26 @@ namespace DoubleDash
 
             if (!anyCollision)
             {
+                justHitWall = false;
                 jumpState = JumpStates.Air;
+            }
+            else if (!onGround)
+            {
+                canJump = false;
+                acceleration = Vector2.Zero;
+                velocity.X = 0;
+                if (velocity.Y < 0)
+                {
+                    velocity.Y += .005f;
+                }
+                else if (!justHitWall)
+                {
+                    justHitWall = true;
+                    velocity.Y /= 2f;
+                    acceleration.Y = 3f;
+                }
+                
+                ResetJump();
             }
         }
 
