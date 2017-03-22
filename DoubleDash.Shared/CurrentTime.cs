@@ -16,13 +16,13 @@ namespace DoubleDash
             Fast
         }
 
-        private List<(GameTimeWrapper, decimal)> gameTimes;
+        private List<Tuple<GameTimeWrapper, decimal>> gameTimes;
         public TextItem text;
         private Speeds speed;
         
         public CurrentTime(SpriteFont spriteFont)
         {
-            gameTimes = new List<(GameTimeWrapper, decimal)>();
+            gameTimes = new List<Tuple<GameTimeWrapper, decimal>>();
             text = new TextItem(spriteFont, "1.0x");
             text.color = Color.Black;
             speed = Speeds.Normal;
@@ -30,7 +30,7 @@ namespace DoubleDash
 
         public void AddGameTime(GameTimeWrapper gameTime, decimal baseTime)
         {
-            gameTimes.Add((gameTime, baseTime));
+            gameTimes.Add(new Tuple<GameTimeWrapper, decimal>(gameTime, baseTime));
         }
 
         public void SetToSlow()
