@@ -13,6 +13,17 @@ namespace DoubleDash
     public class Game1 : Game
     {
         const string MainGame = "game1";
+        const string MainMenu = "mainMenu";
+        const string PauseMenu = "pauseMenu";
+
+        public enum States
+        {
+            Game,
+            MainMenu,
+            PauseMenu
+        }
+
+        States state;
 
         GraphicsDeviceManager graphics;
         World world;
@@ -20,6 +31,10 @@ namespace DoubleDash
         GameTimeWrapper collisionGameTime;
         GameTimeWrapper endGameTime;
         GameState mainGameState;
+
+        GameTimeWrapper pauseGameTime;
+        MenuState pauseMenuState;
+
         KeyboardState previousKeyboardState;
         GamePadState previousGamePadState;
 
@@ -37,6 +52,8 @@ namespace DoubleDash
 
         SpriteSheet spriteSheet;
         SpriteSheetInfo spriteSheetInfo;
+
+        Sprite pauseMenuRect;
 
         public Game1()
         {
@@ -78,6 +95,20 @@ namespace DoubleDash
         {
             DebugText.Initialize(Content.Load<SpriteFont>("Fonts/Courier_New_12"));
             world = new World(graphics);
+
+            world.AddMenuState(MainMenu, this);
+            //world.ActivateMenuState(MainMenu);
+            pauseGameTime = new GameTimeWrapper(PauseMenuUpdate, this, 1);
+            pauseMenuState = new MenuState(PauseMenu, graphics, this, world);
+            pauseMenuState.AddTime(pauseGameTime);
+            pauseMenuState.AddDraw(PauseMenuDraw);
+            world.AddMenuState(pauseMenuState);
+            state = States.Game;
+
+            pauseMenuRect = new Sprite(graphics);
+            pauseMenuRect.DrawSize = new Size(world.virtualResolutionRenderer.WindowResolution.Width, world.virtualResolutionRenderer.WindowResolution.Height);
+            pauseMenuRect.color = new Color(0, 0, 0, 128);
+
             mainGameTime = new GameTimeWrapper(MainUpdate, this, 1);
             collisionGameTime = new GameTimeWrapper(CollisionUpdate, this, 0.1m);
             collisionGameTime.NormalUpdate = false;
@@ -90,8 +121,8 @@ namespace DoubleDash
             world.AddGameState(mainGameState);
             world.ActivateGameState(MainGame);
             world.CurrentCamera.Focus = Camera.CameraFocus.Center;
-            world.CurrentCamera.Zoom = 0.75f;
-            world.CurrentCamera.Origin *= 1 / .75f;
+            //world.CurrentCamera.Zoom = 0.75f;
+            //world.CurrentCamera.Origin *= 1 / .75f;
             currentTime = new CurrentTime(Content.Load<SpriteFont>("Fonts/Arial_24"));
             currentTime.AddGameTime(mainGameTime, 1);
             currentTime.AddGameTime(collisionGameTime, 0.1m);
@@ -158,6 +189,27 @@ namespace DoubleDash
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            if (keyboardState.IsKeyDownAndUp(Keys.Space, previousKeyboardState))
+            {
+                if (state == States.PauseMenu)
+                {
+                    world.DeactivateMenuState(PauseMenu);
+                    mainGameTime.GameSpeed = 1;
+                    collisionGameTime.GameSpeed = 0.1m;
+                    endGameTime.GameSpeed = 1;
+                    state = States.Game;
+                }
+                else if (state == States.Game)
+                {
+                    world.ActivateMenuState(PauseMenu);
+                    mainGameTime.GameSpeed = 0;
+                    collisionGameTime.GameSpeed = 0;
+                    endGameTime.GameSpeed = 0;
+                    state = States.PauseMenu;
+                }
+            }
+            
+
             if (keyboardState.IsKeyDownAndUp(Keys.D1, previousKeyboardState))
             {
                 currentTime.SetToSlow();
@@ -181,6 +233,12 @@ namespace DoubleDash
             }
 
             world.Update(gameTime);
+
+            if (state != States.Game)
+            {
+                previousKeyboardState = keyboardState;
+                previousGamePadState = gamePadState;
+            }
 
             base.Update(gameTime);
         }
@@ -352,13 +410,26 @@ namespace DoubleDash
             previousGamePadState = gamePadState;
         }
 
+        void PauseMenuUpdate(GameTimeWrapper gameTime)
+        {
+            pauseMenuRect.position = Vector2.Transform(Vector2.Zero, world.CurrentCamera.InverseTransform);
+            pauseMenuRect.Update(gameTime);
+        }
+
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(new Color(216, 216, 216));
+            if (world.activeGameStates.Count > 0)
+            {
+                GraphicsDevice.Clear(new Color(216, 216, 216));
+            }
+            else if (world.activeMenuStates.Count > 0)
+            {
+                GraphicsDevice.Clear(Color.CornflowerBlue);
+            }
 
             world.DrawWorld();
 
@@ -375,6 +446,13 @@ namespace DoubleDash
             //world.Draw(testCircle.Draw);
             world.Draw(currentTime.Draw);
             world.Draw(DebugText.Draw);
+            world.EndDraw();
+        }
+
+        void PauseMenuDraw()
+        {
+            world.BeginDraw();
+            world.Draw(pauseMenuRect.Draw);
             world.EndDraw();
         }
     }
