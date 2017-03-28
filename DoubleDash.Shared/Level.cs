@@ -16,11 +16,13 @@ namespace DoubleDash
         public Vector2 start;
         public Vector2 end;
         public Sprite endPointIndicator;
+        private bool zoomingIn;
 
         public Level()
         {
             blocksDescription = new List<BlockDescription>();
             blocks = new List<Block>();
+            zoomingIn = false;
         }
 
         public void FinishLoading(Texture2D endPointTex, GraphicsDeviceManager graphics)
@@ -37,8 +39,26 @@ namespace DoubleDash
             }
         }
 
-        public void Update(GameTimeWrapper gameTime)
+        public void StartZoomIn(Camera camera)
         {
+            zoomingIn = true;
+            camera.Zoom = 0.01f;
+        }
+
+        public void Update(GameTimeWrapper gameTime, Camera camera)
+        {
+            if (zoomingIn)
+            {
+                if (camera.Zoom < 1)
+                {
+                    camera.Zoom += 0.001f * (float)gameTime.GameSpeed;
+                }
+                else
+                {
+                    camera.Zoom = 1;
+                    zoomingIn = false;
+                }
+            }
             foreach (var block in blocks)
             {
                 block.Update(gameTime);

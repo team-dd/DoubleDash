@@ -130,18 +130,18 @@ namespace DoubleDash
 
             levelManager = new LevelManager(Content.Load<Texture2D>("door"), graphics);
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testtestlevel1.json"),
-                //LevelReader.Load("Content/Levels/Test Levels/triallevel.json"),
-                //LevelReader.Load("Content/Levels/World 1/Level 1/level1.json"),
-                //LevelReader.Load("Content/Levels/Test Levels/testlevel5.json"));
+            //LevelReader.Load("Content/Levels/Test Levels/triallevel.json"),
+            //LevelReader.Load("Content/Levels/World 1/Level 1/level1.json"),
+            //LevelReader.Load("Content/Levels/Test Levels/testlevel5.json"));
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/longtest.json"));
 
 
-            /levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testlevel1V2.1.json"));
+            // levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testlevel1V2.1.json"));
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testlevel2V1.2.json"));
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/test8.json"));
             levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level1.json"));
             levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level2.json"));
-            levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level3.json"));
+            //levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level3.json"));
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level4.json"));
             levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level4.2.json"));
             levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level5.json"));
@@ -171,7 +171,7 @@ namespace DoubleDash
             MediaPlayer.IsRepeating = true;
             //MediaPlayer.Play(song);
 
-            levelManager.Start(player);
+            levelManager.Start(player, world.CurrentCamera);
         }
 
         /// <summary>
@@ -215,7 +215,15 @@ namespace DoubleDash
                     state = States.PauseMenu;
                 }
             }
-            
+
+            if (keyboardState.IsKeyDown(Keys.OemPlus))
+            {
+                world.CurrentCamera.Zoom += 0.01f;
+            }
+            else if (keyboardState.IsKeyDown(Keys.OemMinus))
+            {
+                world.CurrentCamera.Zoom -= 0.01f;
+            }
 
             if (keyboardState.IsKeyDownAndUp(Keys.D1, previousKeyboardState))
             {
@@ -258,7 +266,7 @@ namespace DoubleDash
             if (keyboardState.IsKeyDownAndUp(Keys.OemTilde, previousKeyboardState) ||
                 gamePadState.IsButtonDownAndUp(Buttons.Start, previousGamePadState))
             {
-                levelManager.Start(player);
+                levelManager.Start(player, world.CurrentCamera);
             }
 
             if (gamePadState.IsConnected)
@@ -299,6 +307,21 @@ namespace DoubleDash
             else if (keyboardState.IsKeyDown(Keys.S))
             {
                 testCirclePos.Y += 5;
+            }
+
+            if (gamePadState.IsConnected)
+            {
+                if (gamePadState.IsButtonDownAndUp(Buttons.B, previousGamePadState))
+                {
+                    player.Dash();
+                }
+            }
+            else
+            {
+                if (keyboardState.IsKeyDownAndUp(Keys.X, previousKeyboardState))
+                {
+                    player.Dash();
+                }
             }
         }
 
@@ -367,23 +390,8 @@ namespace DoubleDash
                 }
             }
 
-            if (gamePadState.IsConnected)
-            {
-                if (gamePadState.IsButtonDownAndUp(Buttons.B, previousGamePadState))
-                {
-                    player.Dash();
-                }
-            }
-            else
-            {
-                if (keyboardState.IsKeyDownAndUp(Keys.X, previousKeyboardState))
-                {
-                    player.Dash();
-                }
-            }
-
             player.Update(gameTime);
-            levelManager.Update(gameTime, player);
+            levelManager.Update(gameTime, player, world.CurrentCamera);
             player.CheckCollisions(levelManager.levels[levelManager.currentLevel].blocks);
         }
 
