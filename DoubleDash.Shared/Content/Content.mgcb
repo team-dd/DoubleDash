@@ -156,21 +156,6 @@
 /processorParam:TextureFormat=Color
 /build:end_point_indicator.png
 
-#begin Levels/World 1/Level 1/level1.json
-/copy:Levels/World 1/Level 1/level1.json
-
-#begin Levels/World 1/Level 1/World 1 - Level 1 V1.0.json
-/copy:Levels/World 1/Level 1/World 1 - Level 1 V1.0.json
-
-#begin Levels/World 1/Level 1/World 1 - Level 1 V2.0.json
-/copy:Levels/World 1/Level 1/World 1 - Level 1 V2.0.json
-
-#begin Levels/World 1/Level 1/World 1 - Level 1 V2.1.json
-/copy:Levels/World 1/Level 1/World 1 - Level 1 V2.1.json
-
-#begin Levels/World 1/Level 1/World 1 - Level 1.json
-/copy:Levels/World 1/Level 1/World 1 - Level 1.json
-
 #begin demoanimation.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -215,4 +200,25 @@
 
 #begin Levels/Test Levels/testtestlevel1.json
 /copy:Levels/Test Levels/testtestlevel1.json
+
+#begin Levels/Test Levels/testlevel6.json
+/copy:Levels/Test Levels/testlevel6.json
+
+#begin Levels/Test Levels/test8.json
+/copy:Levels/Test Levels/test8.json
+
+#begin Levels/World 1/level1.json
+/copy:Levels/World 1/level1.json
+
+#begin Levels/World 1/level2.json
+/copy:Levels/World 1/level2.json
+
+#begin Levels/World 1/level3.json
+/copy:Levels/World 1/level3.json
+
+#begin Levels/World 1/level4.json
+/copy:Levels/World 1/level4.json
+
+#begin Levels/World 1/level5.json
+/copy:Levels/World 1/level5.json
 
