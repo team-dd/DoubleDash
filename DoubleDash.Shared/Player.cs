@@ -45,6 +45,8 @@ namespace DoubleDash
 
         private bool justHitWall;
 
+        private bool isOnMovingBlock;
+
         public Vector2 spawnPoint;
 
         int wallJumpCounter;
@@ -431,6 +433,18 @@ namespace DoubleDash
                         velocity.Y = 0;
                         acceleration.Y = 0;
                         ResetJump();
+
+                        if (wall.isMoving)
+                        {
+                            if (wall.isMovingLeft)
+                            {
+                                position.X -= .3f;
+                            }
+                            else
+                            {
+                                position.X += .3f;
+                            }
+                        }
                     }
                 }
             }

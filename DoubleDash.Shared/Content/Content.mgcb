@@ -213,3 +213,6 @@
 /processorParam:TextureFormat=Color
 /build:door.png
 
+#begin Levels/Test Levels/testtestlevel1.json
+/copy:Levels/Test Levels/testtestlevel1.json
+

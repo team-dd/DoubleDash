@@ -1,0 +1,48 @@
+{
+  "rectangles": [
+    {
+      "X": 385,
+      "Y": 315,
+      "Width": 225,
+      "Height": 245,
+      "IsMoving": false
+    },
+    {
+      "X": 0,
+      "Y": 350,
+      "Width": 225,
+      "Height": 210,
+      "IsMoving": false
+    },
+    {
+      "X": 1195,
+      "Y": 220,
+      "Width": 140,
+      "Height": 340,
+      "IsMoving": false
+    },
+    {
+      "X": 1335,
+      "Y": 0,
+      "Width": 60,
+      "Height": 560,
+      "IsMoving": false
+    },
+    {
+      "X": 760,
+      "Y": 280,
+      "Width": 45,
+      "Height": 5,
+      "IsMoving": true
+    },
+    {
+      "X": 1005,
+      "Y": 280,
+      "Width": 35,
+      "Height": 5,
+      "IsMoving": true
+    }
+  ],
+  "start": "10, 340",
+  "end": "1310, 205"
+}

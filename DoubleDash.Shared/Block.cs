@@ -18,13 +18,17 @@ namespace DoubleDash
         private Line bottom;
         private Line left;
 
+        public bool isMoving;
+        Vector2 origin;
+        public bool isMovingLeft;
+
         bool redAscending;
         TimeSpan blockColorSwitchTime;
         TimeSpan colorSwitchTime;
         Color lowColor;
         Color highColor;
 
-        public Block(Vector2 position, Size size, GraphicsDeviceManager graphics) : base(graphics)
+        public Block(Vector2 position, Size size, bool isMoving, GraphicsDeviceManager graphics) : base(graphics)
         {
             color = Color.Black;
             base.position = position;
@@ -34,6 +38,10 @@ namespace DoubleDash
             right = new Line(graphics);
             bottom = new Line(graphics);
             left = new Line(graphics);
+
+            this.isMoving = isMoving;
+            isMovingLeft = true;
+            origin = position;
 
             colorSwitchTime = TimeSpan.FromMilliseconds(1000);
             blockColorSwitchTime = colorSwitchTime;
@@ -46,9 +54,35 @@ namespace DoubleDash
 
         public void Update(GameTimeWrapper gameTime)
         {
+            MoveBlock();
             UpdateColor(gameTime);
             base.Update(gameTime);
             UpdatePolygon();
+        }
+
+        public void MoveBlock()
+        {
+            if (!isMoving)
+            {
+                return;
+            }
+
+            if (isMovingLeft)
+            {
+                base.position.X -= .3f;
+                if (origin.X - base.position.X > 150)
+                {
+                    isMovingLeft = false;
+                }
+            }
+            else
+            {
+                base.position.X += .3f;
+                if (base.position.X - origin.X > 150)
+                {
+                    isMovingLeft = true;
+                }
+            }
         }
 
         public void UpdateColor(GameTimeWrapper gameTime)

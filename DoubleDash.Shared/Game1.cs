@@ -129,7 +129,7 @@ namespace DoubleDash
             currentTime.AddGameTime(endGameTime, 1);
 
             levelManager = new LevelManager(Content.Load<Texture2D>("door"), graphics);
-            levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testlevel1.json"),
+            levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testtestlevel1.json"),
                 LevelReader.Load("Content/Levels/Test Levels/triallevel.json"),
                 LevelReader.Load("Content/Levels/World 1/Level 1/level1.json"),
                 LevelReader.Load("Content/Levels/Test Levels/testlevel5.json"));

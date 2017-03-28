@@ -23,7 +23,8 @@ namespace DoubleDash
                         (int)o["X"],
                         (int)o["Y"],
                         (int)o["Width"],
-                        (int)o["Height"]));
+                        (int)o["Height"],
+                        (bool)o["IsMoving"]));
                 }
                 return level;
             }

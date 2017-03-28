@@ -18,9 +18,9 @@ namespace DoubleDash
             walls = new List<Block>();
         }
 
-        public void Create(Size size, Vector2 position)
+        public void Create(Size size, Vector2 position, bool isMoving)
         {
-            Block block = new Block(position, size, graphics);
+            Block block = new Block(position, size, isMoving, graphics);
             walls.Add(block);
         }
 

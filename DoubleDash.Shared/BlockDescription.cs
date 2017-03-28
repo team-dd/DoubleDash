@@ -10,11 +10,13 @@ namespace DoubleDash
     {
         public readonly int Width;
         public readonly int Height;
+        public readonly bool IsMoving;
 
-        public BlockDescription(int x, int y, int width, int height) : base(x, y)
+        public BlockDescription(int x, int y, int width, int height, bool isMoving) : base(x, y)
         {
             Width = width;
             Height = height;
+            IsMoving = isMoving;
         }
     }
 }

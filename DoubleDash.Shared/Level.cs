@@ -31,6 +31,7 @@ namespace DoubleDash
             {
                 Block block = new Block(new Vector2(blockDescription.X * 4, blockDescription.Y * 4),
                     new Size(blockDescription.Width * 4, blockDescription.Height * 4),
+                    blockDescription.IsMoving,
                     graphics);
                 blocks.Add(block);
             }
