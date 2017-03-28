@@ -142,7 +142,8 @@ namespace DoubleDash
             levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level1.json"));
             levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level2.json"));
             levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level3.json"));
-            levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level4.json"));
+            //levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level4.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level4.2.json"));
             levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level5.json"));
             levelManager.FinishLoading();
 
@@ -301,6 +302,10 @@ namespace DoubleDash
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameTime"></param>
         void CollisionUpdate(GameTimeWrapper gameTime)
         {
             KeyboardState keyboardState = Keyboard.GetState();
@@ -362,20 +367,20 @@ namespace DoubleDash
                 }
             }
 
-            //if (gamePadState.IsConnected)
-            //{
-            //    if (gamePadState.IsButtonDownAndUp(Buttons.B, previousGamePadState))
-            //    {
-            //        player.Dash();
-            //    }
-            //}
-            //else
-            //{
-            //    if (keyboardState.IsKeyDownAndUp(Keys.X, previousKeyboardState))
-            //    {
-            //        player.Dash();
-            //    }
-            //}
+            if (gamePadState.IsConnected)
+            {
+                if (gamePadState.IsButtonDownAndUp(Buttons.B, previousGamePadState))
+                {
+                    player.Dash();
+                }
+            }
+            else
+            {
+                if (keyboardState.IsKeyDownAndUp(Keys.X, previousKeyboardState))
+                {
+                    player.Dash();
+                }
+            }
 
             player.Update(gameTime);
             levelManager.Update(gameTime, player);

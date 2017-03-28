@@ -222,3 +222,9 @@
 #begin Levels/World 1/level5.json
 /copy:Levels/World 1/level5.json
 
+#begin Levels/World 1/level4.1.json
+/copy:Levels/World 1/level4.1.json
+
+#begin Levels/World 1/level4.2.json
+/copy:Levels/World 1/level4.2.json
+

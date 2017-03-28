@@ -32,7 +32,7 @@ namespace DoubleDash
         TimeSpan jumpTime;
 
         private const int MaxDashes = 2;
-        private const int DashDistance = 200;
+        private const int DashDistance = 300;
         Sprite dashIndicator;
         int dashes;
         TimeSpan dashTimer;
@@ -55,7 +55,7 @@ namespace DoubleDash
         {
             maxJumpTime = TimeSpan.FromMilliseconds(400);
             dashIndicator = new Sprite(dashIndicatorTex);
-            dashRefreshTime = TimeSpan.FromSeconds(5);
+            dashRefreshTime = TimeSpan.FromSeconds(1);
             dashBar = new DashBar(graphics);
             justHitWall = false;
             Reset();
