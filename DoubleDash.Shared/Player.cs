@@ -267,7 +267,7 @@ namespace DoubleDash
 
         private bool isOutOfBounds()
         {
-            return position.Y > 8000;
+            return position.Y > 15000;
         }
 
         public override void Update(GameTimeWrapper gameTime)

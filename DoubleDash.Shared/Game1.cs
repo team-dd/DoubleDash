@@ -121,7 +121,7 @@ namespace DoubleDash
             world.AddGameState(mainGameState);
             world.ActivateGameState(MainGame);
             world.CurrentCamera.Focus = Camera.CameraFocus.Center;
-            //world.CurrentCamera.Zoom = 0.75f;
+            world.CurrentCamera.Zoom = 0.75f;
             //world.CurrentCamera.Origin *= 1 / .75f;
             currentTime = new CurrentTime(Content.Load<SpriteFont>("Fonts/Arial_24"));
             currentTime.AddGameTime(mainGameTime, 1);
@@ -140,11 +140,11 @@ namespace DoubleDash
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testlevel2V1.2.json"));
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/test8.json"));
             levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level1.json"));
-            levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level2.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level3.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level4.json"));
-            levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level4.2.json"));
+            //levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level2.json"));
             levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level5.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level3.json"));
+            //levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level4.json"));
+            //levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level4.2.json"));
             levelManager.FinishLoading();
 
             spriteSheetInfo = new SpriteSheetInfo(30, 32);
@@ -458,7 +458,7 @@ namespace DoubleDash
         void MainDraw()
         {
             world.BeginDraw();
-            world.Draw(starBackgroundManager.Draw);
+            //world.Draw(starBackgroundManager.Draw);
             //world.Draw(walls.Draw);
             world.Draw(levelManager.Draw);
             world.Draw(player.Draw);
