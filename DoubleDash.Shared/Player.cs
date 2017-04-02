@@ -102,7 +102,7 @@ namespace DoubleDash
 
             else if (jumpState == JumpStates.Ground)
             {
-                acceleration.X -= 0.01f * multiplier;
+                acceleration.X -= 0.005f * multiplier;
             }
             else if (jumpState == JumpStates.Air)
             {
@@ -137,11 +137,11 @@ namespace DoubleDash
 
             if (jumpState == JumpStates.Ground)
             {
-                acceleration.X += 0.01f * multiplier;
+                acceleration.X += 0.005f * multiplier;
             }
             else if (jumpState == JumpStates.Air)
             {
-                acceleration.X += 0.0075f * multiplier;
+                acceleration.X += 0.005f * multiplier;
             }
             else if (jumpState == JumpStates.WallLeft)
             {
@@ -354,7 +354,7 @@ namespace DoubleDash
                 }
             }
             
-            acceleration.X = MathHelper.Clamp(acceleration.X, -1.5f, 1.5f);
+            acceleration.X = MathHelper.Clamp(acceleration.X, -1.8f, 1.8f);
 
             velocity.X = MathHelper.Clamp(velocity.X, -14f, 14f);
 
@@ -427,14 +427,13 @@ namespace DoubleDash
                     }
                     else
                     {
-                        justHitWall = false;
                         onGround = true;
                         jumpState = JumpStates.Ground;
                         velocity.Y = 0;
                         acceleration.Y = 0;
                         ResetJump();
 
-                        if (wall.isMoving)
+                        if (wall.isMoving && !justHitWall)
                         {
                             if (wall.isMovingLeft)
                             {
@@ -445,6 +444,8 @@ namespace DoubleDash
                                 position.X += .3f;
                             }
                         }
+
+                        justHitWall = false;
                     }
                 }
             }
