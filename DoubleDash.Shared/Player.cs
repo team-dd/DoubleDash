@@ -222,13 +222,13 @@ namespace DoubleDash
                 
                 if (jumpState == JumpStates.WallLeft)
                 {
-                    velocity.X = 6;
-                    acceleration.X = .5f;
+                    velocity.X = 8;
+                    acceleration.X = 1f;
                 }
                 else if (jumpState == JumpStates.WallRight)
                 {
-                    velocity.X = -6;
-                    acceleration.X = -.5f;
+                    velocity.X = -8;
+                    acceleration.X = -1f;
                 }
                 jumpState = JumpStates.Air;
             }
