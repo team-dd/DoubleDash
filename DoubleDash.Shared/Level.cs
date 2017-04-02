@@ -18,11 +18,26 @@ namespace DoubleDash
         public Sprite endPointIndicator;
         private bool zoomingIn;
 
+        static Random r = new Random();
+
+        static Color[] RAINBOW = {
+            Color.Red,
+            Color.Orange,
+            Color.Yellow,
+            Color.Green,
+            Color.Blue,
+            Color.Indigo,
+            Color.Violet
+        };
+
+        public Color[] palette;
+
         public Level()
         {
             blocksDescription = new List<BlockDescription>();
             blocks = new List<Block>();
             zoomingIn = false;
+            palette = new Color[1] { RAINBOW[r.Next(6)] };
         }
 
         public void FinishLoading(Texture2D endPointTex, GraphicsDeviceManager graphics)
@@ -34,7 +49,8 @@ namespace DoubleDash
                 Block block = new Block(new Vector2(blockDescription.X * 4, blockDescription.Y * 4),
                     new Size(blockDescription.Width * 4, blockDescription.Height * 4),
                     blockDescription.IsMoving,
-                    graphics);
+                    graphics,
+                    palette);
                 blocks.Add(block);
             }
         }

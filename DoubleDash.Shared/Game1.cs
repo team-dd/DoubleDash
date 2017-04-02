@@ -466,17 +466,18 @@ namespace DoubleDash
         void MainDraw()
         {
             world.BeginDraw();
+            if (GameHelpers.Rain)
+            {
+                world.Draw(rainManager.Draw);
+            }
             //world.Draw(starBackgroundManager.Draw);
             //world.Draw(walls.Draw);
             world.Draw(levelManager.Draw);
             world.Draw(player.Draw);
             //world.Draw(testCircle.Draw);
-            if (GameHelpers.Rain)
-            {
-                world.Draw(rainManager.Draw);
-            }
             world.Draw(currentTime.Draw);
             world.Draw(DebugText.Draw);
+            
             world.EndDraw();
         }
 

@@ -9,7 +9,7 @@ namespace DoubleDash
 {
     public class RainManager
     {
-        private const int NumberOfLines = 100;
+        private const int NumberOfLines = 150;
 
         private GraphicsDeviceManager graphics;
         private List<Line> lines;
@@ -23,9 +23,10 @@ namespace DoubleDash
             for (int i = 0; i < NumberOfLines; i++)
             {
                 Line line = new Line(graphics);
-                line.color = Color.White;
-                line.thickness = 2;
+                line.color = new Color(200, 200, 200);
+                line.thickness = (i % 3) + 1;
                 line.visible = false;
+                line.velocity = new Vector2(0, ((i % 3) + 4) * 12);
                 lines.Add(line);
             }
             spawnCountdown = SpawnTime;
@@ -44,12 +45,10 @@ namespace DoubleDash
                 {
                     if (spawnCountdown <= TimeSpan.Zero)
                     {
-                        Vector2 velocity = new Vector2(0, 1);
-                        float magnitude = (float)World.random.NextDouble(100, 300);
+                        float magnitude = (float)World.random.NextDouble(150, 350);
                         line.point1 = new Vector2(World.random.Next(0, (int)vrr.WindowResolution.Width), 0);
                         line.point1 = Vector2.Transform(line.point1, camera.InverseTransform);
-                        line.point2 = line.point1 - velocity * magnitude;
-                        line.velocity = velocity * (float)World.random.NextDouble(40, 50);
+                        line.point2 = line.point1 - (new Vector2(0, 120) - line.velocity) / 50 * magnitude;
                         line.visible = true;
                         spawnCountdown = SpawnTime;
                     }
