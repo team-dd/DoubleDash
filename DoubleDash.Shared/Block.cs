@@ -43,11 +43,11 @@ namespace DoubleDash
             isMovingLeft = true;
             origin = position;
 
-            colorSwitchTime = TimeSpan.FromMilliseconds(1000);
+            colorSwitchTime = TimeSpan.FromMilliseconds(2000);
             blockColorSwitchTime = colorSwitchTime;
             redAscending = false;
-            lowColor = new Color(0, 100, 255);
-            highColor = new Color(220, 100, 255);
+            lowColor = new Color(0, 130, 238);
+            highColor = new Color(238, 130, 238);
 
             UpdatePolygon();
         }

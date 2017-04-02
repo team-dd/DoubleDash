@@ -443,7 +443,7 @@ namespace DoubleDash
         {
             if (world.activeGameStates.Count > 0)
             {
-                GraphicsDevice.Clear(new Color(216, 216, 216));
+                GraphicsDevice.Clear(Color.HotPink);
             }
             else if (world.activeMenuStates.Count > 0)
             {
