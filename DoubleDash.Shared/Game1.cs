@@ -143,7 +143,7 @@ namespace DoubleDash
             world = new World(graphics);
 
             mainMenuState = world.AddMenuState(MainMenu, this);
-            mainMenuState.MenuFont = Content.Load<SpriteFont>("Fonts/Montserrat_Ultra_Light_36");
+            mainMenuState.MenuFont = Content.Load<SpriteFont>("Fonts/Arial_24");
             mainMenuState.AddDraw(MainMenuDraw);
             mainMenuState.AddMenuItem("Play");
             mainMenuState.AddMenuItem("Exit");

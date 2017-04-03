@@ -56,6 +56,7 @@ namespace DoubleDash
                 currentLevel = 0;
             }
             SetupLevel(player, camera);
+            player.yDeathThreshold = levels[currentLevel].highestY + 2000;
         }
 
         public void DecreaseLevel(Player player, Camera camera)
@@ -66,6 +67,7 @@ namespace DoubleDash
                 currentLevel = levels.Count - 1;
             }
             SetupLevel(player, camera);
+            player.yDeathThreshold = levels[currentLevel].highestY + 2000;
         }
 
         public void Update(GameTimeWrapper gameTime, Player player, Camera camera)
