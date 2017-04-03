@@ -44,6 +44,7 @@ namespace DoubleDash
         Player player;
         CurrentTime currentTime;
         StarBackgroundManager starBackgroundManager;
+        RainManager rainManager;
 
         Vector2 testCirclePos;
         Sprite testCircle;
@@ -166,6 +167,8 @@ namespace DoubleDash
 
             starBackgroundManager = new StarBackgroundManager(graphics);
             starBackgroundManager.Create(5, world.virtualResolutionRenderer);
+
+            rainManager = new RainManager(graphics);
 
             song = Content.Load<Song>("music");
             MediaPlayer.IsRepeating = true;
@@ -323,6 +326,11 @@ namespace DoubleDash
                     player.Dash();
                 }
             }
+
+            if (GameHelpers.Rain)
+            {
+                rainManager.Update(gameTime, world.virtualResolutionRenderer, world.CurrentCamera);
+            }
         }
 
         /// <summary>
@@ -443,7 +451,7 @@ namespace DoubleDash
         {
             if (world.activeGameStates.Count > 0)
             {
-                GraphicsDevice.Clear(Color.HotPink);
+                GraphicsDevice.Clear(GameHelpers.GameBackgroundColor);
             }
             else if (world.activeMenuStates.Count > 0)
             {
@@ -463,6 +471,10 @@ namespace DoubleDash
             world.Draw(levelManager.Draw);
             world.Draw(player.Draw);
             //world.Draw(testCircle.Draw);
+            if (GameHelpers.Rain)
+            {
+                world.Draw(rainManager.Draw);
+            }
             world.Draw(currentTime.Draw);
             world.Draw(DebugText.Draw);
             world.EndDraw();

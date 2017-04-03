@@ -22,7 +22,7 @@ namespace DoubleDash
         Vector2 origin;
         public bool isMovingLeft;
 
-        bool redAscending;
+        bool blockColorTimeIncreasing;
         TimeSpan blockColorSwitchTime;
         TimeSpan colorSwitchTime;
         Color lowColor;
@@ -34,10 +34,10 @@ namespace DoubleDash
             base.position = position;
             base.DrawSize = size;
 
-            top = new Line(graphics);
-            right = new Line(graphics);
-            bottom = new Line(graphics);
-            left = new Line(graphics);
+            top = CreateLine(graphics, GameHelpers.BlockOutlineColor, GameHelpers.BlockOutlineThickness);
+            right = CreateLine(graphics, GameHelpers.BlockOutlineColor, GameHelpers.BlockOutlineThickness);
+            bottom = CreateLine(graphics, GameHelpers.BlockOutlineColor, GameHelpers.BlockOutlineThickness);
+            left = CreateLine(graphics, GameHelpers.BlockOutlineColor, GameHelpers.BlockOutlineThickness);
 
             this.isMoving = isMoving;
             isMovingLeft = true;
@@ -45,17 +45,32 @@ namespace DoubleDash
 
             colorSwitchTime = TimeSpan.FromMilliseconds(2000);
             blockColorSwitchTime = colorSwitchTime;
-            redAscending = false;
-            lowColor = new Color(0, 130, 238);
-            highColor = new Color(238, 130, 238);
+            blockColorTimeIncreasing = false;
+            lowColor = GameHelpers.BlockColor1;
+            highColor = GameHelpers.BlockColor2;
 
             UpdatePolygon();
         }
 
-        public void Update(GameTimeWrapper gameTime)
+        private Line CreateLine(GraphicsDeviceManager graphics, Color color, float thickness)
+        {
+            Line line = new Line(graphics);
+            line.color = color;
+            line.thickness = thickness;
+            return line;
+        }
+
+        public override void Update(GameTimeWrapper gameTime)
         {
             MoveBlock();
-            UpdateColor(gameTime);
+            if (GameHelpers.LerpBlockColor)
+            {
+                UpdateColor(gameTime);
+            }
+            else
+            {
+                color = GameHelpers.BlockColor1;
+            }
             base.Update(gameTime);
             UpdatePolygon();
         }
@@ -87,13 +102,13 @@ namespace DoubleDash
 
         public void UpdateColor(GameTimeWrapper gameTime)
         {
-            if (redAscending)
+            if (blockColorTimeIncreasing)
             {
                 blockColorSwitchTime += gameTime.ElapsedGameTime;
                 if (blockColorSwitchTime >= colorSwitchTime)
                 {
                     blockColorSwitchTime = colorSwitchTime;
-                    redAscending = false;
+                    blockColorTimeIncreasing = false;
                 }
             }
             else
@@ -102,7 +117,7 @@ namespace DoubleDash
                 if (blockColorSwitchTime <= TimeSpan.Zero)
                 {
                     blockColorSwitchTime = TimeSpan.Zero;
-                    redAscending = true;
+                    blockColorTimeIncreasing = true;
                 }
             }
             color = Color.Lerp(lowColor, highColor, (float)blockColorSwitchTime.Ticks / colorSwitchTime.Ticks);
@@ -135,10 +150,14 @@ namespace DoubleDash
         public void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            //top.Draw(spriteBatch);
-            //right.Draw(spriteBatch);
-            //bottom.Draw(spriteBatch);
-            //left.Draw(spriteBatch);
+            
+            if (GameHelpers.DrawBlockOutlines)
+            {
+                top.Draw(spriteBatch);
+                right.Draw(spriteBatch);
+                bottom.Draw(spriteBatch);
+                left.Draw(spriteBatch);
+            }
         }
     }
 }

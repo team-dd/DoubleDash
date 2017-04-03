@@ -23,6 +23,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)LevelManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LevelReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Player.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RainManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StarBackground.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StarBackgroundManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TileDescription.cs" />
