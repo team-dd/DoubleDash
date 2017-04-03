@@ -78,6 +78,10 @@ namespace DoubleDash
                 lineColor = COLORS_1[r.Next(4)];
             }
 
+            if (isMoving)
+            {
+                velocity = new Vector2(-3f, 0);
+            }
 
             top = CreateLine(graphics, GameHelpers.BlockOutlineColor, GameHelpers.BlockOutlineThickness);
             right = CreateLine(graphics, GameHelpers.BlockOutlineColor, GameHelpers.BlockOutlineThickness);
@@ -130,17 +134,17 @@ namespace DoubleDash
 
             if (isMovingLeft)
             {
-                base.position.X -= .3f;
                 if (origin.X - base.position.X > 150)
                 {
+                    velocity.X = 3f;
                     isMovingLeft = false;
                 }
             }
             else
             {
-                base.position.X += .3f;
                 if (base.position.X - origin.X > 150)
                 {
+                    velocity.X = -3f;
                     isMovingLeft = true;
                 }
             }

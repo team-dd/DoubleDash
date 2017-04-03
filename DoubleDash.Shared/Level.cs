@@ -17,6 +17,7 @@ namespace DoubleDash
         public Vector2 end;
         public Sprite endPointIndicator;
         private bool zoomingIn;
+        public float highestY;
 
         static Random r = new Random();
 
@@ -38,6 +39,7 @@ namespace DoubleDash
             blocks = new List<Block>();
             zoomingIn = false;
             palette = new Color[1] { RAINBOW[r.Next(6)] };
+            highestY = 0;
         }
 
         public void FinishLoading(Texture2D endPointTex, GraphicsDeviceManager graphics)
@@ -52,6 +54,10 @@ namespace DoubleDash
                     graphics,
                     palette);
                 blocks.Add(block);
+                if (block.position.Y > highestY)
+                {
+                    highestY = block.position.Y;
+                }
             }
         }
 

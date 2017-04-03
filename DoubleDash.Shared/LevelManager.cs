@@ -45,6 +45,7 @@ namespace DoubleDash
         {
             currentLevel = 0;
             SetupLevel(player, camera);
+            player.yDeathThreshold = levels[currentLevel].highestY + 2000;
         }
 
         public void IncreaseLevel(Player player, Camera camera)

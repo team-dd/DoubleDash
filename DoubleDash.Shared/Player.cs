@@ -22,6 +22,8 @@ namespace DoubleDash
         private const float GroundXMovement = 5;
         private const int WALL_JUMP_BUFFER = 10 * 10; // change to a timer
 
+        public float yDeathThreshold;
+
         private Polygon polygon;
         public JumpStates jumpState;
         public float storedXVelocity;
@@ -59,6 +61,7 @@ namespace DoubleDash
             dashBar = new DashBar(graphics);
             justHitWall = false;
             Reset();
+            yDeathThreshold = 0;
 
             //LoadDebugTexts();
         }
@@ -267,7 +270,7 @@ namespace DoubleDash
 
         private bool isOutOfBounds()
         {
-            return position.Y > 15000;
+            return position.Y > yDeathThreshold;
         }
 
         public override void Update(GameTimeWrapper gameTime)
@@ -433,7 +436,7 @@ namespace DoubleDash
                         acceleration.Y = 0;
                         ResetJump();
 
-                        if (wall.isMoving && !justHitWall)
+                        if (wall.isMoving)
                         {
                             if (wall.isMovingLeft)
                             {
@@ -462,7 +465,7 @@ namespace DoubleDash
                 velocity.X = 0;
                 if (velocity.Y < 0)
                 {
-                    velocity.Y += .005f;
+                    //velocity.Y += .005f;
                 }
                 else if (!justHitWall)
                 {

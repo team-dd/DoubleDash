@@ -1,0 +1,153 @@
+{
+  "rectangles": [
+    {
+      "X": 200,
+      "Y": 70,
+      "Width": 15,
+      "Height": 25,
+      "IsMoving": true
+    },
+    {
+      "X": 365,
+      "Y": 70,
+      "Width": 15,
+      "Height": 25,
+      "IsMoving": true
+    },
+    {
+      "X": 315,
+      "Y": 30,
+      "Width": 5,
+      "Height": 40,
+      "IsMoving": false
+    },
+    {
+      "X": 260,
+      "Y": 30,
+      "Width": 5,
+      "Height": 40,
+      "IsMoving": false
+    },
+    {
+      "X": 0,
+      "Y": 30,
+      "Width": 35,
+      "Height": 435,
+      "IsMoving": false
+    },
+    {
+      "X": 0,
+      "Y": 0,
+      "Width": 460,
+      "Height": 30,
+      "IsMoving": false
+    },
+    {
+      "X": 460,
+      "Y": 0,
+      "Width": 40,
+      "Height": 790,
+      "IsMoving": false
+    },
+    {
+      "X": 105,
+      "Y": 755,
+      "Width": 355,
+      "Height": 35,
+      "IsMoving": false
+    },
+    {
+      "X": 0,
+      "Y": 465,
+      "Width": 105,
+      "Height": 325,
+      "IsMoving": false
+    },
+    {
+      "X": 150,
+      "Y": 30,
+      "Width": 5,
+      "Height": 40,
+      "IsMoving": false
+    },
+    {
+      "X": 205,
+      "Y": 30,
+      "Width": 5,
+      "Height": 40,
+      "IsMoving": false
+    },
+    {
+      "X": 370,
+      "Y": 30,
+      "Width": 5,
+      "Height": 40,
+      "IsMoving": false
+    },
+    {
+      "X": 310,
+      "Y": 70,
+      "Width": 15,
+      "Height": 25,
+      "IsMoving": true
+    },
+    {
+      "X": 255,
+      "Y": 70,
+      "Width": 15,
+      "Height": 25,
+      "IsMoving": true
+    },
+    {
+      "X": 105,
+      "Y": 95,
+      "Width": 320,
+      "Height": 580,
+      "IsMoving": false
+    },
+    {
+      "X": 145,
+      "Y": 70,
+      "Width": 15,
+      "Height": 25,
+      "IsMoving": true
+    },
+    {
+      "X": 55,
+      "Y": 95,
+      "Width": 5,
+      "Height": 245,
+      "IsMoving": false
+    },
+    {
+      "X": 60,
+      "Y": 95,
+      "Width": 45,
+      "Height": 5,
+      "IsMoving": false
+    },
+    {
+      "X": 35,
+      "Y": 360,
+      "Width": 50,
+      "Height": 5,
+      "IsMoving": false
+    },
+    {
+      "X": 80,
+      "Y": 120,
+      "Width": 5,
+      "Height": 240,
+      "IsMoving": false
+    },
+    {
+      "X": 35,
+      "Y": 410,
+      "Width": 70,
+      "Height": 55,
+      "IsMoving": false
+    }
+  ],
+  "start": "120, 735",
+  "end": "70, 400"
+}
