@@ -422,10 +422,34 @@ namespace DoubleDash
                         if (position.X > wall.center.X)
                         {
                             jumpState = JumpStates.WallLeft;
+
+                            if (wall.isMoving)
+                            {
+                                if (wall.isMovingLeft)
+                                {
+                                    position.X -= .3f;
+                                }
+                                else
+                                {
+                                    position.X += .3f;
+                                }
+                            }
                         }
                         else if (position.X < wall.center.X)
                         {
                             jumpState = JumpStates.WallRight;
+
+                            if (wall.isMoving)
+                            {
+                                if (wall.isMovingLeft)
+                                {
+                                    position.X -= .3f;
+                                }
+                                else
+                                {
+                                    position.X += .3f;
+                                }
+                            }
                         }
                     }
                     else
