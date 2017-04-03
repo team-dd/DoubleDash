@@ -1,0 +1,83 @@
+{
+  "rectangles": [
+    {
+      "X": 0,
+      "Y": 465,
+      "Width": 105,
+      "Height": 325,
+      "IsMoving": false
+    },
+    {
+      "X": 245,
+      "Y": 30,
+      "Width": 10,
+      "Height": 40,
+      "IsMoving": false
+    },
+    {
+      "X": 105,
+      "Y": 755,
+      "Width": 355,
+      "Height": 35,
+      "IsMoving": false
+    },
+    {
+      "X": 460,
+      "Y": 0,
+      "Width": 40,
+      "Height": 790,
+      "IsMoving": false
+    },
+    {
+      "X": 0,
+      "Y": 0,
+      "Width": 460,
+      "Height": 30,
+      "IsMoving": false
+    },
+    {
+      "X": 0,
+      "Y": 30,
+      "Width": 35,
+      "Height": 435,
+      "IsMoving": false
+    },
+    {
+      "X": 235,
+      "Y": 70,
+      "Width": 30,
+      "Height": 25,
+      "IsMoving": true
+    },
+    {
+      "X": 105,
+      "Y": 95,
+      "Width": 320,
+      "Height": 580,
+      "IsMoving": false
+    },
+    {
+      "X": 70,
+      "Y": 360,
+      "Width": 75,
+      "Height": 10,
+      "IsMoving": true
+    },
+    {
+      "X": 0,
+      "Y": 185,
+      "Width": 70,
+      "Height": 10,
+      "IsMoving": true
+    },
+    {
+      "X": 35,
+      "Y": 270,
+      "Width": 70,
+      "Height": 10,
+      "IsMoving": true
+    }
+  ],
+  "start": "120, 735",
+  "end": "70, 455"
+}

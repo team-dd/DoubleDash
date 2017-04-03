@@ -231,3 +231,12 @@
 #begin Levels/Test Levels/zacktry1.json
 /copy:Levels/Test Levels/zacktry1.json
 
+#begin Levels/Updated World 1/level1.json
+/copy:Levels/Updated World 1/level1.json
+
+#begin Levels/Updated World 1/level2.json
+/copy:Levels/Updated World 1/level2.json
+
+#begin Levels/Updated World 1/level3.json
+/copy:Levels/Updated World 1/level3.json
+
