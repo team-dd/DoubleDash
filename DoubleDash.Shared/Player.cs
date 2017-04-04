@@ -59,7 +59,7 @@ namespace DoubleDash
         {
             maxJumpTime = TimeSpan.FromMilliseconds(400);
             dashIndicator = new Sprite(dashIndicatorTex);
-            dashRefreshTime = TimeSpan.FromSeconds(1);
+            dashRefreshTime = TimeSpan.FromSeconds(3);
             dashBar = new DashBar(graphics);
             justHitWall = false;
             Reset();
