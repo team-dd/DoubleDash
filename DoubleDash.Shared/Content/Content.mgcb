@@ -240,6 +240,15 @@
 #begin Levels/Updated World 1/3.json
 /copy:Levels/Updated World 1/3.json
 
+<<<<<<< HEAD
 #begin Levels/World 2/level1.json
 /copy:Levels/World 2/level1.json
+=======
+#begin Fonts/Montserrat_Ultra_Light_36.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Montserrat_Ultra_Light_36.spritefont
+>>>>>>> b74fc8ffa5281faae8d339fb08627023e11e90fa
 

@@ -23,10 +23,57 @@ namespace DoubleDash
             PauseMenu
         }
 
-        States state;
+        private States state;
+        States State
+        {
+            get
+            {
+                return state;
+            }
+            set
+            {
+                if (value == States.MainMenu)
+                {
+                    world.DeactivateGameState(MainGame);
+                    world.DeactivateMenuState(PauseMenu);
+                    world.ActivateMenuState(MainMenu);
+                    world.CurrentCameraName = DoubleDash.MainMenu.MainMenuCamera;
+                }
+                else if (value == States.Game)
+                {
+                    world.CurrentCameraName = World.Camera1Name;
+                    if (state == States.MainMenu)
+                    {
+                        world.DeactivateMenuState(MainMenu);
+                        world.ActivateGameState(MainGame);
+                    }
+                    else if (state == States.PauseMenu)
+                    {
+                        world.DeactivateMenuState(PauseMenu);
+                        mainGameTime.GameSpeed = 1;
+                        collisionGameTime.GameSpeed = 0.1m;
+                        endGameTime.GameSpeed = 1;
+                    }
+                }
+                else if (value == States.PauseMenu)
+                {
+                    world.CurrentCameraName = World.Camera1Name;
+                    world.ActivateMenuState(PauseMenu);
+                    mainGameTime.GameSpeed = 0;
+                    collisionGameTime.GameSpeed = 0;
+                    endGameTime.GameSpeed = 0;
+                }
+                state = value;
+            }
+        }
 
         GraphicsDeviceManager graphics;
         World world;
+
+        GameTimeWrapper mainMenuTime;
+        MenuState mainMenuState;
+        MainMenu mainMenu;
+
         GameTimeWrapper mainGameTime;
         GameTimeWrapper collisionGameTime;
         GameTimeWrapper endGameTime;
@@ -39,7 +86,6 @@ namespace DoubleDash
         GamePadState previousGamePadState;
 
         LevelManager levelManager;
-        Walls walls;
 
         Player player;
         CurrentTime currentTime;
@@ -51,7 +97,6 @@ namespace DoubleDash
         TextItem testCircleText;
         Song song;
 
-        SpriteSheet spriteSheet;
         SpriteSheetInfo spriteSheetInfo;
 
         Sprite pauseMenuRect;
@@ -97,14 +142,23 @@ namespace DoubleDash
             DebugText.Initialize(Content.Load<SpriteFont>("Fonts/Courier_New_12"));
             world = new World(graphics);
 
-            world.AddMenuState(MainMenu, this);
-            //world.ActivateMenuState(MainMenu);
+            mainMenuState = world.AddMenuState(MainMenu, this);
+            mainMenuState.MenuFont = Content.Load<SpriteFont>("Fonts/Montserrat_Ultra_Light_36");
+            mainMenuState.AddDraw(MainMenuDraw);
+            mainMenuState.AddMenuItem("Play");
+            mainMenuState.AddMenuItem("Exit");
+            mainMenuState.SetMenuAction("Play", () => { State = States.Game; });
+            mainMenuState.SetMenuAction("Exit", () => { this.Exit(); });
+            mainMenu = new MainMenu(mainMenuState, world.virtualResolutionRenderer);
+            mainMenuTime = new GameTimeWrapper(mainMenu.Update, this, 1);
+            mainMenuState.AddTime(mainMenuTime);
+            world.AddCamera(DoubleDash.MainMenu.MainMenuCamera, mainMenu.Camera);
+
             pauseGameTime = new GameTimeWrapper(PauseMenuUpdate, this, 1);
             pauseMenuState = new MenuState(PauseMenu, graphics, this, world);
             pauseMenuState.AddTime(pauseGameTime);
             pauseMenuState.AddDraw(PauseMenuDraw);
             world.AddMenuState(pauseMenuState);
-            state = States.Game;
 
             pauseMenuRect = new Sprite(graphics);
             pauseMenuRect.DrawSize = new Size(world.virtualResolutionRenderer.WindowResolution.Width, world.virtualResolutionRenderer.WindowResolution.Height);
@@ -120,7 +174,6 @@ namespace DoubleDash
             mainGameState.AddTime(endGameTime);
             mainGameState.AddDraw(MainDraw);
             world.AddGameState(mainGameState);
-            world.ActivateGameState(MainGame);
             world.CurrentCamera.Focus = Camera.CameraFocus.Center;
             world.CurrentCamera.Zoom = 0.75f;
             //world.CurrentCamera.Origin *= 1 / .75f;
@@ -179,6 +232,9 @@ namespace DoubleDash
             //MediaPlayer.Play(song);
 
             levelManager.Start(player, world.CurrentCamera);
+
+            State = States.MainMenu;
+            //State = States.Game;
         }
 
         /// <summary>
@@ -200,26 +256,20 @@ namespace DoubleDash
             KeyboardState keyboardState = Keyboard.GetState();
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
 
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            if (keyboardState.IsKeyDown(Keys.Escape))
+            {
+                this.Exit();
+            }
 
             if (keyboardState.IsKeyDownAndUp(Keys.Space, previousKeyboardState))
             {
-                if (state == States.PauseMenu)
+                if (State == States.PauseMenu)
                 {
-                    world.DeactivateMenuState(PauseMenu);
-                    mainGameTime.GameSpeed = 1;
-                    collisionGameTime.GameSpeed = 0.1m;
-                    endGameTime.GameSpeed = 1;
-                    state = States.Game;
+                    State = States.Game;
                 }
-                else if (state == States.Game)
+                else if (State == States.Game)
                 {
-                    world.ActivateMenuState(PauseMenu);
-                    mainGameTime.GameSpeed = 0;
-                    collisionGameTime.GameSpeed = 0;
-                    endGameTime.GameSpeed = 0;
-                    state = States.PauseMenu;
+                    State = States.PauseMenu;
                 }
             }
 
@@ -256,7 +306,7 @@ namespace DoubleDash
 
             world.Update(gameTime);
 
-            if (state != States.Game)
+            if (State != States.Game)
             {
                 previousKeyboardState = keyboardState;
                 previousGamePadState = gamePadState;
@@ -453,13 +503,13 @@ namespace DoubleDash
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            if (world.activeGameStates.Count > 0)
-            {
-                GraphicsDevice.Clear(GameHelpers.GameBackgroundColor);
-            }
-            else if (world.activeMenuStates.Count > 0)
+            if (State == States.MainMenu)
             {
                 GraphicsDevice.Clear(Color.CornflowerBlue);
+            }
+            else
+            {
+                GraphicsDevice.Clear(GameHelpers.GameBackgroundColor);
             }
 
             world.DrawWorld();
@@ -475,13 +525,19 @@ namespace DoubleDash
                 world.Draw(rainManager.Draw);
             }
             //world.Draw(starBackgroundManager.Draw);
-            //world.Draw(walls.Draw);
             world.Draw(levelManager.Draw);
             world.Draw(player.Draw);
             //world.Draw(testCircle.Draw);
             world.Draw(currentTime.Draw);
             world.Draw(DebugText.Draw);
             
+            world.EndDraw();
+        }
+
+        void MainMenuDraw()
+        {
+            world.BeginDraw();
+            world.Draw(mainMenu.Draw);
             world.EndDraw();
         }
 
