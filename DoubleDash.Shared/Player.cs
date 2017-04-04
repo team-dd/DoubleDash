@@ -491,6 +491,16 @@ namespace DoubleDash
                     spriteEffects = SpriteEffects.FlipHorizontally;
                 }
             }
+            else if (jumpState == JumpStates.Air && acceleration.X != 0)
+            {
+                if (acceleration.X > 0)
+                {
+                    spriteEffects = SpriteEffects.None;
+                } else if (acceleration.X < 0)
+                {
+                    spriteEffects = SpriteEffects.FlipHorizontally;
+                }
+            }
             else
             {
                 animations.active = false;
