@@ -257,7 +257,14 @@ namespace DoubleDash
             if (dashes > 0)
             {
                 dashes--;
-                position += Vector2.Normalize(velocity) * DashDistance;
+                if (velocity == Vector2.Zero)
+                {
+                    position += Vector2.Normalize(new Vector2(0, 1)) * DashDistance;
+                }
+                else
+                {
+                    position += Vector2.Normalize(velocity) * DashDistance;
+                }
             }
         }
 
