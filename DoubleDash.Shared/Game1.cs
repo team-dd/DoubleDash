@@ -189,9 +189,21 @@ namespace DoubleDash
             //LevelReader.Load("Content/Levels/Test Levels/testlevel5.json"));
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/longtest.json"));
 
-            levelManager.AddLevel(LevelReader.Load("Content/Levels/Updated World 1/1.json"));
-            levelManager.AddLevel(LevelReader.Load("Content/Levels/Updated World 1/2.json"));
-            levelManager.AddLevel(LevelReader.Load("Content/Levels/Updated World 1/3.json"));
+            //levelManager.AddLevel(LevelReader.Load("Content/Levels/Updated World 1/1.json"));
+            //levelManager.AddLevel(LevelReader.Load("Content/Levels/Updated World 1/2.json"));
+            //levelManager.AddLevel(LevelReader.Load("Content/Levels/Updated World 1/3.json"));
+
+            //levelManager.AddLevel(LevelReader.Load("Content/Levels/World 2/level1.json"));
+
+            //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 1.json"));
+            //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 2.json"));
+            //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 4.json"));
+            //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 5.json"));
+            levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 7.json"));
+
+
+            //levelManager.AddLevel(LevelReader.Load("content/levels/test Levels/testlevevl9.json"));
+
 
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/zacktry1.json"));
             // levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testlevel1V2.1.json"));
