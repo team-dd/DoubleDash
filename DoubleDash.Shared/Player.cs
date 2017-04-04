@@ -28,6 +28,8 @@ namespace DoubleDash
         public JumpStates jumpState;
         public float storedXVelocity;
 
+        public Vector2 dashVector;
+
         bool canJump;
         bool hasLetGoOfJump;
         TimeSpan maxJumpTime;
@@ -62,6 +64,7 @@ namespace DoubleDash
             justHitWall = false;
             Reset();
             yDeathThreshold = 0;
+            dashVector = Vector2.Zero;
 
             //LoadDebugTexts();
         }
@@ -257,7 +260,19 @@ namespace DoubleDash
             if (dashes > 0)
             {
                 dashes--;
-                position += Vector2.Normalize(velocity) * DashDistance;
+                if (velocity == Vector2.Zero)
+                {
+                    position += Vector2.Normalize(new Vector2(1, 0)) * DashDistance;
+                }
+                else
+                {
+                    position = dashIndicator.position;
+                }
+
+                if (velocity.Y > 0 && dashVector.Y > 0)
+                {
+                    velocity.Y = -5f;
+                }
             }
         }
 
@@ -271,6 +286,18 @@ namespace DoubleDash
         private bool isOutOfBounds()
         {
             return position.Y > yDeathThreshold;
+        }
+
+        public void SetDashCircle(Vector2 dashVector) {
+            if (dashIndicator.visible)
+            {
+                if (dashVector == Vector2.Zero)
+                {
+                    dashVector = new Vector2(1, 0);
+                }
+                this.dashVector = dashVector;
+                dashIndicator.position = position + Vector2.Normalize(dashVector) * new Vector2(1, -1) * DashDistance;
+            }
         }
 
         public override void Update(GameTimeWrapper gameTime)
@@ -364,10 +391,10 @@ namespace DoubleDash
             base.Update(gameTime);
             UpdatePolygon();
 
-            if (dashIndicator.visible)
+            /*if (dashIndicator.visible)
             {
                 dashIndicator.position = position + Vector2.Normalize(velocity) * DashDistance;
-            }
+            }*/
 
             //UpdateDebugTexts(gameTime);
         }
@@ -429,10 +456,6 @@ namespace DoubleDash
                                 {
                                     position.X -= .3f;
                                 }
-                                else
-                                {
-                                    position.X += .3f;
-                                }
                             }
                         }
                         else if (position.X < wall.center.X)
@@ -441,11 +464,7 @@ namespace DoubleDash
 
                             if (wall.isMoving)
                             {
-                                if (wall.isMovingLeft)
-                                {
-                                    position.X -= .3f;
-                                }
-                                else
+                                if (!wall.isMovingLeft)
                                 {
                                     position.X += .3f;
                                 }

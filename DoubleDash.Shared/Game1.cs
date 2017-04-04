@@ -149,7 +149,7 @@ namespace DoubleDash
             mainMenuState.AddMenuItem("Exit");
             mainMenuState.SetMenuAction("Play", () => { State = States.Game; });
             mainMenuState.SetMenuAction("Exit", () => { this.Exit(); });
-            mainMenu = new MainMenu(mainMenuState, world.virtualResolutionRenderer);
+            mainMenu = new MainMenu(mainMenuState, world.virtualResolutionRenderer, graphics);
             mainMenuTime = new GameTimeWrapper(mainMenu.Update, this, 1);
             mainMenuState.AddTime(mainMenuTime);
             world.AddCamera(DoubleDash.MainMenu.MainMenuCamera, mainMenu.Camera);
@@ -195,16 +195,13 @@ namespace DoubleDash
 
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/World 2/level1.json"));
 
-            //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 1.json"));
-            //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 2.json"));
-            //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 4.json"));
-            //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 5.json"));
+            levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 1.json"));
+            levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 2.json"));
+            levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 4.json"));
+            levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 5.json"));
             levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 7.json"));
 
-
             //levelManager.AddLevel(LevelReader.Load("content/levels/test Levels/testlevevl9.json"));
-
-
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/zacktry1.json"));
             // levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testlevel1V2.1.json"));
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testlevel2V1.2.json"));
@@ -422,6 +419,8 @@ namespace DoubleDash
                 {
                     player.LetGo();
                 }
+
+                player.SetDashCircle(gamePadState.ThumbSticks.Left);
             }
             else
             {
@@ -484,8 +483,8 @@ namespace DoubleDash
 
             // GUI stuff
             player.dashBar.Position = Vector2.Transform(
-                new Vector2(world.virtualResolutionRenderer.VirtualResolution.Width - DashBar.BarWidth - 50,
-                world.virtualResolutionRenderer.VirtualResolution.Height - DashBar.BarHeight - 100),
+                new Vector2(world.virtualResolutionRenderer.WindowResolution.Width - DashBar.BarWidth * 1.5f - 100,
+                world.virtualResolutionRenderer.WindowResolution.Height - DashBar.BarHeight * 2 - 100),
                 world.CurrentCamera.InverseTransform);
             player.dashBar.Update(gameTime);
             DebugText.position = Vector2.Transform(Vector2.Zero, world.CurrentCamera.InverseTransform);
@@ -517,7 +516,7 @@ namespace DoubleDash
         {
             if (State == States.MainMenu)
             {
-                GraphicsDevice.Clear(Color.CornflowerBlue);
+                GraphicsDevice.Clear(GameHelpers.GameBackgroundColor);
             }
             else
             {
