@@ -124,7 +124,6 @@ namespace DoubleDash
         {
             graphics.PreferredBackBufferWidth = graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width;
             graphics.PreferredBackBufferHeight = graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height;
-            //graphics.PreferredBackBufferHeight = 1688;
             graphics.ApplyChanges();
 
             previousKeyboardState = Keyboard.GetState();
@@ -143,7 +142,9 @@ namespace DoubleDash
             world = new World(graphics);
 
             mainMenuState = world.AddMenuState(MainMenu, this);
-            mainMenuState.MenuFont = Content.Load<SpriteFont>("Fonts/Arial_24");
+            mainMenuState.unselectedColor = Color.Gray;
+            mainMenuState.selectedColor = Color.White;
+            mainMenuState.MenuFont = Content.Load<SpriteFont>("Fonts/Montserrat_Ultra_Light_36");
             mainMenuState.AddDraw(MainMenuDraw);
             mainMenuState.AddMenuItem("Play");
             mainMenuState.AddMenuItem("Exit");
@@ -176,7 +177,6 @@ namespace DoubleDash
             world.AddGameState(mainGameState);
             world.CurrentCamera.Focus = Camera.CameraFocus.Center;
             world.CurrentCamera.Zoom = 0.75f;
-            //world.CurrentCamera.Origin *= 1 / .75f;
             currentTime = new CurrentTime(Content.Load<SpriteFont>("Fonts/Arial_24"));
             currentTime.AddGameTime(mainGameTime, 1);
             currentTime.AddGameTime(collisionGameTime, 0.1m);
@@ -226,10 +226,6 @@ namespace DoubleDash
 
             testCircle = new Sprite(Content.Load<Texture2D>("testcircle"));
             testCirclePos = new Vector2(100);
-
-            // start floor
-            //walls.Create(new Vector2(10000, 100), new Vector2(0, 900));
-            //walls.Create(new Size(100, 1000), new Vector2(0, 0));
 
             starBackgroundManager = new StarBackgroundManager(graphics);
             starBackgroundManager.Create(5, world.virtualResolutionRenderer);
