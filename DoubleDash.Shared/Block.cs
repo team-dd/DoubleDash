@@ -56,22 +56,22 @@ namespace DoubleDash
             Color.Orange,
             Color.Yellow,
             Color.Green,
-            Color.Blue,
-            Color.Indigo,
-            Color.Violet
+            Color.LightBlue,
+            Color.MediumPurple
         };
         static Random r = new Random();
         Color lineColor;
+        int currentColorIndex;
 
-        public Block(Vector2 position, Size size, bool isMoving, GraphicsDeviceManager graphics, Color[] palette) : base(graphics)
+        public Block(Vector2 position, Size size, bool isMoving, GraphicsDeviceManager graphics, Color outlineColor) : base(graphics)
         {
             color = Color.Black;
             base.position = position;
             base.DrawSize = size;
 
-            if (palette != null)
+            if (outlineColor != null)
             {
-                lineColor = palette[r.Next(palette.Length)];
+                lineColor = outlineColor;
             }
             else
             {

@@ -59,7 +59,7 @@ namespace DoubleDash
         {
             maxJumpTime = TimeSpan.FromMilliseconds(400);
             dashIndicator = new Sprite(dashIndicatorTex);
-            dashRefreshTime = TimeSpan.FromSeconds(3);
+            dashRefreshTime = TimeSpan.FromSeconds(2);
             dashBar = new DashBar(graphics);
             justHitWall = false;
             Reset();
@@ -92,6 +92,8 @@ namespace DoubleDash
             dashBar.CurrentDashPercent = (float)dashes / MaxDashes;
             dashBar.CooldownBarPercent = (float)dashTimer.Ticks / dashRefreshTime.Ticks;
             wallJumpCounter = 0;
+            dashIndicator.visible = true;
+            dashIndicator.position = position + Vector2.Normalize(new Vector2(0, 1)) * DashDistance;
         }
 
         public void MoveLeft(GameTimeWrapper gameTime)

@@ -33,16 +33,16 @@ namespace DoubleDash
 
         public Color[] palette;
 
-        public Level()
+        public Level(int levelIndex)
         {
             blocksDescription = new List<BlockDescription>();
             blocks = new List<Block>();
             zoomingIn = false;
-            palette = new Color[1] { RAINBOW[r.Next(6)] };
+            palette = RAINBOW;
             highestY = 0;
         }
 
-        public void FinishLoading(Texture2D endPointTex, GraphicsDeviceManager graphics)
+        public void FinishLoading(Texture2D endPointTex, GraphicsDeviceManager graphics, int currentLevelIndex)
         {
             endPointIndicator = new Sprite(endPointTex);
             endPointIndicator.position = end;
@@ -52,7 +52,7 @@ namespace DoubleDash
                     new Size(blockDescription.Width * 4, blockDescription.Height * 4),
                     blockDescription.IsMoving,
                     graphics,
-                    palette);
+                    palette[currentLevelIndex]);
                 blocks.Add(block);
                 if (block.position.Y > highestY)
                 {

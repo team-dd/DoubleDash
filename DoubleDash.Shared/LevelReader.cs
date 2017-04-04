@@ -16,7 +16,7 @@ namespace DoubleDash
             using (var streamReader = new StreamReader(input.BaseStream))
             {
                 JArray a = JArray.Load(new JsonTextReader(streamReader));
-                Level level = new Level();
+                Level level = new Level(0);
                 foreach (JObject o in a)
                 {
                     level.blocksDescription.Add(new BlockDescription(
@@ -38,7 +38,7 @@ namespace DoubleDash
                 Byte[] levelDataRaw = new Byte[levelSize];
                 streamReader.Read(levelDataRaw, 0, (int)levelSize);
                 GameSave save = JsonConvert.DeserializeObject<GameSave>(System.Text.Encoding.Default.GetString(levelDataRaw));
-                Level level = new Level();
+                Level level = new Level(0);
                 foreach (BlockDescription block in save.blocks)
                 {
                     level.blocksDescription.Add(block);
