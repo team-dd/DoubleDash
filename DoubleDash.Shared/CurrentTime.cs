@@ -16,6 +16,11 @@ namespace DoubleDash
             Fast
         }
 
+        /// <summary>
+        /// List of Tuples of GameTimeWrappers
+        /// Item1 - GameTimeWrapper
+        /// Item2 - GameTimeWrapper original speed
+        /// </summary>
         private List<Tuple<GameTimeWrapper, decimal>> gameTimes;
         public TextItem text;
         private Speeds speed;

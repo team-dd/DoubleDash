@@ -44,6 +44,7 @@ namespace DoubleDash
         TextItem canJumpText;
         TextItem hasLetGoOfJumpText;
         TextItem jumpTimeText;
+        TextItem velocityText;
 
         private bool justHitWall;
 
@@ -63,7 +64,7 @@ namespace DoubleDash
             Reset();
             yDeathThreshold = 0;
 
-            //LoadDebugTexts();
+            LoadDebugTexts();
         }
 
         public void LoadDebugTexts()
@@ -71,7 +72,8 @@ namespace DoubleDash
             canJumpText = new TextItem(DebugText.spriteFont);
             hasLetGoOfJumpText = new TextItem(DebugText.spriteFont);
             jumpTimeText = new TextItem(DebugText.spriteFont);
-            DebugText.Add(canJumpText, hasLetGoOfJumpText, jumpTimeText);
+            velocityText = new TextItem(DebugText.spriteFont);
+            DebugText.Add(canJumpText, hasLetGoOfJumpText, jumpTimeText, velocityText);
         }
 
         public void Reset()
@@ -273,6 +275,7 @@ namespace DoubleDash
             canJumpText.text = $"{nameof(canJump)}: {canJump.ToString()}";
             hasLetGoOfJumpText.text = $"{nameof(hasLetGoOfJump)}: {hasLetGoOfJump.ToString()}";
             jumpTimeText.text = $"{nameof(jumpTime)}: {jumpTime.ToString()}";
+            velocityText.text = $"{nameof(velocity)}: {velocity.ToString()}";
         }
 
         private bool isOutOfBounds()
@@ -376,7 +379,7 @@ namespace DoubleDash
                 dashIndicator.position = position + Vector2.Normalize(velocity) * DashDistance;
             }
 
-            //UpdateDebugTexts(gameTime);
+            UpdateDebugTexts(gameTime);
         }
 
         private void UpdatePolygon()

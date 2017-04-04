@@ -26,8 +26,8 @@ namespace DoubleDash
             this.menuState = menuState;
             Camera = new Camera(vrr, Camera.CameraFocus.TopLeft);
             title = new TextItem(menuState.MenuFont, "Double Dash");
-            title.position = new Vector2(vrr.WindowResolution.Width / 2, vrr.WindowResolution.Height / 2);
-            menuState.initialPosition = new Vector2(vrr.WindowResolution.Width / 2, vrr.WindowResolution.Height * 0.66f);
+            title.position = new Vector2(vrr.VirtualResolution.Width / 2, vrr.VirtualResolution.Height / 2);
+            menuState.initialPosition = new Vector2(vrr.VirtualResolution.Width / 2, vrr.VirtualResolution.Height * 0.66f);
         }
 
         public void Update(GameTimeWrapper gameTime)
