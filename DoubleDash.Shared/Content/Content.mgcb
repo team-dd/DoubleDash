@@ -243,3 +243,18 @@
 #begin Levels/World 2/level1.json
 /copy:Levels/World 2/level1.json
 
+#begin Levels/Demo World/demo level 1.json
+/copy:Levels/Demo World/demo level 1.json
+
+#begin Levels/Demo World/demo level 2.json
+/copy:Levels/Demo World/demo level 2.json
+
+#begin Levels/Demo World/demo level 7.json
+/copy:Levels/Demo World/demo level 7.json
+
+#begin Levels/Demo World/demo level 5.json
+/copy:Levels/Demo World/demo level 5.json
+
+#begin Levels/Demo World/demo level 4.json
+/copy:Levels/Demo World/demo level 4.json
+
