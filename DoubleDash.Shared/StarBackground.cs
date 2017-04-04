@@ -44,7 +44,7 @@ namespace DoubleDash
                     World.random.Next(0, (int)vrr.WindowResolution.Height));
             star.DrawSize = new Size(World.random.Next(1, 5));
             star.position = Vector2.Transform(star.position, camera.InverseTransform);
-            star.color = Color.Black;
+            star.color = Color.White;
             star.visible = true;
         }
 

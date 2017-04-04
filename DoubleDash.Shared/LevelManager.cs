@@ -28,9 +28,9 @@ namespace DoubleDash
 
         public void FinishLoading()
         {
-            foreach (var level in levels)
+            for (int i = 0; i < levels.Count; i++)
             {
-                level.FinishLoading(endPointTex, graphics);
+                levels[i].FinishLoading(endPointTex, graphics, i);
             }
         }
 

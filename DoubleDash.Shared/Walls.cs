@@ -20,7 +20,7 @@ namespace DoubleDash
 
         public void Create(Size size, Vector2 position, bool isMoving)
         {
-            Block block = new Block(position, size, isMoving, graphics, null);
+            Block block = new Block(position, size, isMoving, graphics, Color.White);
             walls.Add(block);
         }
 

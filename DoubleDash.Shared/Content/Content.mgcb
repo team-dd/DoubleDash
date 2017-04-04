@@ -247,6 +247,9 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Montserrat_Ultra_Light_36.spritefont
 
+#begin Levels/World 2/level1.json
+/copy:Levels/World 2/level1.json
+
 #begin Levels/Demo World/demo level 1.json
 /copy:Levels/Demo World/demo level 1.json
 
