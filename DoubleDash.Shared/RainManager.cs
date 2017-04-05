@@ -12,22 +12,22 @@ namespace DoubleDash
         private const int NumberOfLines = 150;
 
         private GraphicsDeviceManager graphics;
-        private List<Line> lines;
+        private List<Rain> lines;
         private TimeSpan spawnCountdown;
         private TimeSpan SpawnTime { get { return TimeSpan.FromMilliseconds(10); } }
 
         public RainManager(GraphicsDeviceManager graphics)
         {
             this.graphics = graphics;
-            lines = new List<Line>(NumberOfLines);
+            lines = new List<Rain>(NumberOfLines);
             for (int i = 0; i < NumberOfLines; i++)
             {
-                Line line = new Line(graphics);
-                line.color = new Color(200, 200, 200);
-                line.thickness = (i % 3) + 1;
-                line.visible = false;
-                line.velocity = new Vector2(0, ((i % 3) + 4) * 12);
-                lines.Add(line);
+                Rain rain = new Rain(graphics);
+                rain.color = new Color(200, 200, 200);
+                rain.thickness = (i % 3) + 1;
+                rain.visible = false;
+                rain.velocity = new Vector2(0, ((i % 3) + 4) * 12);
+                lines.Add(rain);
             }
             spawnCountdown = SpawnTime;
         }
@@ -50,12 +50,28 @@ namespace DoubleDash
                         line.point1 = Vector2.Transform(line.point1, camera.InverseTransform);
                         line.point2 = line.point1 - (new Vector2(0, 120) - line.velocity) / 50 * magnitude;
                         line.visible = true;
+                        line.block.visible = false;
                         spawnCountdown = SpawnTime;
                     }
                 }
                 if (line.point2.Y > Vector2.Transform(new Vector2(0, vrr.WindowResolution.Height), camera.InverseTransform).Y)
                 {
                     line.visible = false;
+                }
+                if (line.visible)
+                {
+                    line.UpdatePolygon();
+                }
+            }
+        }
+
+        public void CheckCollisions(List<Block> walls)
+        {
+            foreach (var line in lines)
+            {
+                if (line.visible)
+                {
+                    line.CheckCollisions(walls);
                 }
             }
         }

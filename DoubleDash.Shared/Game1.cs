@@ -385,11 +385,6 @@ namespace DoubleDash
                     player.Dash();
                 }
             }
-
-            if (GameHelpers.Rain)
-            {
-                rainManager.Update(gameTime, world.virtualResolutionRenderer, world.CurrentCamera);
-            }
         }
 
         /// <summary>
@@ -462,6 +457,12 @@ namespace DoubleDash
             player.Update(gameTime);
             levelManager.Update(gameTime, player, world.CurrentCamera);
             player.CheckCollisions(levelManager.levels[levelManager.currentLevel].blocks);
+
+            if (GameHelpers.Rain)
+            {
+                rainManager.Update(gameTime, world.virtualResolutionRenderer, world.CurrentCamera);
+            }
+            rainManager.CheckCollisions(levelManager.levels[levelManager.currentLevel].blocks);
         }
 
         void EndUpdate(GameTimeWrapper gameTime)
