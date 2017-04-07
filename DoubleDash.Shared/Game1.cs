@@ -111,7 +111,10 @@ namespace DoubleDash
 #else
             graphics.IsFullScreen = true;
 #endif
+
+#if !WINDOWS_UWP
             Window.Position = Point.Zero;
+#endif
         }
 
         /// <summary>
@@ -193,7 +196,7 @@ namespace DoubleDash
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Updated World 1/2.json"));
 
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/World 2/level1.json"));
-            
+
             levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 1.json"));
             levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 2.json"));
             levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 4.json"));

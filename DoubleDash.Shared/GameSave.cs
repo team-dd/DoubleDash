@@ -13,9 +13,11 @@ namespace DoubleDash
         public List<BlockDescription> blocks;
 
         [JsonProperty("start")]
+        [JsonConverter(typeof(Vector2Converter))]
         public Vector2 start;
 
         [JsonProperty("end")]
+        [JsonConverter(typeof(Vector2Converter))]
         public Vector2 end;
     }
 }
