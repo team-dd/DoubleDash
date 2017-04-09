@@ -11,7 +11,7 @@ namespace DoubleDash
         public const float Gravity = 0.7f;
 
         public static Color GameBackgroundColor { get { return new Color(25, 25, 30); } }
-        public const bool Rain = true;
+        public const bool Rain = false;
 
         public const bool DrawBlockOutlines = true;
         public static Color BlockOutlineColor { get { return Color.White; } }

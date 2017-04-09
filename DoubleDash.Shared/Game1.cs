@@ -464,8 +464,8 @@ namespace DoubleDash
             if (GameHelpers.Rain)
             {
                 rainManager.Update(gameTime, world.virtualResolutionRenderer, world.CurrentCamera);
+                rainManager.CheckCollisions(levelManager.levels[levelManager.currentLevel].blocks);
             }
-            rainManager.CheckCollisions(levelManager.levels[levelManager.currentLevel].blocks);
         }
 
         void EndUpdate(GameTimeWrapper gameTime)
