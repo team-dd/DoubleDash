@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using GLX;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
@@ -44,6 +45,7 @@ namespace DoubleDash
                     world.CurrentCameraName = World.Camera1Name;
                     if (state == States.MainMenu)
                     {
+                        MediaPlayer.Play(bgMusic);
                         world.DeactivateMenuState(MainMenu);
                         world.ActivateGameState(MainGame);
                     }
@@ -96,10 +98,14 @@ namespace DoubleDash
         Sprite testCircle;
         TextItem testCircleText;
         Song song;
+        SoundEffect jumpSound;
+        SoundEffect blinkSound;
+        SoundEffect doorSound;
 
         SpriteSheetInfo spriteSheetInfo;
 
         Sprite pauseMenuRect;
+        Song bgMusic;
 
         public Game1()
         {
@@ -235,9 +241,14 @@ namespace DoubleDash
 
             rainManager = new RainManager(graphics);
 
-            song = Content.Load<Song>("newmusic");
+            bgMusic = Content.Load<Song>("newmusic");
+            song = Content.Load<Song>("intro");
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(song);
+
+            jumpSound = Content.Load<SoundEffect>("jumpsound");
+            blinkSound = Content.Load<SoundEffect>("blinksound");
+            doorSound = Content.Load<SoundEffect>("doorsound");
 
             levelManager.Start(player, world.CurrentCamera);
 
@@ -378,6 +389,7 @@ namespace DoubleDash
             {
                 if (gamePadState.IsButtonDownAndUp(Buttons.B, previousGamePadState))
                 {
+                    blinkSound.Play();
                     player.Dash();
                 }
             }
@@ -385,6 +397,7 @@ namespace DoubleDash
             {
                 if (keyboardState.IsKeyDownAndUp(Keys.X, previousKeyboardState))
                 {
+                    blinkSound.Play();
                     player.Dash();
                 }
             }
@@ -438,6 +451,10 @@ namespace DoubleDash
             {
                 if (gamePadState.IsButtonDown(Buttons.A))
                 {
+                    if (previousGamePadState.IsButtonUp(Buttons.A))
+                    {
+                        jumpSound.Play(0.3f, 0.0f, 0.0f);
+                    }
                     player.Jump();
                 }
                 else
@@ -449,6 +466,10 @@ namespace DoubleDash
             {
                 if (keyboardState.IsKeyDown(Keys.Z))
                 {
+                    if (keyboardState.IsKeyDownAndUp(Keys.Z, previousKeyboardState))
+                    {
+                        jumpSound.Play(0.3f, 0.0f, 0.0f);
+                    }
                     player.Jump();
                 }
                 else
