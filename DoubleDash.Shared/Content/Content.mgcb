@@ -271,3 +271,6 @@
 /processorParam:Quality=Best
 /build:newmusic.mp3
 
+#begin Levels/Test Levels/testlevevl9.json
+/copy:Levels/Test Levels/testlevevl9.json
+
