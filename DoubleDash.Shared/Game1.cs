@@ -150,9 +150,9 @@ namespace DoubleDash
             DebugText.Initialize(Content.Load<SpriteFont>("Fonts/Courier_New_12"));
             world = new World(graphics);
 
-            mainMenuState = world.AddMenuState(MainMenu, this);
-            mainMenuState.unselectedColor = Color.Gray;
-            mainMenuState.selectedColor = Color.White;
+            mainMenuState = world.AddMenuState(MainMenu);
+            mainMenuState.UnselectedColor = Color.Gray;
+            mainMenuState.SelectedColor = Color.White;
             mainMenuState.MenuFont = Content.Load<SpriteFont>("Fonts/Montserrat_Ultra_Light_36");
             mainMenuState.AddDraw(MainMenuDraw);
             mainMenuState.AddMenuItem("Play");
@@ -165,7 +165,7 @@ namespace DoubleDash
             world.AddCamera(DoubleDash.MainMenu.MainMenuCamera, mainMenu.Camera);
 
             pauseGameTime = new GameTimeWrapper(PauseMenuUpdate, this, 1);
-            pauseMenuState = new MenuState(PauseMenu, graphics, this, world);
+            pauseMenuState = new MenuState(PauseMenu, graphics, world);
             pauseMenuState.AddTime(pauseGameTime);
             pauseMenuState.AddDraw(PauseMenuDraw);
             world.AddMenuState(pauseMenuState);
@@ -264,14 +264,12 @@ namespace DoubleDash
 
             if (keyboardState.IsKeyDownAndUp(Keys.Space, previousKeyboardState))
             {
-                if (State == States.PauseMenu)
-                {
-                    State = States.Game;
-                }
-                else if (State == States.Game)
-                {
-                    State = States.PauseMenu;
-                }
+                TogglePauseMenu();
+            }
+
+            if (gamePadState.IsButtonDownAndUp(Buttons.Start, previousGamePadState))
+            {
+                TogglePauseMenu();
             }
 
             if (keyboardState.IsKeyDown(Keys.OemPlus))
@@ -314,6 +312,18 @@ namespace DoubleDash
             }
 
             base.Update(gameTime);
+        }
+
+        private void TogglePauseMenu()
+        {
+            if (State == States.PauseMenu)
+            {
+                State = States.Game;
+            }
+            else if (State == States.Game)
+            {
+                State = States.PauseMenu;
+            }
         }
 
         void MainUpdate(GameTimeWrapper gameTime)
