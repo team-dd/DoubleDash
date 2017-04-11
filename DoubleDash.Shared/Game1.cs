@@ -196,45 +196,15 @@ namespace DoubleDash
             doorSound = Content.Load<SoundEffect>("doorsound");
 
             levelManager = new LevelManager(Content.Load<Texture2D>("door"), graphics, doorSound);
-            //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testtestlevel1.json"),
-            //LevelReader.Load("Content/Levels/Test Levels/triallevel.json"),
-            //LevelReader.Load("Content/Levels/World 1/Level 1/level1.json"),
-            //LevelReader.Load("Content/Levels/Test Levels/testlevel5.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/longtest.json"));
 
-            //levelManager.AddLevel(LevelReader.Load("Content/Levels/Updated World 1/1.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/Levels/Updated World 1/2.json"));
-
-            //levelManager.AddLevel(LevelReader.Load("Content/Levels/World 2/level1.json"));
-
-
-
-
+            levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level1.json"));
             levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 1.json"));
             levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 2.json"));
             levelManager.AddLevel(LevelReader.Load("content/levels/test Levels/testlevevl9.json"));
-            //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 4.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/zacktry1.json"));
             levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 5.json"));
-            //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 7.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/zacktry1.json"));
+            levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 7.json"));
 
-
-
-
-
-
-
-
-            //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/zacktry1.json"));
-            // levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testlevel1V2.1.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testlevel2V1.2.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/test8.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level1.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level2.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level5.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level3.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level4.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level4.2.json"));
             levelManager.FinishLoading();
 
             spriteSheetInfo = new SpriteSheetInfo(30, 32);
