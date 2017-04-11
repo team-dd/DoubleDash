@@ -265,3 +265,9 @@
 #begin Levels/Demo World/demo level 7.json
 /copy:Levels/Demo World/demo level 7.json
 
+#begin newmusic.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:newmusic.mp3
+

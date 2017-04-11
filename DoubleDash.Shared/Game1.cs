@@ -235,9 +235,9 @@ namespace DoubleDash
 
             rainManager = new RainManager(graphics);
 
-            song = Content.Load<Song>("music");
+            song = Content.Load<Song>("newmusic");
             MediaPlayer.IsRepeating = true;
-            //MediaPlayer.Play(song);
+            MediaPlayer.Play(song);
 
             levelManager.Start(player, world.CurrentCamera);
 
