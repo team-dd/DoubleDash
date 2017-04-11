@@ -1,6 +1,13 @@
 {
   "rectangles": [
     {
+      "X": 840,
+      "Y": 410,
+      "Width": 30,
+      "Height": 30,
+      "IsMoving": false
+    },
+    {
       "X": 355,
       "Y": 955,
       "Width": 5,
@@ -8,38 +15,10 @@
       "IsMoving": false
     },
     {
-      "X": 710,
-      "Y": 85,
-      "Width": 20,
-      "Height": 20,
-      "IsMoving": true
-    },
-    {
-      "X": 425,
-      "Y": 85,
-      "Width": 20,
-      "Height": 20,
-      "IsMoving": true
-    },
-    {
       "X": 945,
       "Y": 135,
       "Width": 50,
       "Height": 40,
-      "IsMoving": false
-    },
-    {
-      "X": 1005,
-      "Y": 350,
-      "Width": 150,
-      "Height": 35,
-      "IsMoving": false
-    },
-    {
-      "X": 1080,
-      "Y": 15,
-      "Width": 75,
-      "Height": 95,
       "IsMoving": false
     },
     {
@@ -62,13 +41,6 @@
       "Width": 165,
       "Height": 35,
       "IsMoving": false
-    },
-    {
-      "X": 705,
-      "Y": 350,
-      "Width": 140,
-      "Height": 35,
-      "IsMoving": true
     },
     {
       "X": 0,
@@ -113,25 +85,46 @@
       "IsMoving": false
     },
     {
-      "X": 315,
+      "X": 365,
       "Y": 110,
-      "Width": 20,
-      "Height": 20,
-      "IsMoving": false
-    },
-    {
-      "X": 570,
-      "Y": 85,
-      "Width": 20,
-      "Height": 20,
-      "IsMoving": false
-    },
-    {
-      "X": 815,
-      "Y": 85,
-      "Width": 35,
+      "Width": 75,
       "Height": 20,
       "IsMoving": true
+    },
+    {
+      "X": 585,
+      "Y": 110,
+      "Width": 30,
+      "Height": 20,
+      "IsMoving": false
+    },
+    {
+      "X": 765,
+      "Y": 110,
+      "Width": 75,
+      "Height": 20,
+      "IsMoving": true
+    },
+    {
+      "X": 1020,
+      "Y": 15,
+      "Width": 135,
+      "Height": 40,
+      "IsMoving": false
+    },
+    {
+      "X": 595,
+      "Y": 410,
+      "Width": 130,
+      "Height": 30,
+      "IsMoving": true
+    },
+    {
+      "X": 945,
+      "Y": 355,
+      "Width": 210,
+      "Height": 30,
+      "IsMoving": false
     }
   ],
   "start": "50, 335",

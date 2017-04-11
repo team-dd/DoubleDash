@@ -45,7 +45,7 @@ namespace DoubleDash
             {
                 time.Item1.GameSpeed = time.Item2 * 0.5m;
             }
-            text.text = "0.5x";
+            text.text = "Slow";
             text.alpha = 1;
             text.visible = true;
         }
@@ -57,7 +57,7 @@ namespace DoubleDash
             {
                 time.Item1.GameSpeed = time.Item2;
             }
-            text.text = "1.0x";
+            text.text = "Normal";
             text.alpha = 1;
             text.visible = true;
         }
@@ -67,9 +67,9 @@ namespace DoubleDash
             speed = Speeds.Fast;
             foreach (var time in gameTimes)
             {
-                time.Item1.GameSpeed = time.Item2 * 1.75m;
+                time.Item1.GameSpeed = time.Item2 * 1.25m;
             }
-            text.text = "2.0x";
+            text.text = "Fast";
             text.alpha = 1;
             text.visible = true;
         }

@@ -211,10 +211,11 @@ namespace DoubleDash
 
 
             levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 1.json"));
-            //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 2.json"));
+            levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 2.json"));
+            levelManager.AddLevel(LevelReader.Load("content/levels/test Levels/testlevevl9.json"));
             //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 4.json"));
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/zacktry1.json"));
-            //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 5.json"));
+            levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 5.json"));
             //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 7.json"));
 
 
@@ -223,7 +224,7 @@ namespace DoubleDash
 
 
 
-            levelManager.AddLevel(LevelReader.Load("content/levels/test Levels/testlevevl9.json"));
+
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/zacktry1.json"));
             // levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testlevel1V2.1.json"));
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testlevel2V1.2.json"));
