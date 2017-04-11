@@ -191,7 +191,11 @@ namespace DoubleDash
             currentTime.AddGameTime(collisionGameTime, 0.1m);
             currentTime.AddGameTime(endGameTime, 1);
 
-            levelManager = new LevelManager(Content.Load<Texture2D>("door"), graphics);
+            jumpSound = Content.Load<SoundEffect>("jumpsound");
+            blinkSound = Content.Load<SoundEffect>("blinksound");
+            doorSound = Content.Load<SoundEffect>("doorsound");
+
+            levelManager = new LevelManager(Content.Load<Texture2D>("door"), graphics, doorSound);
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/testtestlevel1.json"),
             //LevelReader.Load("Content/Levels/Test Levels/triallevel.json"),
             //LevelReader.Load("Content/Levels/World 1/Level 1/level1.json"),
@@ -206,7 +210,7 @@ namespace DoubleDash
 
 
 
-            //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 1.json"));
+            levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 1.json"));
             //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 2.json"));
             //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 4.json"));
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/zacktry1.json"));
@@ -255,9 +259,7 @@ namespace DoubleDash
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(song);
 
-            jumpSound = Content.Load<SoundEffect>("jumpsound");
-            blinkSound = Content.Load<SoundEffect>("blinksound");
-            doorSound = Content.Load<SoundEffect>("doorsound");
+            
 
             levelManager.Start(player, world.CurrentCamera);
 

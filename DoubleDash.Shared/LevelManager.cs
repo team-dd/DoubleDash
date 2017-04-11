@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using GLX;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace DoubleDash
@@ -13,12 +14,14 @@ namespace DoubleDash
         public int currentLevel;
         private Texture2D endPointTex;
         private GraphicsDeviceManager graphics;
+        private SoundEffect doorSound;
 
-        public LevelManager(Texture2D endPointTex, GraphicsDeviceManager graphics)
+        public LevelManager(Texture2D endPointTex, GraphicsDeviceManager graphics, SoundEffect doorSound)
         {
             levels = new List<Level>();
             this.endPointTex = endPointTex;
             this.graphics = graphics;
+            this.doorSound = doorSound;
         }
 
         public void AddLevel(params Level[] levels)
@@ -79,6 +82,7 @@ namespace DoubleDash
 
             if (player.rectangle.Intersects(levels[currentLevel].endPointIndicator.rectangle))
             {
+                doorSound.Play();
                 IncreaseLevel(player, camera);
             }
         }
