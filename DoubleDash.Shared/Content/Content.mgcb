@@ -265,11 +265,35 @@
 #begin Levels/Demo World/demo level 7.json
 /copy:Levels/Demo World/demo level 7.json
 
-#begin newmusic.mp3
-/importer:Mp3Importer
+#begin blinksound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:blinksound.wav
+
+#begin doorsound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:doorsound.wav
+
+#begin jumpsound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:jumpsound.wav
+
+#begin intro.wav
+/importer:WavImporter
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:newmusic.mp3
+/build:intro.wav
+
+#begin newmusic.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:newmusic.wav
 
 #begin Levels/Test Levels/testlevevl9.json
 /copy:Levels/Test Levels/testlevevl9.json
