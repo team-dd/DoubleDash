@@ -6,6 +6,7 @@ using GLX;
 using GLX.Collisions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace DoubleDash
 {
@@ -42,6 +43,8 @@ namespace DoubleDash
         TimeSpan dashTimer;
         TimeSpan dashRefreshTime;
         public DashBar dashBar;
+        private bool justBlinked = false;
+        private Vector2 blinkPreviousPosition;
 
         TextItem canJumpText;
         TextItem hasLetGoOfJumpText;
@@ -56,8 +59,17 @@ namespace DoubleDash
 
         int wallJumpCounter;
 
+        Sound jumpSound;
+        Sound blinkSound;
+        Sound failSound;
+        Sound deathSound;
+
         public Player(SpriteSheetInfo info,
             Texture2D dashIndicatorTex,
+            SoundEffect jumpSound,
+            SoundEffect blinkSound,
+            SoundEffect failSound,
+            SoundEffect deathSound,
             GraphicsDeviceManager graphics) : base(info, graphics)
         {
             maxJumpTime = TimeSpan.FromMilliseconds(400);
@@ -65,6 +77,12 @@ namespace DoubleDash
             dashRefreshTime = TimeSpan.FromSeconds(2);
             dashBar = new DashBar(graphics);
             justHitWall = false;
+
+            this.jumpSound = new Sound(jumpSound);
+            this.blinkSound = new Sound(blinkSound);
+            this.failSound = new Sound(failSound);
+            this.deathSound = new Sound(deathSound);
+
             Reset();
             yDeathThreshold = 0;
             dashVector = Vector2.Zero;
@@ -266,6 +284,7 @@ namespace DoubleDash
             if (dashes > 0)
             {
                 dashes--;
+                blinkPreviousPosition = position;
                 if (velocity == Vector2.Zero)
                 {
                     position += Vector2.Normalize(new Vector2(1, 0)) * DashDistance;
@@ -279,6 +298,7 @@ namespace DoubleDash
                 {
                     velocity.Y = -5f;
                 }
+                justBlinked = true;
             }
         }
 
@@ -311,10 +331,7 @@ namespace DoubleDash
         {
             if (isOutOfBounds())
             {
-                velocity = Vector2.Zero;
-                acceleration = Vector2.Zero;
-                position = spawnPoint;
-                jumpState = JumpStates.Ground;
+                Reset();
             }
 
             if (dashes < MaxDashes)
@@ -429,6 +446,20 @@ namespace DoubleDash
                 GLX.Collisions.MTV? mtv = GLX.Collisions.HelperMethods.Colliding(polygon, wall.polygon);
                 if (mtv != null)
                 {
+                    if (justBlinked)
+                    {
+                        position = blinkPreviousPosition;
+                        if (dashes > 0)
+                        {
+                            dashIndicator.visible = true;
+                        }
+                        dashes++;
+                        dashTimer = dashRefreshTime;
+                        justBlinked = false;
+                        failSound.Play();
+                        return;
+                    }
+
                     anyCollision = true;
                     Vector2 vector = mtv.Value.vector;
                     // you would think that you could just multiply vector by -1 if the second case
@@ -507,6 +538,10 @@ namespace DoubleDash
             {
                 justHitWall = false;
                 jumpState = JumpStates.Air;
+                if (justBlinked)
+                {
+                    blinkSound.Play();
+                }
             }
             else if (!onGround)
             {
@@ -526,6 +561,7 @@ namespace DoubleDash
                 
                 ResetJump();
             }
+            justBlinked = false;
         }
 
         public override void Draw(SpriteBatch spriteBatch)

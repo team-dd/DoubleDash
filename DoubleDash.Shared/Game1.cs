@@ -95,8 +95,6 @@ namespace DoubleDash
         RainManager rainManager;
 
         Song song;
-        SoundEffect jumpSound;
-        SoundEffect blinkSound;
         SoundEffect doorSound;
 
         SpriteSheetInfo spriteSheetInfo;
@@ -160,6 +158,8 @@ namespace DoubleDash
             World.SoundManager.Load("Audio/Sounds/jumpsound");
             World.SoundManager.Load("Audio/Sounds/blinksound");
             World.SoundManager.Load("Audio/Sounds/doorsound");
+            World.SoundManager.Load("Audio/Sounds/death");
+            World.SoundManager.Load("Audio/Sounds/fail");
 
             // Load songs
             World.SongManager.Load("Audio/Music/newmusic");
@@ -208,8 +208,6 @@ namespace DoubleDash
             currentTime.AddGameTime(collisionGameTime, 0.1m);
             currentTime.AddGameTime(endGameTime, 1);
 
-            jumpSound = World.SoundManager["Audio/Sounds/jumpsound"];
-            blinkSound = World.SoundManager["Audio/Sounds/blinksound"];
             doorSound = World.SoundManager["Audio/Sounds/doorsound"];
 
             levelManager = new LevelManager(World.TextureManager["door"], graphics, doorSound);
@@ -228,6 +226,10 @@ namespace DoubleDash
 
             player = new Player(spriteSheetInfo,
                 World.TextureManager["dash_indicator"],
+                World.SoundManager["Audio/Sounds/jumpsound"],
+                World.SoundManager["Audio/Sounds/blinksound"],
+                World.SoundManager["Audio/Sounds/fail"],
+                World.SoundManager["Audio/Sounds/death"],
                 graphics);
             player.animations["demoanimation"] = player.animations.AddSpriteSheet(World.TextureManager["demoanimation"], spriteSheetInfo, 2, 2, 1, SpriteSheet.Direction.LeftToRight, 10, true);
             player.Ready();
@@ -376,23 +378,6 @@ namespace DoubleDash
                     starBackgroundManager.MoveLeft(2);
                 }
             }
-
-            if (gamePadState.IsConnected)
-            {
-                if (gamePadState.IsButtonDownAndUp(Buttons.B, previousGamePadState))
-                {
-                    blinkSound.Play();
-                    player.Dash();
-                }
-            }
-            else
-            {
-                if (keyboardState.IsKeyDownAndUp(Keys.X, previousKeyboardState))
-                {
-                    blinkSound.Play();
-                    player.Dash();
-                }
-            }
         }
 
         /// <summary>
@@ -437,7 +422,20 @@ namespace DoubleDash
                 }
             }
 
-
+            if (gamePadState.IsConnected)
+            {
+                if (gamePadState.IsButtonDownAndUp(Buttons.B, previousGamePadState))
+                {
+                    player.Dash();
+                }
+            }
+            else
+            {
+                if (keyboardState.IsKeyDownAndUp(Keys.X, previousKeyboardState))
+                {
+                    player.Dash();
+                }
+            }
 
             if (gamePadState.IsConnected)
             {
@@ -445,7 +443,7 @@ namespace DoubleDash
                 {
                     if (previousGamePadState.IsButtonUp(Buttons.A))
                     {
-                        jumpSound.Play(0.3f, 0.0f, 0.0f);
+                        //jumpSound.Play(0.3f, 0.0f, 0.0f);
                     }
                     player.Jump();
                 }
@@ -460,7 +458,7 @@ namespace DoubleDash
                 {
                     if (keyboardState.IsKeyDownAndUp(Keys.Z, previousKeyboardState))
                     {
-                        jumpSound.Play(0.3f, 0.0f, 0.0f);
+                        //jumpSound.Play(0.3f, 0.0f, 0.0f);
                     }
                     player.Jump();
                 }

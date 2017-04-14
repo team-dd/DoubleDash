@@ -304,3 +304,9 @@
 /processorParam:Quality=Best
 /build:Audio/Sounds/jumpsound.wav
 
+#begin Audio/Sounds/fail.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Sounds/fail.wav
+
