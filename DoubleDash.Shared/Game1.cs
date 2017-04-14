@@ -477,13 +477,13 @@ namespace DoubleDash
                 rainManager.Update(gameTime, world.virtualResolutionRenderer, world.CurrentCamera);
                 rainManager.CheckCollisions(levelManager.levels[levelManager.currentLevel].blocks);
             }
+
+            previousKeyboardState = keyboardState;
+            previousGamePadState = gamePadState;
         }
 
         void EndUpdate(GameTimeWrapper gameTime)
         {
-            KeyboardState keyboardState = Keyboard.GetState();
-            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
-
             if (world.CurrentCamera.Focus == Camera.CameraFocus.Center)
             {
                 world.CurrentCamera.Pan = Vector2.Lerp(world.CurrentCamera.Pan, player.position, .075f);
@@ -504,9 +504,6 @@ namespace DoubleDash
                 new Vector2(100),
                 world.CurrentCamera.InverseTransform);
             currentTime.Update(gameTime);
-
-            previousKeyboardState = keyboardState;
-            previousGamePadState = gamePadState;
         }
 
         void PauseMenuUpdate(GameTimeWrapper gameTime)

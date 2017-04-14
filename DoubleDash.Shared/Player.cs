@@ -449,12 +449,15 @@ namespace DoubleDash
                     if (justBlinked)
                     {
                         position = blinkPreviousPosition;
+                        dashes++;
                         if (dashes > 0)
                         {
                             dashIndicator.visible = true;
                         }
-                        dashes++;
-                        dashTimer = dashRefreshTime;
+                        if (dashes >= MaxDashes)
+                        {
+                            dashTimer = dashRefreshTime;
+                        }
                         justBlinked = false;
                         failSound.Play();
                         return;
