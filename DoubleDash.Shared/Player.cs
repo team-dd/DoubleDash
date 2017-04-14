@@ -331,6 +331,7 @@ namespace DoubleDash
         {
             if (isOutOfBounds())
             {
+                deathSound.Play();
                 Reset();
             }
 
