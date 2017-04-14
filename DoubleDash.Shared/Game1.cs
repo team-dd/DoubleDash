@@ -441,10 +441,6 @@ namespace DoubleDash
             {
                 if (gamePadState.IsButtonDown(Buttons.A))
                 {
-                    if (previousGamePadState.IsButtonUp(Buttons.A))
-                    {
-                        //jumpSound.Play(0.3f, 0.0f, 0.0f);
-                    }
                     player.Jump();
                 }
                 else
@@ -456,10 +452,6 @@ namespace DoubleDash
             {
                 if (keyboardState.IsKeyDown(Keys.Z))
                 {
-                    if (keyboardState.IsKeyDownAndUp(Keys.Z, previousKeyboardState))
-                    {
-                        //jumpSound.Play(0.3f, 0.0f, 0.0f);
-                    }
                     player.Jump();
                 }
                 else

@@ -261,6 +261,7 @@ namespace DoubleDash
                     acceleration.X = -1f;
                 }
                 jumpState = JumpStates.Air;
+                jumpSound.Play();
             }
         }
 
