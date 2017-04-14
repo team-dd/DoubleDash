@@ -501,6 +501,9 @@ namespace DoubleDash
         void PauseMenuUpdate(GameTimeWrapper gameTime)
         {
             pauseMenuRect.position = Vector2.Transform(Vector2.Zero, world.CurrentCamera.InverseTransform);
+            pauseMenuRect.DrawSize = new Vector2(
+                world.virtualResolutionRenderer.WindowResolution.Width * (1 / world.CurrentCamera.Zoom),
+                world.virtualResolutionRenderer.WindowResolution.Height * (1 / world.CurrentCamera.Zoom));
             pauseMenuRect.Update(gameTime);
         }
 
