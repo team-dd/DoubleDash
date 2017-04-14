@@ -35,6 +35,7 @@ namespace DoubleDash
             {
                 if (value == States.MainMenu)
                 {
+                    MediaPlayer.Play(song);
                     world.DeactivateGameState(MainGame);
                     world.DeactivateMenuState(PauseMenu);
                     world.ActivateMenuState(MainMenu);
@@ -48,6 +49,10 @@ namespace DoubleDash
                         MediaPlayer.Play(bgMusic);
                         world.DeactivateMenuState(MainMenu);
                         world.ActivateGameState(MainGame);
+                        levelManager.Start(player, world.Cameras[World.Camera1Name]);
+                        mainGameTime.GameSpeed = 1;
+                        collisionGameTime.GameSpeed = 0.1m;
+                        endGameTime.GameSpeed = 1;
                     }
                     else if (state == States.PauseMenu)
                     {
@@ -72,17 +77,16 @@ namespace DoubleDash
         GraphicsDeviceManager graphics;
         World world;
 
-        GameTimeWrapper mainMenuTime;
         MenuState mainMenuState;
         MainMenu mainMenu;
+
+        MenuState pauseMenuState;
+        PauseMenu pauseMenu;
 
         GameTimeWrapper mainGameTime;
         GameTimeWrapper collisionGameTime;
         GameTimeWrapper endGameTime;
         GameState mainGameState;
-
-        GameTimeWrapper pauseGameTime;
-        MenuState pauseMenuState;
 
         KeyboardState previousKeyboardState;
         GamePadState previousGamePadState;
@@ -99,7 +103,6 @@ namespace DoubleDash
 
         SpriteSheetInfo spriteSheetInfo;
 
-        Sprite pauseMenuRect;
         Song bgMusic;
 
         public Game1()
@@ -167,29 +170,10 @@ namespace DoubleDash
 
             DebugText.Initialize(World.FontManager["Fonts/Courier_New_12"]);
 
-            mainMenuState = world.AddMenuState(MainMenu);
-            mainMenuState.UnselectedColor = Color.Gray;
-            mainMenuState.SelectedColor = Color.White;
-            mainMenuState.MenuFont = World.FontManager["Fonts/Montserrat_Ultra_Light_36"];
-            mainMenuState.AddDraw(MainMenuDraw);
-            mainMenuState.AddMenuItem("Play");
-            mainMenuState.AddMenuItem("Exit");
-            mainMenuState.SetMenuAction("Play", () => { State = States.Game; });
-            mainMenuState.SetMenuAction("Exit", () => { this.Exit(); });
-            mainMenu = new MainMenu(mainMenuState, world.virtualResolutionRenderer, graphics);
-            mainMenuTime = new GameTimeWrapper(mainMenu.Update, this, 1);
-            mainMenuState.AddTime(mainMenuTime);
+            SetupMainMenu();
+            SetupPauseMenu();
+            
             world.AddCamera(DoubleDash.MainMenu.MainMenuCamera, mainMenu.Camera);
-
-            pauseGameTime = new GameTimeWrapper(PauseMenuUpdate, this, 1);
-            pauseMenuState = new MenuState(PauseMenu, graphics, world);
-            pauseMenuState.AddTime(pauseGameTime);
-            pauseMenuState.AddDraw(PauseMenuDraw);
-            world.AddMenuState(pauseMenuState);
-
-            pauseMenuRect = new Sprite(graphics);
-            pauseMenuRect.DrawSize = new Size(world.virtualResolutionRenderer.WindowResolution.Width, world.virtualResolutionRenderer.WindowResolution.Height);
-            pauseMenuRect.color = new Color(0, 0, 0, 128);
 
             mainGameTime = new GameTimeWrapper(MainUpdate, this, 1);
             collisionGameTime = new GameTimeWrapper(CollisionUpdate, this, 0.1m);
@@ -242,11 +226,38 @@ namespace DoubleDash
             bgMusic = World.SongManager["Audio/Music/newmusic"];
             song = World.SongManager["Audio/Music/intro"];
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(song);
-
-            levelManager.Start(player, world.CurrentCamera);
 
             State = States.MainMenu;
+        }
+
+        private void SetupMainMenu()
+        {
+            // I can't figure out a good way of making this look better :|
+            mainMenuState = world.AddMenuState(MainMenu);
+            mainMenuState.UnselectedColor = Color.Gray;
+            mainMenuState.SelectedColor = Color.White;
+            mainMenuState.MenuFont = World.FontManager["Fonts/Montserrat_Ultra_Light_36"];
+            mainMenuState.AddDraw(MainMenuDraw);
+            mainMenuState.AddMenuItems("Play", "Exit");
+            mainMenuState.SetMenuAction("Play", () => { State = States.Game; });
+            mainMenuState.SetMenuAction("Exit", () => { this.Exit(); });
+            mainMenu = new MainMenu(mainMenuState, world.virtualResolutionRenderer, graphics);
+            mainMenuState.AddTime(new GameTimeWrapper(mainMenu.Update, this, 1));
+        }
+
+        private void SetupPauseMenu()
+        {
+            pauseMenuState = world.AddMenuState(PauseMenu);
+            pauseMenuState.UnselectedColor = Color.Gray;
+            pauseMenuState.SelectedColor = Color.White;
+            pauseMenuState.MenuFont = World.FontManager["Fonts/Montserrat_Ultra_Light_36"];
+            pauseMenuState.AddDraw(PauseMenuDraw);
+            pauseMenuState.AddMenuItems("Resume", "Main Menu", "Quit");
+            pauseMenuState.SetMenuAction("Resume", () => { State = States.Game; });
+            pauseMenuState.SetMenuAction("Main Menu", () => { State = States.MainMenu; });
+            pauseMenuState.SetMenuAction("Quit", () => { this.Exit(); });
+            pauseMenu = new PauseMenu(pauseMenuState, world.virtualResolutionRenderer, world.Cameras[World.Camera1Name], graphics);
+            pauseMenuState.AddTime(new GameTimeWrapper(pauseMenu.Update, this, 1));
         }
 
         /// <summary>
@@ -280,7 +291,10 @@ namespace DoubleDash
 
             if (gamePadState.IsButtonDownAndUp(Buttons.Start, previousGamePadState))
             {
-                TogglePauseMenu();
+                if (State == States.Game)
+                {
+                    State = States.PauseMenu;
+                }
             }
 
             if (keyboardState.IsKeyDown(Keys.OemPlus))
@@ -342,8 +356,7 @@ namespace DoubleDash
             KeyboardState keyboardState = Keyboard.GetState();
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
 
-            if (keyboardState.IsKeyDownAndUp(Keys.OemTilde, previousKeyboardState) ||
-                gamePadState.IsButtonDownAndUp(Buttons.Start, previousGamePadState))
+            if (keyboardState.IsKeyDownAndUp(Keys.OemTilde, previousKeyboardState))
             {
                 levelManager.Start(player, world.CurrentCamera);
             }
@@ -380,10 +393,6 @@ namespace DoubleDash
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="gameTime"></param>
         void CollisionUpdate(GameTimeWrapper gameTime)
         {
             KeyboardState keyboardState = Keyboard.GetState();
@@ -498,14 +507,7 @@ namespace DoubleDash
             currentTime.Update(gameTime);
         }
 
-        void PauseMenuUpdate(GameTimeWrapper gameTime)
-        {
-            pauseMenuRect.position = Vector2.Transform(Vector2.Zero, world.CurrentCamera.InverseTransform);
-            pauseMenuRect.DrawSize = new Vector2(
-                world.virtualResolutionRenderer.WindowResolution.Width * (1 / world.CurrentCamera.Zoom),
-                world.virtualResolutionRenderer.WindowResolution.Height * (1 / world.CurrentCamera.Zoom));
-            pauseMenuRect.Update(gameTime);
-        }
+        
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -553,7 +555,7 @@ namespace DoubleDash
         void PauseMenuDraw()
         {
             world.BeginDraw();
-            world.Draw(pauseMenuRect.Draw);
+            world.Draw(pauseMenu.Draw);
             world.EndDraw();
         }
     }

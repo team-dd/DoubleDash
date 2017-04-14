@@ -41,7 +41,6 @@ namespace DoubleDash
         {
             player.spawnPoint = levels[currentLevel].start;
             player.Reset();
-            //levels[currentLevel].StartZoomIn(camera);
         }
 
         public void Start(Player player, Camera camera)

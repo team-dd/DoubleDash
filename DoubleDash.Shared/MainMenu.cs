@@ -36,32 +36,10 @@ namespace DoubleDash
 
         public void Update(GameTimeWrapper gameTime)
         {
-            KeyboardState keyboardState = Keyboard.GetState();
-            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
-
-            if (keyboardState.IsKeyDownAndUp(Keys.Up, previousKeyboardState) ||
-                gamePadState.IsButtonDownAndUp(Buttons.DPadUp, previousGamePadState))
-            {
-                menuState.CurrentSelection--;
-            }
-            if (keyboardState.IsKeyDownAndUp(Keys.Down, previousKeyboardState) ||
-                gamePadState.IsButtonDownAndUp(Buttons.DPadDown, previousGamePadState))
-            {
-                menuState.CurrentSelection++;
-            }
-
-            if (keyboardState.IsKeyDownAndUp(Keys.Enter, previousKeyboardState) ||
-                gamePadState.IsButtonDownAndUp(Buttons.A, previousGamePadState))
-            {
-                menuState.DoAction();
-            }
-
             Camera.Update(gameTime);
             starBackground.MoveLeft(3);
             starBackground.Update(gameTime, Camera);
-
-            previousKeyboardState = keyboardState;
-            previousGamePadState = gamePadState;
+            menuState.UpdateMenuState();
         }
 
         public void Draw(SpriteBatch spriteBatch)
