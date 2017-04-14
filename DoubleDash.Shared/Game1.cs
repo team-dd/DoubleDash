@@ -94,9 +94,6 @@ namespace DoubleDash
         StarBackgroundManager starBackgroundManager;
         RainManager rainManager;
 
-        Vector2 testCirclePos;
-        Sprite testCircle;
-        TextItem testCircleText;
         Song song;
         SoundEffect jumpSound;
         SoundEffect blinkSound;
@@ -147,13 +144,33 @@ namespace DoubleDash
         /// </summary>
         protected override void LoadContent()
         {
-            DebugText.Initialize(Content.Load<SpriteFont>("Fonts/Courier_New_12"));
-            world = new World(graphics);
+            world = new World(graphics, Content);
+
+            // Load textures
+            World.TextureManager.Load("door");
+            World.TextureManager.Load("dash_indicator");
+            World.TextureManager.Load("demoanimation");
+
+            // Load fonts
+            World.FontManager.Load("Fonts/Courier_New_12");
+            World.FontManager.Load("Fonts/Montserrat_Ultra_Light_36");
+            World.FontManager.Load("Fonts/Arial_24");
+
+            // Load sounds
+            World.SoundManager.Load("Audio/Sounds/jumpsound");
+            World.SoundManager.Load("Audio/Sounds/blinksound");
+            World.SoundManager.Load("Audio/Sounds/doorsound");
+
+            // Load songs
+            World.SongManager.Load("Audio/Music/newmusic");
+            World.SongManager.Load("Audio/Music/intro");
+
+            DebugText.Initialize(World.FontManager["Fonts/Courier_New_12"]);
 
             mainMenuState = world.AddMenuState(MainMenu);
             mainMenuState.UnselectedColor = Color.Gray;
             mainMenuState.SelectedColor = Color.White;
-            mainMenuState.MenuFont = Content.Load<SpriteFont>("Fonts/Montserrat_Ultra_Light_36");
+            mainMenuState.MenuFont = World.FontManager["Fonts/Montserrat_Ultra_Light_36"];
             mainMenuState.AddDraw(MainMenuDraw);
             mainMenuState.AddMenuItem("Play");
             mainMenuState.AddMenuItem("Exit");
@@ -186,16 +203,16 @@ namespace DoubleDash
             world.AddGameState(mainGameState);
             world.CurrentCamera.Focus = Camera.CameraFocus.Center;
             world.CurrentCamera.Zoom = 0.75f;
-            currentTime = new CurrentTime(Content.Load<SpriteFont>("Fonts/Arial_24"));
+            currentTime = new CurrentTime(World.FontManager["Fonts/Arial_24"]);
             currentTime.AddGameTime(mainGameTime, 1);
             currentTime.AddGameTime(collisionGameTime, 0.1m);
             currentTime.AddGameTime(endGameTime, 1);
 
-            jumpSound = Content.Load<SoundEffect>("jumpsound");
-            blinkSound = Content.Load<SoundEffect>("blinksound");
-            doorSound = Content.Load<SoundEffect>("doorsound");
+            jumpSound = World.SoundManager["Audio/Sounds/jumpsound"];
+            blinkSound = World.SoundManager["Audio/Sounds/blinksound"];
+            doorSound = World.SoundManager["Audio/Sounds/doorsound"];
 
-            levelManager = new LevelManager(Content.Load<Texture2D>("door"), graphics, doorSound);
+            levelManager = new LevelManager(World.TextureManager["door"], graphics, doorSound);
 
             levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level1.json"));
             levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 1.json"));
@@ -210,32 +227,24 @@ namespace DoubleDash
             spriteSheetInfo = new SpriteSheetInfo(30, 32);
 
             player = new Player(spriteSheetInfo,
-                Content.Load<Texture2D>("dash_indicator"),
+                World.TextureManager["dash_indicator"],
                 graphics);
-            player.animations["demoanimation"] = player.animations.AddSpriteSheet(Content.Load<Texture2D>("demoanimation"), spriteSheetInfo, 2, 2, 1, SpriteSheet.Direction.LeftToRight, 10, true);
+            player.animations["demoanimation"] = player.animations.AddSpriteSheet(World.TextureManager["demoanimation"], spriteSheetInfo, 2, 2, 1, SpriteSheet.Direction.LeftToRight, 10, true);
             player.Ready();
-            testCircleText = new TextItem(DebugText.spriteFont);
-            //DebugText.Add(testCircleText);
-
-            testCircle = new Sprite(Content.Load<Texture2D>("testcircle"));
-            testCirclePos = new Vector2(100);
 
             starBackgroundManager = new StarBackgroundManager(graphics);
             starBackgroundManager.Create(5, world.virtualResolutionRenderer);
 
             rainManager = new RainManager(graphics);
 
-            bgMusic = Content.Load<Song>("newmusic");
-            song = Content.Load<Song>("intro");
+            bgMusic = World.SongManager["Audio/Music/newmusic"];
+            song = World.SongManager["Audio/Music/intro"];
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(song);
-
-            
 
             levelManager.Start(player, world.CurrentCamera);
 
             State = States.MainMenu;
-            //State = States.Game;
         }
 
         /// <summary>
@@ -368,15 +377,6 @@ namespace DoubleDash
                 }
             }
 
-            if (keyboardState.IsKeyDown(Keys.W))
-            {
-                testCirclePos.Y -= 5;
-            }
-            else if (keyboardState.IsKeyDown(Keys.S))
-            {
-                testCirclePos.Y += 5;
-            }
-
             if (gamePadState.IsConnected)
             {
                 if (gamePadState.IsButtonDownAndUp(Buttons.B, previousGamePadState))
@@ -506,10 +506,6 @@ namespace DoubleDash
                 new Vector2(100),
                 world.CurrentCamera.InverseTransform);
             currentTime.Update(gameTime);
-            testCircle.position = Vector2.Transform(testCirclePos, world.CurrentCamera.InverseTransform);
-            testCircle.Update(gameTime);
-
-            testCircleText.text = $"Test circle visible by camera: {world.CurrentCamera.Contains(testCircle.rectangle)}";
 
             previousKeyboardState = keyboardState;
             previousGamePadState = gamePadState;
@@ -551,7 +547,6 @@ namespace DoubleDash
             //world.Draw(starBackgroundManager.Draw);
             world.Draw(levelManager.Draw);
             world.Draw(player.Draw);
-            //world.Draw(testCircle.Draw);
             world.Draw(currentTime.Draw);
             world.Draw(DebugText.Draw);
             

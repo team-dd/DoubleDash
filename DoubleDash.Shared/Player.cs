@@ -56,7 +56,9 @@ namespace DoubleDash
 
         int wallJumpCounter;
 
-        public Player(SpriteSheetInfo info, Texture2D dashIndicatorTex, GraphicsDeviceManager graphics) : base(info, graphics)
+        public Player(SpriteSheetInfo info,
+            Texture2D dashIndicatorTex,
+            GraphicsDeviceManager graphics) : base(info, graphics)
         {
             maxJumpTime = TimeSpan.FromMilliseconds(400);
             dashIndicator = new Sprite(dashIndicatorTex);
