@@ -210,18 +210,6 @@
 #begin Levels/World 1/level3.json
 /copy:Levels/World 1/level3.json
 
-#begin Levels/World 1/level4.json
-/copy:Levels/World 1/level4.json
-
-#begin Levels/World 1/level5.json
-/copy:Levels/World 1/level5.json
-
-#begin Levels/World 1/level4.1.json
-/copy:Levels/World 1/level4.1.json
-
-#begin Levels/World 1/level4.2.json
-/copy:Levels/World 1/level4.2.json
-
 #begin Levels/Test Levels/zacktry1.json
 /copy:Levels/Test Levels/zacktry1.json
 
@@ -258,9 +246,6 @@
 
 #begin Levels/Demo World/demo level 7.json
 /copy:Levels/Demo World/demo level 7.json
-
-#begin Levels/Test Levels/testlevevl9.json
-/copy:Levels/Test Levels/testlevevl9.json
 
 #begin Audio/Music/intro.wav
 /importer:WavImporter
@@ -309,4 +294,16 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/Sounds/fail.wav
+
+#begin Levels/World 1/level4.json
+/copy:Levels/World 1/level4.json
+
+#begin Levels/World 1/level5.json
+/copy:Levels/World 1/level5.json
+
+#begin Levels/World 1/level6.json
+/copy:Levels/World 1/level6.json
+
+#begin Levels/World 1/puzzle1.json
+/copy:Levels/World 1/puzzle1.json
 
