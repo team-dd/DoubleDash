@@ -45,6 +45,7 @@ namespace DoubleDash
         public DashBar dashBar;
         private bool justBlinked = false;
         private Vector2 blinkPreviousPosition;
+        Vector2 currentVector = new Vector2(1, 0);
 
         TextItem canJumpText;
         TextItem hasLetGoOfJumpText;
@@ -319,12 +320,17 @@ namespace DoubleDash
         public void SetDashCircle(Vector2 dashVector) {
             if (dashIndicator.visible)
             {
+                if (dashVector != Vector2.Zero)
+                {
+                    currentVector = dashVector;
+                }
+                
                 if (dashVector == Vector2.Zero)
                 {
-                    dashVector = new Vector2(1, 0);
+                    this.dashVector = currentVector;
                 }
                 this.dashVector = dashVector;
-                dashIndicator.position = position + Vector2.Normalize(dashVector) * new Vector2(1, -1) * DashDistance;
+                dashIndicator.position = position + Vector2.Normalize(currentVector) * new Vector2(1, -1) * DashDistance;
             }
         }
 
