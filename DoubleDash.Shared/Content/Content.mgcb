@@ -319,3 +319,6 @@
 #begin Levels/World 2/level4.json
 /copy:Levels/World 2/level4.json
 
+#begin Levels/World 2/level5.json
+/copy:Levels/World 2/level5.json
+
