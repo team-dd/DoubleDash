@@ -18,6 +18,7 @@ namespace DoubleDash
         public Sprite endPointIndicator;
         private bool zoomingIn;
         public float highestY;
+        public Color color;
 
         static Random r = new Random();
 
@@ -59,6 +60,7 @@ namespace DoubleDash
                     highestY = block.position.Y;
                 }
             }
+            color = palette[currentLevelIndex];
         }
 
         public void StartZoomIn(Camera camera)

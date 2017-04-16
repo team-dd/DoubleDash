@@ -102,6 +102,7 @@ namespace DoubleDash
         CurrentTime currentTime;
         StarBackgroundManager starBackgroundManager;
         RainManager rainManager;
+        ShapeBackground shapeManager;
 
         Song song;
         SoundEffect doorSound;
@@ -170,8 +171,8 @@ namespace DoubleDash
             World.SoundManager.Load("Audio/Sounds/fail");
 
             // Load songs
-            World.SongManager.Load("Audio/Music/newmusic");
-            World.SongManager.Load("Audio/Music/intro");
+            World.SongManager.Load("Audio/Music/newmusic2");
+            World.SongManager.Load("Audio/Music/intro2");
 
             DebugText.Initialize(World.FontManager["Fonts/Courier_New_12"]);
 
@@ -202,8 +203,8 @@ namespace DoubleDash
             gameTimer = new GameTimer(World.FontManager["Fonts/Arial_24"]);
 
             doorSound = World.SoundManager["Audio/Sounds/doorsound"];
-
-            levelManager = new LevelManager(World.TextureManager["door"], graphics, doorSound);
+            shapeManager = new ShapeBackground(graphics, Color.Red);
+            levelManager = new LevelManager(World.TextureManager["door"], graphics, doorSound, shapeManager);
 
             //World 1
             levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level1.json"));
@@ -248,9 +249,11 @@ namespace DoubleDash
 
             rainManager = new RainManager(graphics);
 
-            bgMusic = World.SongManager["Audio/Music/newmusic"];
-            song = World.SongManager["Audio/Music/intro"];
+            //bgMusic = World.SongManager["Audio/Music/newmusic2"];
+            //song = World.SongManager["Audio/Music/intro2"];
             MediaPlayer.IsRepeating = true;
+
+            
 
             State = States.MainMenu;
         }
@@ -413,6 +416,8 @@ namespace DoubleDash
                     starBackgroundManager.MoveLeft(2);
                 }
             }
+
+            shapeManager.Update(gameTime);
         }
 
         void CollisionUpdate(GameTimeWrapper gameTime)
@@ -565,6 +570,7 @@ namespace DoubleDash
             {
                 world.Draw(rainManager.Draw);
             }
+            shapeManager.Draw();
             //world.Draw(starBackgroundManager.Draw);
             world.Draw(levelManager.Draw);
             world.Draw(player.Draw);

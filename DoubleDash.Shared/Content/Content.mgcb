@@ -114,30 +114,6 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Courier_New_12.spritefont
 
-#begin Levels/Test Levels/Empty.json
-/copy:Levels/Test Levels/Empty.json
-
-#begin Levels/Test Levels/emptyspace.json
-/copy:Levels/Test Levels/emptyspace.json
-
-#begin Levels/Test Levels/samplelevel.json
-/copy:Levels/Test Levels/samplelevel.json
-
-#begin Levels/Test Levels/samplelevel2.json
-/copy:Levels/Test Levels/samplelevel2.json
-
-#begin Levels/Test Levels/samplelevel3.json
-/copy:Levels/Test Levels/samplelevel3.json
-
-#begin Levels/Test Levels/testlevel1.json
-/copy:Levels/Test Levels/testlevel1.json
-
-#begin Levels/Test Levels/testlevel5.json
-/copy:Levels/Test Levels/testlevel5.json
-
-#begin Levels/Test Levels/triallevel.json
-/copy:Levels/Test Levels/triallevel.json
-
 #begin end_point_indicator.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -162,24 +138,6 @@
 /processorParam:TextureFormat=Color
 /build:demoanimation.png
 
-#begin Levels/Test Levels/newlevel1.json
-/copy:Levels/Test Levels/newlevel1.json
-
-#begin Levels/Test Levels/test.json
-/copy:Levels/Test Levels/test.json
-
-#begin Levels/Test Levels/longtest.json
-/copy:Levels/Test Levels/longtest.json
-
-#begin Levels/Test Levels/testlevel1V2.1.json
-/copy:Levels/Test Levels/testlevel1V2.1.json
-
-#begin Levels/Test Levels/testlevel2V1.1.json
-/copy:Levels/Test Levels/testlevel2V1.1.json
-
-#begin Levels/Test Levels/testlevel2V1.2.json
-/copy:Levels/Test Levels/testlevel2V1.2.json
-
 #begin door.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -192,57 +150,12 @@
 /processorParam:TextureFormat=Color
 /build:door.png
 
-#begin Levels/Test Levels/testtestlevel1.json
-/copy:Levels/Test Levels/testtestlevel1.json
-
-#begin Levels/Test Levels/testlevel6.json
-/copy:Levels/Test Levels/testlevel6.json
-
-#begin Levels/Test Levels/test8.json
-/copy:Levels/Test Levels/test8.json
-
-#begin Levels/World 1/level1.json
-/copy:Levels/World 1/level1.json
-
-#begin Levels/World 1/level2.json
-/copy:Levels/World 1/level2.json
-
-#begin Levels/World 1/level3.json
-/copy:Levels/World 1/level3.json
-
-#begin Levels/Test Levels/zacktry1.json
-/copy:Levels/Test Levels/zacktry1.json
-
-#begin Levels/Updated World 1/1.json
-/copy:Levels/Updated World 1/1.json
-
-#begin Levels/Updated World 1/2.json
-/copy:Levels/Updated World 1/2.json
-
-#begin Levels/Updated World 1/3.json
-/copy:Levels/Updated World 1/3.json
-
 #begin Fonts/Montserrat_Ultra_Light_36.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Montserrat_Ultra_Light_36.spritefont
-
-#begin Levels/Demo World/demo level 1.json
-/copy:Levels/Demo World/demo level 1.json
-
-#begin Levels/Demo World/demo level 2.json
-/copy:Levels/Demo World/demo level 2.json
-
-#begin Levels/Demo World/demo level 4.json
-/copy:Levels/Demo World/demo level 4.json
-
-#begin Levels/Demo World/demo level 5.json
-/copy:Levels/Demo World/demo level 5.json
-
-#begin Levels/Demo World/demo level 7.json
-/copy:Levels/Demo World/demo level 7.json
 
 #begin Audio/Music/intro.wav
 /importer:WavImporter
@@ -292,20 +205,17 @@
 /processorParam:Quality=Best
 /build:Audio/Sounds/fail.wav
 
-#begin Levels/World 1/level4.json
-/copy:Levels/World 1/level4.json
+#begin Audio/Music/intro2.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/Music/intro2.wav
 
-#begin Levels/World 1/level5.json
-/copy:Levels/World 1/level5.json
-
-#begin Levels/World 1/level6.json
-/copy:Levels/World 1/level6.json
-
-#begin Levels/World 1/puzzle1.json
-/copy:Levels/World 1/puzzle1.json
-
-#begin Levels/World 2/level6.json
-/copy:Levels/World 2/level6.json
+#begin Audio/Music/newmusic2.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/Music/newmusic2.wav
 
 #begin Levels/World 2/level1.json
 /copy:Levels/World 2/level1.json
@@ -321,4 +231,43 @@
 
 #begin Levels/World 2/level5.json
 /copy:Levels/World 2/level5.json
+
+#begin Levels/World 2/level6.json
+/copy:Levels/World 2/level6.json
+
+#begin Levels/World 1/level1.json
+/copy:Levels/World 1/level1.json
+
+#begin Levels/World 1/level2.json
+/copy:Levels/World 1/level2.json
+
+#begin Levels/World 1/level2old.json
+/copy:Levels/World 1/level2old.json
+
+#begin Levels/World 1/level3.json
+/copy:Levels/World 1/level3.json
+
+#begin Levels/World 1/level3old.json
+/copy:Levels/World 1/level3old.json
+
+#begin Levels/World 1/level4.json
+/copy:Levels/World 1/level4.json
+
+#begin Levels/World 1/level4old.json
+/copy:Levels/World 1/level4old.json
+
+#begin Levels/World 1/level5.json
+/copy:Levels/World 1/level5.json
+
+#begin Levels/World 1/level6.json
+/copy:Levels/World 1/level6.json
+
+#begin Levels/World 1/puzzle1.json
+/copy:Levels/World 1/puzzle1.json
+
+#begin Levels/World 1/level5old.json
+/copy:Levels/World 1/level5old.json
+
+#begin Levels/World 1/puzzle1old.json
+/copy:Levels/World 1/puzzle1old.json
 

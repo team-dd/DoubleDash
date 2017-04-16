@@ -15,13 +15,16 @@ namespace DoubleDash
         private Texture2D endPointTex;
         private GraphicsDeviceManager graphics;
         private SoundEffect doorSound;
+        public Color currentColor;
+        private ShapeBackground shapeManager;
 
-        public LevelManager(Texture2D endPointTex, GraphicsDeviceManager graphics, SoundEffect doorSound)
+        public LevelManager(Texture2D endPointTex, GraphicsDeviceManager graphics, SoundEffect doorSound, ShapeBackground shapeManager)
         {
             levels = new List<Level>();
             this.endPointTex = endPointTex;
             this.graphics = graphics;
             this.doorSound = doorSound;
+            this.shapeManager = shapeManager;
         }
 
         public void AddLevel(params Level[] levels)
@@ -39,6 +42,8 @@ namespace DoubleDash
 
         public void SetupLevel(Player player, Camera camera)
         {
+            currentColor = levels[currentLevel].color;
+            shapeManager.UpdateColor(currentColor);
             player.spawnPoint = levels[currentLevel].start;
             player.Reset();
         }
