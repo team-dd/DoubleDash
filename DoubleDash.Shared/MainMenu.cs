@@ -10,6 +10,7 @@ namespace DoubleDash
 {
     public class MainMenu
     {
+        public const string MainMenuName = "mainMenu";
         public const string MainMenuCamera = "mainMenuCamera";
 
         public StarBackgroundManager starBackground;
@@ -25,13 +26,19 @@ namespace DoubleDash
         {
             previousKeyboardState = Keyboard.GetState();
             previousGamePadState = GamePad.GetState(PlayerIndex.One);
-            this.menuState = menuState;
             Camera = new Camera(vrr, Camera.CameraFocus.Center);
             title = new TextItem(menuState.MenuFont, "Double Dash");
             title.position = new Vector2(vrr.VirtualResolution.Width / 2, vrr.VirtualResolution.Height / 2);
             menuState.initialPosition = new Vector2(vrr.VirtualResolution.Width / 2, vrr.VirtualResolution.Height * 0.66f);
             starBackground = new StarBackgroundManager(graphics);
             starBackground.Create(5, vrr);
+            this.menuState = menuState;
+            SetUpMenuState();
+        }
+
+        private void SetUpMenuState()
+        {
+            menuState.AddDraw(Draw);
         }
 
         public void Update(GameTimeWrapper gameTime)
@@ -42,10 +49,12 @@ namespace DoubleDash
             menuState.UpdateMenuState();
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw()
         {
-            title.Draw(spriteBatch);
-            starBackground.Draw(spriteBatch);
+            menuState.world.BeginDraw();
+            menuState.world.Draw(title.Draw);
+            menuState.world.Draw(starBackground.Draw);
+            menuState.world.EndDraw();
         }
     }
 }

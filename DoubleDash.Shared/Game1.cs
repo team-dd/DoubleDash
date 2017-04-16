@@ -14,7 +14,6 @@ namespace DoubleDash
     public class Game1 : Game
     {
         const string MainGame = "game1";
-        const string MainMenu = "mainMenu";
         const string PauseMenu = "pauseMenu";
 
         public enum States
@@ -38,7 +37,7 @@ namespace DoubleDash
                     MediaPlayer.Play(song);
                     world.DeactivateGameState(MainGame);
                     world.DeactivateMenuState(PauseMenu);
-                    world.ActivateMenuState(MainMenu);
+                    world.ActivateMenuState(MainMenu.MainMenuName);
                     world.CurrentCameraName = DoubleDash.MainMenu.MainMenuCamera;
                 }
                 else if (value == States.Game)
@@ -47,7 +46,7 @@ namespace DoubleDash
                     if (state == States.MainMenu)
                     {
                         MediaPlayer.Play(bgMusic);
-                        world.DeactivateMenuState(MainMenu);
+                        world.DeactivateMenuState(MainMenu.MainMenuName);
                         world.ActivateGameState(MainGame);
                         levelManager.Start(player, world.Cameras[World.Camera1Name]);
                         mainGameTime.GameSpeed = 1;
@@ -248,12 +247,10 @@ namespace DoubleDash
 
         private void SetupMainMenu()
         {
-            // I can't figure out a good way of making this look better :|
-            mainMenuState = world.AddMenuState(MainMenu);
+            mainMenuState = world.AddMenuState(MainMenu.MainMenuName);
+            mainMenuState.MenuFont = World.FontManager["Fonts/Montserrat_Ultra_Light_36"];
             mainMenuState.UnselectedColor = Color.Gray;
             mainMenuState.SelectedColor = Color.White;
-            mainMenuState.MenuFont = World.FontManager["Fonts/Montserrat_Ultra_Light_36"];
-            mainMenuState.AddDraw(MainMenuDraw);
             mainMenuState.AddMenuItems("Play", "Exit");
             mainMenuState.SetMenuAction("Play", () => { State = States.Game; });
             mainMenuState.SetMenuAction("Exit", () => { this.Exit(); });
@@ -264,10 +261,9 @@ namespace DoubleDash
         private void SetupPauseMenu()
         {
             pauseMenuState = world.AddMenuState(PauseMenu);
+            pauseMenuState.MenuFont = World.FontManager["Fonts/Montserrat_Ultra_Light_36"];
             pauseMenuState.UnselectedColor = Color.Gray;
             pauseMenuState.SelectedColor = Color.White;
-            pauseMenuState.MenuFont = World.FontManager["Fonts/Montserrat_Ultra_Light_36"];
-            pauseMenuState.AddDraw(PauseMenuDraw);
             pauseMenuState.AddMenuItems("Resume", "Main Menu", "Quit");
             pauseMenuState.SetMenuAction("Resume", () => { State = States.Game; });
             pauseMenuState.SetMenuAction("Main Menu", () => { State = States.MainMenu; });
@@ -558,20 +554,6 @@ namespace DoubleDash
             world.Draw(currentTime.Draw);
             world.Draw(DebugText.Draw);
             
-            world.EndDraw();
-        }
-
-        void MainMenuDraw()
-        {
-            world.BeginDraw();
-            world.Draw(mainMenu.Draw);
-            world.EndDraw();
-        }
-
-        void PauseMenuDraw()
-        {
-            world.BeginDraw();
-            world.Draw(pauseMenu.Draw);
             world.EndDraw();
         }
     }

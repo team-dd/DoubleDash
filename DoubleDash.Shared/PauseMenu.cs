@@ -21,7 +21,6 @@ namespace DoubleDash
 
         public PauseMenu(MenuState menuState, VirtualResolutionRenderer vrr, Camera gameCamera, GraphicsDeviceManager graphics)
         {
-            this.menuState = menuState;
             this.vrr = vrr;
             this.gameCamera = gameCamera;
             pauseTitle = new TextItem(menuState.MenuFont, "Paused");
@@ -32,6 +31,13 @@ namespace DoubleDash
             background = new Sprite(graphics);
             background.DrawSize = new Size(vrr.WindowResolution.Width, vrr.WindowResolution.Height);
             background.color = new Color(0, 0, 0, 128);
+            this.menuState = menuState;
+            SetUpMenuState();
+        }
+
+        private void SetUpMenuState()
+        {
+            menuState.AddDraw(Draw);
         }
 
         public void Update(GameTimeWrapper gameTime)
@@ -47,10 +53,12 @@ namespace DoubleDash
             menuState.UpdateMenuState();
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw()
         {
-            background.Draw(spriteBatch);
-            pauseTitle.Draw(spriteBatch);
+            menuState.world.BeginDraw();
+            menuState.world.Draw(background.Draw);
+            menuState.world.Draw(pauseTitle.Draw);
+            menuState.world.EndDraw();
         }
     }
 }
