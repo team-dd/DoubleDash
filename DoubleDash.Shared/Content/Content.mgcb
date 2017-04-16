@@ -229,9 +229,6 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Montserrat_Ultra_Light_36.spritefont
 
-#begin Levels/World 2/level1.json
-/copy:Levels/World 2/level1.json
-
 #begin Levels/Demo World/demo level 1.json
 /copy:Levels/Demo World/demo level 1.json
 
@@ -306,4 +303,19 @@
 
 #begin Levels/World 1/puzzle1.json
 /copy:Levels/World 1/puzzle1.json
+
+#begin Levels/World 2/level6.json
+/copy:Levels/World 2/level6.json
+
+#begin Levels/World 2/level1.json
+/copy:Levels/World 2/level1.json
+
+#begin Levels/World 2/level2.json
+/copy:Levels/World 2/level2.json
+
+#begin Levels/World 2/level3.json
+/copy:Levels/World 2/level3.json
+
+#begin Levels/World 2/level4.json
+/copy:Levels/World 2/level4.json
 
