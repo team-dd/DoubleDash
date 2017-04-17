@@ -20,7 +20,8 @@ namespace DoubleDash
         public ShapeBackground(GraphicsDeviceManager graphics, Color color)
         {
             this.graphics = graphics;
-            n = rand.Next(12, 40);
+            //n = rand.Next(24, 40);
+            n = 26;
             CreateShapes();
         }
 
@@ -30,15 +31,16 @@ namespace DoubleDash
 
             for (int i = 1; i <= NumberOfLines; i++)
             {
-                ShapeNPoints shape = new ShapeNPoints(graphics, i * .025f, color, n);
+                ShapeNPoints shape = new ShapeNPoints(graphics, i*n/32.0f, color, n);
                 shapes.Add(shape);
             }
         }
 
         public void ChangeMode()
         {
-            int pren = rand.Next(6, 20);
-            n = pren - pren % 2;
+            int pren = rand.Next(24, 40);
+            //n = pren - pren % 2;
+            n = 26;
             CreateShapes();
         }
 

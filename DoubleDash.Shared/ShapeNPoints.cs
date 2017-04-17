@@ -8,7 +8,7 @@ namespace DoubleDash
 {
     class ShapeNPoints
     {
-        ushort[] Indices = new ushort[200];
+        ushort[] Indices;
         VertexPositionColor[] vertices;
         //Vector2 location;
         GraphicsDeviceManager graphics;
@@ -30,12 +30,13 @@ namespace DoubleDash
             graphics = device;
             vertices = new VertexPositionColor[n];
             this.n = n;
+            Indices = new ushort[n * 2];
 
             for (int i = 0; i < n*2; i++)
             {
                 if (i != (n*2) -1)
                 {
-                    Indices[i] = (ushort) ((i / 2) - ((i/2) % 1));
+                    Indices[i] = (ushort) ((i / 2.0) + ((i/2.0) % 1));
                 }
                 else
                 {
