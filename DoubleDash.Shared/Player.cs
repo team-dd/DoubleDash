@@ -31,6 +31,8 @@ namespace DoubleDash
 
         public Vector2 dashVector;
 
+        bool shouldAddYVelocity;
+
         bool canJump;
         bool hasLetGoOfJump;
         TimeSpan maxJumpTime;
@@ -299,7 +301,7 @@ namespace DoubleDash
 
                 if (velocity.Y > 0 && dashVector.Y > 0)
                 {
-                    velocity.Y = -5f;
+                    shouldAddYVelocity = true;
                 }
                 justBlinked = true;
             }
@@ -565,6 +567,12 @@ namespace DoubleDash
                 {
                     blinkSound.Play();
                     PlayBlinkAnimation();
+
+                    if (shouldAddYVelocity)
+                    {
+                        velocity.Y = -5f;
+                        shouldAddYVelocity = false;
+                    }
                 }
             }
             else if (!onGround)
