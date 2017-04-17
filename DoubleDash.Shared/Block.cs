@@ -18,6 +18,11 @@ namespace DoubleDash
         private Line bottom;
         private Line left;
 
+        public bool drawTop;
+        public bool drawRight;
+        public bool drawBottom;
+        public bool drawLeft;
+
         public bool isMoving;
         Vector2 origin;
         public bool isMovingLeft;
@@ -87,6 +92,10 @@ namespace DoubleDash
             right = CreateLine(graphics, GameHelpers.BlockOutlineColor, GameHelpers.BlockOutlineThickness);
             bottom = CreateLine(graphics, GameHelpers.BlockOutlineColor, GameHelpers.BlockOutlineThickness);
             left = CreateLine(graphics, GameHelpers.BlockOutlineColor, GameHelpers.BlockOutlineThickness);
+            drawTop = true;
+            drawRight = true;
+            drawBottom = true;
+            drawLeft = true;
 
             this.isMoving = isMoving;
             isMovingLeft = true;
@@ -203,10 +212,22 @@ namespace DoubleDash
             
             if (GameHelpers.DrawBlockOutlines)
             {
-                top.Draw(spriteBatch);
-                right.Draw(spriteBatch);
-                bottom.Draw(spriteBatch);
-                left.Draw(spriteBatch);
+                if (drawTop)
+                {
+                    top.Draw(spriteBatch);
+                }
+                if (drawRight)
+                {
+                    right.Draw(spriteBatch);
+                }
+                if (drawBottom)
+                {
+                    bottom.Draw(spriteBatch);
+                }
+                if (drawLeft)
+                {
+                    left.Draw(spriteBatch);
+                }
             }
         }
     }

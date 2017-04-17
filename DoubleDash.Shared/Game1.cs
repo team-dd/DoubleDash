@@ -206,6 +206,8 @@ namespace DoubleDash
             shapeManager = new ShapeBackground(graphics, Color.Red);
             levelManager = new LevelManager(World.TextureManager["door"], graphics, doorSound, shapeManager);
 
+            //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/collisiontest.json"));
+
             //World 1
             levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level1.json"));
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level2.json"));

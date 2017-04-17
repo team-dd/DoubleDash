@@ -43,6 +43,40 @@ namespace DoubleDash
             highestY = 0;
         }
 
+        public void CheckCollisions(Block block)
+        {
+            foreach (Block b in blocks)
+            {
+                if (b.Equals(block))
+                {
+                    continue;
+                }
+
+                Rectangle rect = new Rectangle(b.position.ToPoint(), b.DrawSize.ToPoint());
+
+                if (rect.Contains(block.position.X - 9, block.position.Y + 9))
+                {
+                    b.drawRight = false;
+                    block.drawLeft = false;
+                }
+                else if (rect.Contains(block.position.X + block.DrawSize.Width + 9, block.position.Y - 9))
+                {
+                    b.drawLeft = false;
+                    block.drawRight = false;
+                }
+                else if (rect.Contains(block.position.X - 9, block.position.Y + 9 + block.DrawSize.Height))
+                {
+                    b.drawTop = false;
+                    block.drawBottom = false;
+                }
+                else if (rect.Contains(block.position.X + 9, block.position.Y - 9))
+                {
+                    b.drawBottom = false;
+                    block.drawTop = false;
+                }
+            }
+        }
+
         public void FinishLoading(Texture2D endPointTex, GraphicsDeviceManager graphics, int currentLevelIndex)
         {
             endPointIndicator = new Sprite(endPointTex);
@@ -61,6 +95,11 @@ namespace DoubleDash
                 }
             }
             color = palette[currentLevelIndex];
+
+            foreach (Block b in blocks)
+            {
+                CheckCollisions(b);
+            }
         }
 
         public void StartZoomIn(Camera camera)
