@@ -29,7 +29,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Rain.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RainManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShapeBackground.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ShapeSquare.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShapeTriangle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ShapeTwenty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StarBackground.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StarBackgroundManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TileDescription.cs" />

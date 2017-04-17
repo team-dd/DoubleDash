@@ -12,28 +12,72 @@ namespace DoubleDash
         private const int NumberOfLines = 160;
 
         private GraphicsDeviceManager graphics;
-        private List<ShapeTriangle> lines;
-        private TimeSpan spawnCountdown;
-        private TimeSpan SpawnTime { get { return TimeSpan.FromMilliseconds(10); } }
+        private List<ShapeTriangle> triangles;
+        private List<ShapeSquare> squares;
+        private List<ShapeTwenty> twenties;
         public Color color;
+        public Mode mode;
+
+        public enum Mode {
+            Triangle, Square, Twenty
+        };
 
         public ShapeBackground(GraphicsDeviceManager graphics, Color color)
         {
             this.graphics = graphics;
-            lines = new List<ShapeTriangle>(NumberOfLines);
+            this.mode = Mode.Triangle;
+            triangles = new List<ShapeTriangle>(NumberOfLines);
+            squares = new List<ShapeSquare>(NumberOfLines);
+            twenties = new List<ShapeTwenty>(NumberOfLines);
             for (int i = 1; i <= NumberOfLines; i++)
             {
                 ShapeTriangle triangle = new ShapeTriangle(graphics, i * .025f, color);
-                lines.Add(triangle);
+                triangles.Add(triangle);
             }
-            spawnCountdown = SpawnTime;
+            for (int i = 1; i <= NumberOfLines; i++)
+            {
+                ShapeSquare square = new ShapeSquare(graphics, i * .025f, color);
+                squares.Add(square);
+            }
+            for (int i = 1; i <= NumberOfLines; i++)
+            {
+                ShapeTwenty twenty = new ShapeTwenty(graphics, i * .025f, color);
+                twenties.Add(twenty);
+            }
+        }
+
+        public void ChangeMode()
+        {
+            switch (mode)
+            {
+                case Mode.Triangle:
+                    mode = Mode.Square;
+                    break;
+                case Mode.Square:
+                    mode = Mode.Twenty;
+                    break;
+                case Mode.Twenty:
+                    mode = Mode.Triangle;
+                    break;
+            }
         }
 
         public void Update(GameTimeWrapper gameTime)
         {
             for (int i = 0; i < NumberOfLines; i++)
             {
-                lines[i].Update();
+                if (mode == Mode.Triangle)
+                {
+                    triangles[i].Update();
+                }
+                else if (mode == Mode.Square)
+                {
+                    squares[i].Update();
+                }
+                else if (mode == Mode.Twenty)
+                {
+                   twenties[i].Update();
+                }
             }
         }
 
@@ -42,7 +86,18 @@ namespace DoubleDash
             color = newColor;
             for (int i = 0; i < NumberOfLines; i++)
             {
-                lines[i].UpdateColor(newColor);
+                if (mode == Mode.Triangle)
+                {
+                    triangles[i].UpdateColor(newColor);
+                }
+                else if (mode == Mode.Square)
+                {
+                    squares[i].UpdateColor(newColor);
+                }
+                else if (mode == Mode.Twenty)
+                {
+                    twenties[i].UpdateColor(newColor);
+                }
             }
         }
 
@@ -59,9 +114,26 @@ namespace DoubleDash
 
         public void Draw()
         {
-            foreach (var line in lines)
+            if (mode == Mode.Triangle)
             {
-                line.Draw();
+                foreach (var triangle in triangles)
+                {
+                    triangle.Draw();
+                }
+            }
+            else if (mode == Mode.Square)
+            {
+                foreach (var square in squares)
+                {
+                    square.Draw();
+                }
+            }
+            else if (mode == Mode.Twenty)
+            {
+                foreach (var twenty in twenties)
+                {
+                    twenty.Draw();
+                }
             }
         }
     }

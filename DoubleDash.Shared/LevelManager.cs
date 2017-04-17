@@ -43,6 +43,7 @@ namespace DoubleDash
         public void SetupLevel(Player player, Camera camera)
         {
             currentColor = levels[currentLevel].color;
+            shapeManager.ChangeMode();
             shapeManager.UpdateColor(currentColor);
             player.spawnPoint = levels[currentLevel].start;
             player.Reset();
