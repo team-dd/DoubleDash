@@ -48,10 +48,11 @@ namespace DoubleDash
                         MediaPlayer.Play(bgMusic);
                         world.DeactivateMenuState(MainMenu.MainMenuName);
                         world.ActivateGameState(MainGame);
-                        levelManager.Start(player, world.Cameras[World.Camera1Name]);
+                        levelManager.Start(player, world.Cameras[World.Camera1Name], gameTimer);
                         mainGameTime.GameSpeed = 1;
                         collisionGameTime.GameSpeed = 0.1m;
                         endGameTime.GameSpeed = 1;
+                        timerGameTime.GameSpeed = 1;
                     }
                     else if (state == States.PauseMenu)
                     {
@@ -59,6 +60,7 @@ namespace DoubleDash
                         mainGameTime.GameSpeed = 1;
                         collisionGameTime.GameSpeed = 0.1m;
                         endGameTime.GameSpeed = 1;
+                        timerGameTime.GameSpeed = 1;
                     }
                 }
                 else if (value == States.PauseMenu)
@@ -68,6 +70,7 @@ namespace DoubleDash
                     mainGameTime.GameSpeed = 0;
                     collisionGameTime.GameSpeed = 0;
                     endGameTime.GameSpeed = 0;
+                    timerGameTime.GameSpeed = 0;
                 }
                 state = value;
             }
@@ -85,7 +88,10 @@ namespace DoubleDash
         GameTimeWrapper mainGameTime;
         GameTimeWrapper collisionGameTime;
         GameTimeWrapper endGameTime;
+        GameTimeWrapper timerGameTime;
         GameState mainGameState;
+
+        GameTimer gameTimer;
 
         KeyboardState previousKeyboardState;
         GamePadState previousGamePadState;
@@ -178,10 +184,12 @@ namespace DoubleDash
             collisionGameTime = new GameTimeWrapper(CollisionUpdate, this, 0.1m);
             collisionGameTime.NormalUpdate = false;
             endGameTime = new GameTimeWrapper(EndUpdate, this, 1);
+            timerGameTime = new GameTimeWrapper(TimerUpdate, this, 1);
             mainGameState = new GameState(MainGame, graphics);
             mainGameState.AddTime(mainGameTime);
             mainGameState.AddTime(collisionGameTime);
             mainGameState.AddTime(endGameTime);
+            mainGameState.AddTime(timerGameTime);
             mainGameState.AddDraw(MainDraw);
             world.AddGameState(mainGameState);
             world.CurrentCamera.Focus = Camera.CameraFocus.Center;
@@ -190,6 +198,8 @@ namespace DoubleDash
             currentTime.AddGameTime(mainGameTime, 1);
             currentTime.AddGameTime(collisionGameTime, 0.1m);
             currentTime.AddGameTime(endGameTime, 1);
+
+            gameTimer = new GameTimer(World.FontManager["Fonts/Arial_24"]);
 
             doorSound = World.SoundManager["Audio/Sounds/doorsound"];
 
@@ -370,7 +380,7 @@ namespace DoubleDash
 
             if (keyboardState.IsKeyDownAndUp(Keys.OemTilde, previousKeyboardState))
             {
-                levelManager.Start(player, world.CurrentCamera);
+                levelManager.Start(player, world.CurrentCamera, gameTimer);
             }
 
             if (gamePadState.IsConnected)
@@ -482,7 +492,7 @@ namespace DoubleDash
             }
 
             player.Update(gameTime);
-            levelManager.Update(gameTime, player, world.CurrentCamera);
+            levelManager.Update(gameTime, player, world.CurrentCamera, gameTimer);
             player.CheckCollisions(levelManager.levels[levelManager.currentLevel].blocks);
 
             if (GameHelpers.Rain)
@@ -519,7 +529,14 @@ namespace DoubleDash
             currentTime.Update(gameTime);
         }
 
-        
+        void TimerUpdate(GameTimeWrapper gameTime)
+        {
+            gameTimer.timerText.position = Vector2.Transform(
+                new Vector2(world.virtualResolutionRenderer.WindowResolution.Width - gameTimer.timerText.textSize.X,
+                100),
+                world.CurrentCamera.InverseTransform);
+            gameTimer.Update(gameTime);
+        }
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -552,6 +569,7 @@ namespace DoubleDash
             world.Draw(levelManager.Draw);
             world.Draw(player.Draw);
             world.Draw(currentTime.Draw);
+            world.Draw(gameTimer.Draw);
             world.Draw(DebugText.Draw);
             
             world.EndDraw();

@@ -43,14 +43,16 @@ namespace DoubleDash
             player.Reset();
         }
 
-        public void Start(Player player, Camera camera)
+        public void Start(Player player, Camera camera, GameTimer gameTimer)
         {
             currentLevel = 0;
             SetupLevel(player, camera);
             player.yDeathThreshold = levels[currentLevel].highestY + 2000;
+            gameTimer.Reset();
+            gameTimer.Start();
         }
 
-        public void IncreaseLevel(Player player, Camera camera)
+        public void IncreaseLevel(Player player, Camera camera, GameTimer gameTimer)
         {
             currentLevel++;
             if (currentLevel >= levels.Count)
@@ -59,6 +61,8 @@ namespace DoubleDash
             }
             SetupLevel(player, camera);
             player.yDeathThreshold = levels[currentLevel].highestY + 2000;
+            gameTimer.Reset();
+            gameTimer.Start();
         }
 
         public void DecreaseLevel(Player player, Camera camera)
@@ -72,7 +76,7 @@ namespace DoubleDash
             player.yDeathThreshold = levels[currentLevel].highestY + 2000;
         }
 
-        public void Update(GameTimeWrapper gameTime, Player player, Camera camera)
+        public void Update(GameTimeWrapper gameTime, Player player, Camera camera, GameTimer gameTimer)
         {
             if (levels.Count != 0)
             {
@@ -82,7 +86,7 @@ namespace DoubleDash
             if (player.rectangle.Intersects(levels[currentLevel].endPointIndicator.rectangle))
             {
                 doorSound.Play();
-                IncreaseLevel(player, camera);
+                IncreaseLevel(player, camera, gameTimer);
             }
         }
 
