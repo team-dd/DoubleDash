@@ -208,21 +208,21 @@ namespace DoubleDash
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/collisiontest.json"));
 
             //World 1
-            //levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level1.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level2.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level3.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level4.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level5.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level6.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/puzzle1.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level1.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level2.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level3.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level4.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level5.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level6.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/puzzle1.json"));
 
             //World 2
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level1.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level2.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level3.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level4.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level5.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level6.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level1.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level2.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level3.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level4.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level5.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level6.json"));
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/puzzle2.json"));
 
             //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 1.json"));
@@ -251,11 +251,9 @@ namespace DoubleDash
 
             rainManager = new RainManager(graphics);
 
-            //bgMusic = World.SongManager["Audio/Music/newmusic2"];
-            //song = World.SongManager["Audio/Music/intro2"];
+            bgMusic = World.SongManager["Audio/Music/newmusic2"];
+            song = World.SongManager["Audio/Music/intro2"];
             MediaPlayer.IsRepeating = true;
-
-            
 
             State = States.MainMenu;
         }
