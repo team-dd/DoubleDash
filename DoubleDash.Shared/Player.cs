@@ -331,7 +331,7 @@ namespace DoubleDash
                     this.dashVector = currentVector;
                 }
                 this.dashVector = dashVector;
-                dashIndicator.position = position + Vector2.Normalize(currentVector) * new Vector2(1, -1) * DashDistance;
+                dashIndicator.position = position + Vector2.Normalize(currentVector) * new Vector2(1, -1) * DashDistance + new Vector2(0, -3f);
             }
         }
 
@@ -479,7 +479,7 @@ namespace DoubleDash
                         }
                         justBlinked = false;
                         failSound.Play();
-                        PlayBlinkAnimation();
+                        //PlayBlinkAnimation();
                         return;
                     }
 
