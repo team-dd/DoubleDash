@@ -9,7 +9,7 @@ namespace DoubleDash
 {
     public class ShapeBackground
     {
-        private const int NumberOfLines = 40;
+        private const int NumberOfLines = 30;
 
         private GraphicsDeviceManager graphics;
         private List<ShapeTriangle> lines;
@@ -23,7 +23,7 @@ namespace DoubleDash
             lines = new List<ShapeTriangle>(NumberOfLines);
             for (int i = 1; i <= NumberOfLines; i++)
             {
-                ShapeTriangle triangle = new ShapeTriangle(graphics, i * .1f, color);
+                ShapeTriangle triangle = new ShapeTriangle(graphics, (i - 1.5f) * .1f, color);
                 lines.Add(triangle);
             }
             spawnCountdown = SpawnTime;

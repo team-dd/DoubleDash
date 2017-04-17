@@ -18,6 +18,7 @@ namespace DoubleDash
         Matrix world;
         Matrix view;
         static Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.01f, 100f);
+        Matrix rotation;
 
         Vector3 pos;
         static Random rand = new Random();
@@ -35,37 +36,38 @@ namespace DoubleDash
             Indices[4] = (ushort)(2);
             Indices[5] = (ushort)(0);
             world = Matrix.CreateTranslation(0, 0, 0);
-            view = Matrix.CreateLookAt(new Vector3(0, 0, zoomthing), new Vector3(0, 0, -2), new Vector3(0, 1, 0));
+            view = Matrix.CreateLookAt(new Vector3(0, 0, zoomthing), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
             this.zoomthing = zoomthing;
-
-            float size = 0.1f;
-            vertices[0] = new VertexPositionColor(new Vector3(-size, -size, 0f) + pos, Color.Red);
-            vertices[1] = new VertexPositionColor(new Vector3(0, size, 0f) + pos, Color.Red);
-            vertices[2] = new VertexPositionColor(new Vector3(size, -size, 0f) + pos, Color.Red);
+            float size = 0.25f;
+            vertices[0] = new VertexPositionColor(new Vector3(-size, -size, 0f) + pos, Color.Red * .2f);
+            vertices[1] = new VertexPositionColor(new Vector3(0, size, 0f) + pos, Color.Red * .2f);
+            vertices[2] = new VertexPositionColor(new Vector3(size, -size, 0f) + pos, Color.Red * .2f);
             basicEffect = new BasicEffect(graphics.GraphicsDevice);
 
             vertexBuffer = new VertexBuffer(graphics.GraphicsDevice, typeof(VertexPositionColor), 3, BufferUsage.WriteOnly);
             vertexBuffer.SetData<VertexPositionColor>(vertices);
 
             indexBuffer = new DynamicIndexBuffer(device.GraphicsDevice, typeof(ushort), 10, BufferUsage.WriteOnly);
-
             indexBuffer.SetData(0, Indices, 0, 6);
+
+            rotation = Matrix.CreateRotationZ(MathHelper.ToRadians(60 * zoomthing));
         }
 
         public void Update()
         {
-            zoomthing -= .01f;
+            zoomthing -= .02f;
 
-            if (zoomthing < 0.01)
+            if (zoomthing < 0f)
             {
-                zoomthing = 4f;
+                zoomthing = 6f;
             }
-
-            view = Matrix.CreateLookAt(new Vector3(0, 0, zoomthing), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
+            
+            view = Matrix.CreateLookAt(new Vector3(0, 0, zoomthing % 3), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
         }
 
         public void UpdateColor(Color newColor)
         {
+            newColor *= 0.2f;
             vertices[0].Color = newColor;
             vertices[1].Color = newColor;
             vertices[2].Color = newColor;
@@ -74,7 +76,7 @@ namespace DoubleDash
 
         public void Draw()
         {
-            basicEffect.World = world;
+            basicEffect.World = rotation * world;
             basicEffect.View = view;
             basicEffect.Projection = projection;
             basicEffect.VertexColorEnabled = true;
