@@ -6,9 +6,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DoubleDash
 {
-    class ShapeSquare
+    class ShapeNPoints
     {
-        ushort[] Indices = new ushort[20];
+        ushort[] Indices = new ushort[200];
         VertexPositionColor[] vertices;
         //Vector2 location;
         GraphicsDeviceManager graphics;
@@ -19,47 +19,49 @@ namespace DoubleDash
         Matrix view;
         static Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.01f, 100f);
         Matrix rotation;
+        int n;
 
         Vector3 pos;
         static Random rand = new Random();
         float zoomthing;
 
-        public ShapeSquare(GraphicsDeviceManager device, float zoomthing, Color color)
+        public ShapeNPoints(GraphicsDeviceManager device, float zoomthing, Color color, int n)
         {
             graphics = device;
-            vertices = new VertexPositionColor[6];
+            vertices = new VertexPositionColor[n];
+            this.n = n;
 
-            Indices[0] = (ushort)(0);
-            Indices[1] = (ushort)(1);
-            Indices[2] = (ushort)(1);
-            Indices[3] = (ushort)(2);
-            Indices[4] = (ushort)(2);
-            Indices[5] = (ushort)(3);
-            Indices[6] = (ushort)(3);
-            Indices[7] = (ushort)(4);
-            Indices[8] = (ushort)(4);
-            Indices[9] = (ushort)(5);
-            Indices[10] = (ushort)(5);
-            Indices[11] = (ushort)(0);
+            for (int i = 0; i < n*2; i++)
+            {
+                if (i != (n*2) -1)
+                {
+                    Indices[i] = (ushort) ((i / 2) - ((i/2) % 1));
+                }
+                else
+                {
+                    Indices[i] = 0;
+                }
+            }
+
             world = Matrix.CreateTranslation(0, 0, 0);
             view = Matrix.CreateLookAt(new Vector3(0, 0, (zoomthing % 4f)), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
             this.zoomthing = zoomthing;
             float size = 0.25f;
-            double angle = MathHelper.TwoPi / 6;
+            double angle = MathHelper.TwoPi / n;
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < n; i++)
             {
-                Vector3 position = new Vector3(size * (float)Math.Round(Math.Sin(angle * i), 4), size * (float)Math.Round(Math.Cos(angle * i), 4), 0f);
-                vertices[i] = new VertexPositionColor(position, Color.Red * .25f);
+                Vector3 position = new Vector3(size * (float)Math.Round(Math.Sin(angle * i * 2), 4), size * (float)Math.Round(Math.Cos(angle * i * 2), 4), 0f);
+                vertices[i] = new VertexPositionColor(position, Color.Red * .1f);
             }
 
             basicEffect = new BasicEffect(graphics.GraphicsDevice);
 
-            vertexBuffer = new VertexBuffer(graphics.GraphicsDevice, typeof(VertexPositionColor), 6, BufferUsage.WriteOnly);
+            vertexBuffer = new VertexBuffer(graphics.GraphicsDevice, typeof(VertexPositionColor), n, BufferUsage.WriteOnly);
             vertexBuffer.SetData<VertexPositionColor>(vertices);
 
-            indexBuffer = new DynamicIndexBuffer(device.GraphicsDevice, typeof(ushort), 20, BufferUsage.WriteOnly);
-            indexBuffer.SetData(0, Indices, 0, 12);
+            indexBuffer = new DynamicIndexBuffer(device.GraphicsDevice, typeof(ushort), 200, BufferUsage.WriteOnly);
+            indexBuffer.SetData(0, Indices, 0, n*2);
 
             rotation = Matrix.CreateRotationZ(MathHelper.ToRadians(90 * zoomthing));
 
@@ -85,7 +87,7 @@ namespace DoubleDash
 
         public void UpdateColor(Color newColor)
         {
-            newColor *= 0.2f;
+            newColor *= 0.1f;
             for (int i = 0; i < vertices.Length; i++)
             {
                 vertices[i].Color = newColor;
@@ -104,7 +106,7 @@ namespace DoubleDash
             foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                graphics.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.LineList, 0, 0, 6, 0, 6);
+                graphics.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.LineList, 0, 0, n, 0, n);
             }
         }
     }
