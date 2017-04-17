@@ -576,7 +576,7 @@ namespace DoubleDash
             world.Draw(player.Draw);
             world.Draw(currentTime.Draw);
             world.Draw(gameTimer.Draw);
-            world.Draw(DebugText.Draw);
+            //world.Draw(DebugText.Draw);
             
             world.EndDraw();
         }

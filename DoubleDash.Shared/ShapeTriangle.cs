@@ -36,7 +36,7 @@ namespace DoubleDash
             Indices[4] = (ushort)(2);
             Indices[5] = (ushort)(0);
             world = Matrix.CreateTranslation(0, 0, 0);
-            view = Matrix.CreateLookAt(new Vector3(0, 0, zoomthing), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
+            view = Matrix.CreateLookAt(new Vector3(0, 0, (zoomthing % 4f)), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
             this.zoomthing = zoomthing;
             float size = 0.25f;
             vertices[0] = new VertexPositionColor(new Vector3(-size, -size, 0f) + pos, Color.Red * .2f);
@@ -50,19 +50,26 @@ namespace DoubleDash
             indexBuffer = new DynamicIndexBuffer(device.GraphicsDevice, typeof(ushort), 10, BufferUsage.WriteOnly);
             indexBuffer.SetData(0, Indices, 0, 6);
 
-            rotation = Matrix.CreateRotationZ(MathHelper.ToRadians(60 * zoomthing));
+            rotation = Matrix.CreateRotationZ(MathHelper.ToRadians(90 * zoomthing));
+
+            basicEffect.Projection = projection;
+            basicEffect.VertexColorEnabled = true;
+
+            RasterizerState rasterizerState = new RasterizerState();
+            rasterizerState.CullMode = CullMode.None;
+            graphics.GraphicsDevice.RasterizerState = rasterizerState;
         }
 
         public void Update()
         {
             zoomthing -= .02f;
 
-            if (zoomthing < 0f)
+            if (zoomthing <= 0f)
             {
-                zoomthing = 6f;
+                zoomthing = 4f;
             }
-            
-            view = Matrix.CreateLookAt(new Vector3(0, 0, zoomthing % 3), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
+            //rotation = Matrix.CreateRotationZ(MathHelper.ToRadians(60 * zoomthing));
+            view = Matrix.CreateLookAt(new Vector3(0, 0, (zoomthing % 4f)), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
         }
 
         public void UpdateColor(Color newColor)
@@ -78,12 +85,7 @@ namespace DoubleDash
         {
             basicEffect.World = rotation * world;
             basicEffect.View = view;
-            basicEffect.Projection = projection;
-            basicEffect.VertexColorEnabled = true;
 
-            RasterizerState rasterizerState = new RasterizerState();
-            rasterizerState.CullMode = CullMode.None;
-            graphics.GraphicsDevice.RasterizerState = rasterizerState;
             graphics.GraphicsDevice.SetVertexBuffer(vertexBuffer);
             graphics.GraphicsDevice.Indices = indexBuffer;
 
