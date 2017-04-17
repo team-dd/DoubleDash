@@ -65,13 +65,14 @@ namespace DoubleDash
         Sound failSound;
         Sound deathSound;
 
-        public Player(SpriteSheetInfo info,
-            Texture2D dashIndicatorTex,
+        public SpriteSheetInfo spriteSheetInfo = new SpriteSheetInfo(30, 32);
+
+        public Player(Texture2D dashIndicatorTex,
             SoundEffect jumpSound,
             SoundEffect blinkSound,
             SoundEffect failSound,
             SoundEffect deathSound,
-            GraphicsDeviceManager graphics) : base(info, graphics)
+            GraphicsDeviceManager graphics) : base(new SpriteSheetInfo(30, 32), graphics)
         {
             maxJumpTime = TimeSpan.FromMilliseconds(400);
             dashIndicator = new Sprite(dashIndicatorTex);
@@ -421,6 +422,16 @@ namespace DoubleDash
             velocity.X = MathHelper.Clamp(velocity.X, -14f, 14f);
 
             base.Update(gameTime);
+
+            if (!animations.active && !animations.CurrentAnimation.reverse)
+            {
+                animations.CurrentAnimation.reverse = true;
+                animations.ResetAnimation();
+            }
+            else if (!animations.active && animations.CurrentAnimation.reverse)
+            {
+                ResetBlinkAnimation();
+            }
             UpdatePolygon();
 
             /*if (dashIndicator.visible)
@@ -468,6 +479,7 @@ namespace DoubleDash
                         }
                         justBlinked = false;
                         failSound.Play();
+                        PlayBlinkAnimation();
                         return;
                     }
 
@@ -552,6 +564,7 @@ namespace DoubleDash
                 if (justBlinked)
                 {
                     blinkSound.Play();
+                    PlayBlinkAnimation();
                 }
             }
             else if (!onGround)
@@ -573,6 +586,17 @@ namespace DoubleDash
                 ResetJump();
             }
             justBlinked = false;
+        }
+
+        private void PlayBlinkAnimation()
+        {
+            animations.CurrentAnimationName = "dashAnimation";
+        }
+
+        private void ResetBlinkAnimation()
+        {
+            animations.CurrentAnimation.reverse = false;
+            animations.CurrentAnimationName = "demoanimation";
         }
 
         public override void Draw(SpriteBatch spriteBatch)

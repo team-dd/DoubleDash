@@ -107,8 +107,6 @@ namespace DoubleDash
         Song song;
         SoundEffect doorSound;
 
-        SpriteSheetInfo spriteSheetInfo;
-
         Song bgMusic;
 
         public Game1()
@@ -157,6 +155,7 @@ namespace DoubleDash
             World.TextureManager.Load("door");
             World.TextureManager.Load("dash_indicator");
             World.TextureManager.Load("demoanimation");
+            World.TextureManager.Load("blink_animation");
 
             // Load fonts
             World.FontManager.Load("Fonts/Courier_New_12");
@@ -232,16 +231,17 @@ namespace DoubleDash
 
             levelManager.FinishLoading();
 
-            spriteSheetInfo = new SpriteSheetInfo(30, 32);
 
-            player = new Player(spriteSheetInfo,
-                World.TextureManager["dash_indicator"],
+
+            player = new Player(World.TextureManager["dash_indicator"],
                 World.SoundManager["Audio/Sounds/jumpsound"],
                 World.SoundManager["Audio/Sounds/blinksound"],
                 World.SoundManager["Audio/Sounds/fail"],
                 World.SoundManager["Audio/Sounds/death"],
                 graphics);
-            player.animations["demoanimation"] = player.animations.AddSpriteSheet(World.TextureManager["demoanimation"], spriteSheetInfo, 2, 2, 1, SpriteSheet.Direction.LeftToRight, 10, true);
+            player.animations["demoanimation"] = player.animations.AddSpriteSheet(World.TextureManager["demoanimation"], player.spriteSheetInfo, 2, 2, 1, SpriteSheet.Direction.LeftToRight, 10, true);
+            player.animations["dashAnimation"] = player.animations.AddSpriteSheet(World.TextureManager["blink_animation"], player.spriteSheetInfo, 3, 3, 1, SpriteSheet.Direction.LeftToRight, 10, false);
+            player.animations.CurrentAnimationName = "demoanimation";
             player.Ready();
 
             starBackgroundManager = new StarBackgroundManager(graphics);
