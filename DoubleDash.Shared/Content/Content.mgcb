@@ -274,3 +274,16 @@
 #begin Levels/Test Levels/collisiontest.json
 /copy:Levels/Test Levels/collisiontest.json
 
+#begin blink_animation.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:blink_animation.png
+
+
