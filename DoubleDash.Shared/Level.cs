@@ -83,14 +83,14 @@ namespace DoubleDash
                     new Size(blockDescription.Width * 4, blockDescription.Height * 4),
                     blockDescription.IsMoving,
                     graphics,
-                    palette[currentLevelIndex]);
+                    palette[currentLevelIndex % 7]);
                 blocks.Add(block);
                 if (block.position.Y > highestY)
                 {
                     highestY = block.position.Y;
                 }
             }
-            color = palette[currentLevelIndex];
+            color = palette[currentLevelIndex % 7];
 
             foreach (Block b in blocks)
             {
