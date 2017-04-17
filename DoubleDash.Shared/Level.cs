@@ -56,22 +56,18 @@ namespace DoubleDash
 
                 if (rect.Contains(block.position.X - 9, block.position.Y + 9))
                 {
-                    b.drawRight = false;
                     block.drawLeft = false;
                 }
-                else if (rect.Contains(block.position.X + block.DrawSize.Width + 9, block.position.Y - 9))
+                else if (rect.Contains(block.position.X + block.DrawSize.Width + 9, block.position.Y + 9))
                 {
-                    b.drawLeft = false;
                     block.drawRight = false;
                 }
-                else if (rect.Contains(block.position.X - 9, block.position.Y + 9 + block.DrawSize.Height))
+                if (rect.Contains(block.position.X + 9, block.position.Y + 9 + block.DrawSize.Height))
                 {
-                    b.drawTop = false;
                     block.drawBottom = false;
                 }
                 else if (rect.Contains(block.position.X + 9, block.position.Y - 9))
                 {
-                    b.drawBottom = false;
                     block.drawTop = false;
                 }
             }
