@@ -61,11 +61,40 @@ namespace DoubleDash
             cooldownBar.color = Color.Gray;
         }
 
-        public void Update(GameTimeWrapper gameTime)
+        public void Update(GameTimeWrapper gameTime, Camera camera)
         {
+            if (cooldownBar.DrawSize.Width < BarWidth)
+            {
+                cooldownBar.DrawSize = new Size(
+                    cooldownBar.DrawSize.Width * (1 / camera.Zoom),
+                    BarHeight * (1 / camera.Zoom));
+            }
+            else
+            {
+                cooldownBar.DrawSize = new Size(
+                    BarWidth * (1 / camera.Zoom),
+                    BarHeight * (1 / camera.Zoom));
+            }
             cooldownBar.position = new Vector2(position.X + currentDashBar.DrawSize.Width,
                 position.Y);
+
+            fullBar.DrawSize = new Size(
+                BarWidth * (1 / camera.Zoom),
+                BarHeight * (1 / camera.Zoom));
             fullBar.Update(gameTime);
+
+            if (currentDashBar.DrawSize.Width < BarWidth)
+            {
+                currentDashBar.DrawSize = new Size(
+                    currentDashBar.DrawSize.Width * (1 / camera.Zoom),
+                    BarHeight * (1 / camera.Zoom));
+            }
+            else
+            {
+                currentDashBar.DrawSize = new Size(
+                    BarWidth * (1 / camera.Zoom),
+                    BarHeight * (1 / camera.Zoom));
+            }
             currentDashBar.Update(gameTime);
             cooldownBar.Update(gameTime);
         }

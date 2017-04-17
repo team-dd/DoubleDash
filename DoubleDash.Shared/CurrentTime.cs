@@ -28,8 +28,8 @@ namespace DoubleDash
         public CurrentTime(SpriteFont spriteFont)
         {
             gameTimes = new List<Tuple<GameTimeWrapper, decimal>>();
-            text = new TextItem(spriteFont, "1.0x");
-            text.color = Color.Black;
+            text = new TextItem(spriteFont, "Normal");
+            text.color = Color.White;
             speed = Speeds.Normal;
         }
 
