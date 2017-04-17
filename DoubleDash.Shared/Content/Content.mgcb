@@ -286,4 +286,6 @@
 /processorParam:TextureFormat=Color
 /build:blink_animation.png
 
+#begin Levels/World 2/puzzle2.json
+/copy:Levels/World 2/puzzle2.json
 
