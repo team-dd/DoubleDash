@@ -21,7 +21,7 @@ namespace DoubleDash.Menus
         public MainMenu(MenuState menuState, VirtualResolutionRenderer vrr, Camera camera, GraphicsDeviceManager graphics)
         {
             Camera = camera;
-            title = new TextItem(menuState.MenuFont, "Double Dash");
+            title = new TextItem(menuState.MenuFont, "Sprint");
             title.position = new Vector2(vrr.VirtualResolution.Width / 2, vrr.VirtualResolution.Height / 2);
             menuState.initialPosition = new Vector2(vrr.VirtualResolution.Width / 2, vrr.VirtualResolution.Height * 0.66f);
             starBackground = new StarBackgroundManager(graphics);

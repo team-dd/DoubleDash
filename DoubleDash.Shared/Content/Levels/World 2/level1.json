@@ -1,6 +1,27 @@
 {
   "rectangles": [
     {
+      "X": 2325,
+      "Y": 525,
+      "Width": 20,
+      "Height": 155,
+      "IsMoving": false
+    },
+    {
+      "X": 2415,
+      "Y": 620,
+      "Width": 20,
+      "Height": 145,
+      "IsMoving": false
+    },
+    {
+      "X": 0,
+      "Y": 985,
+      "Width": 195,
+      "Height": 40,
+      "IsMoving": false
+    },
+    {
       "X": 2130,
       "Y": 775,
       "Width": 180,
@@ -64,13 +85,6 @@
       "IsMoving": false
     },
     {
-      "X": 1190,
-      "Y": 1440,
-      "Width": 205,
-      "Height": 5,
-      "IsMoving": false
-    },
-    {
       "X": 1170,
       "Y": 775,
       "Width": 65,
@@ -96,27 +110,6 @@
       "Y": 295,
       "Width": 40,
       "Height": 375,
-      "IsMoving": false
-    },
-    {
-      "X": 2365,
-      "Y": 595,
-      "Width": 20,
-      "Height": 145,
-      "IsMoving": false
-    },
-    {
-      "X": 445,
-      "Y": 775,
-      "Width": 100,
-      "Height": 5,
-      "IsMoving": true
-    },
-    {
-      "X": 195,
-      "Y": 985,
-      "Width": 200,
-      "Height": 440,
       "IsMoving": false
     },
     {
@@ -159,13 +152,6 @@
       "Y": 255,
       "Width": 365,
       "Height": 50,
-      "IsMoving": false
-    },
-    {
-      "X": 0,
-      "Y": 985,
-      "Width": 195,
-      "Height": 440,
       "IsMoving": false
     },
     {
@@ -225,13 +211,6 @@
       "IsMoving": false
     },
     {
-      "X": 2290,
-      "Y": 525,
-      "Width": 20,
-      "Height": 155,
-      "IsMoving": false
-    },
-    {
       "X": 2070,
       "Y": 255,
       "Width": 90,
@@ -277,6 +256,27 @@
       "X": 1835,
       "Y": 1280,
       "Width": 145,
+      "Height": 5,
+      "IsMoving": false
+    },
+    {
+      "X": 195,
+      "Y": 985,
+      "Width": 75,
+      "Height": 40,
+      "IsMoving": false
+    },
+    {
+      "X": 450,
+      "Y": 825,
+      "Width": 100,
+      "Height": 5,
+      "IsMoving": true
+    },
+    {
+      "X": 1160,
+      "Y": 1430,
+      "Width": 205,
       "Height": 5,
       "IsMoving": false
     }
