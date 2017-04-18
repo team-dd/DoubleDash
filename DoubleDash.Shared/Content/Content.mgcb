@@ -313,3 +313,6 @@
 /processorParam:Quality=Best
 /build:Audio/Sounds/speedupslower.wav
 
+#begin Levels/World 1/level0.json
+/copy:Levels/World 1/level0.json
+
