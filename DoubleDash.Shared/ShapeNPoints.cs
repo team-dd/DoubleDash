@@ -53,7 +53,7 @@ namespace DoubleDash
             for (int i = 0; i < n; i++)
             {
                 Vector3 position = new Vector3(size * (float)Math.Round(Math.Sin(angle * i * 2), 4), size * (float)Math.Round(Math.Cos(angle * i * 2), 4), 0f);
-                vertices[i] = new VertexPositionColor(position, Color.Red * .1f);
+                vertices[i] = new VertexPositionColor(position, Color.Red * .2f);
             }
 
             basicEffect = new BasicEffect(graphics.GraphicsDevice);
@@ -88,7 +88,7 @@ namespace DoubleDash
 
         public void UpdateColor(Color newColor)
         {
-            newColor *= 0.1f;
+            newColor *= 0.2f;
             for (int i = 0; i < vertices.Length; i++)
             {
                 vertices[i].Color = newColor;
