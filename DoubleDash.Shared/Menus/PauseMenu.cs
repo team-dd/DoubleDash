@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace DoubleDash
+namespace DoubleDash.Menus
 {
     public class PauseMenu
     {

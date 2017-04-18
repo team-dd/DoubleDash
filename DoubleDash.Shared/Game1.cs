@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using DoubleDash.Menus;
 
 namespace DoubleDash
 {
@@ -15,11 +16,13 @@ namespace DoubleDash
     {
         const string MainGame = "game1";
         const string PauseMenu = "pauseMenu";
+        const string MenuCamera = "menuCamera";
 
         public enum States
         {
             Game,
             MainMenu,
+            WorldSelectMenu,
             PauseMenu
         }
 
@@ -34,25 +37,32 @@ namespace DoubleDash
             {
                 if (value == States.MainMenu)
                 {
-                    MediaPlayer.Play(song);
-                    world.DeactivateGameState(MainGame);
-                    world.DeactivateMenuState(PauseMenu);
-                    world.ActivateMenuState(MainMenu.MainMenuName);
-                    world.CurrentCameraName = DoubleDash.MainMenu.MainMenuCamera;
+                    if (state != States.WorldSelectMenu)
+                    {
+                        MediaPlayer.Play(song);
+                        world.DeactivateGameState(MainGame);
+                        world.DeactivateMenuState(PauseMenu);
+                        world.ActivateMenuState(MainMenu.MainMenuName);
+                        world.CurrentCameraName = MenuCamera;
+                    }
+                    else
+                    {
+                        world.DeactivateMenuState(WorldSelectMenu.WorldSelectMenuName);
+                        world.ActivateMenuState(MainMenu.MainMenuName);
+                    }
+                }
+                else if (value == States.WorldSelectMenu)
+                {
+                    world.DeactivateMenuState(MainMenu.MainMenuName);
+                    world.ActivateMenuState(WorldSelectMenu.WorldSelectMenuName);
                 }
                 else if (value == States.Game)
                 {
                     world.CurrentCameraName = World.Camera1Name;
-                    if (state == States.MainMenu)
+                    if (state == States.MainMenu ||
+                        state == States.WorldSelectMenu)
                     {
-                        MediaPlayer.Play(bgMusic);
-                        world.DeactivateMenuState(MainMenu.MainMenuName);
-                        world.ActivateGameState(MainGame);
-                        levelManager.Start(player, world.Cameras[World.Camera1Name], gameTimer);
-                        mainGameTime.GameSpeed = 1;
-                        collisionGameTime.GameSpeed = 0.1m;
-                        endGameTime.GameSpeed = 1;
-                        timerGameTime.GameSpeed = 1;
+                        SwitchToGame();
                     }
                     else if (state == States.PauseMenu)
                     {
@@ -79,8 +89,13 @@ namespace DoubleDash
         GraphicsDeviceManager graphics;
         World world;
 
+        Camera menuCamera;
+
         MenuState mainMenuState;
         MainMenu mainMenu;
+
+        MenuState worldSelectMenuState;
+        WorldSelectMenu worldSelectMenu;
 
         MenuState pauseMenuState;
         PauseMenu pauseMenu;
@@ -179,10 +194,13 @@ namespace DoubleDash
 
             DebugText.Initialize(World.FontManager["Fonts/Courier_New_12"]);
 
+            menuCamera = new Camera(world.virtualResolutionRenderer, Camera.CameraFocus.Center);
+
             SetupMainMenu();
+            SetUpWorldSelectMenu();
             SetupPauseMenu();
             
-            world.AddCamera(DoubleDash.MainMenu.MainMenuCamera, mainMenu.Camera);
+            world.AddCamera(MenuCamera, mainMenu.Camera);
 
             mainGameTime = new GameTimeWrapper(MainUpdate, this, 1);
             collisionGameTime = new GameTimeWrapper(CollisionUpdate, this, 0.1m);
@@ -218,7 +236,7 @@ namespace DoubleDash
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/collisiontest.json"));
 
             //World 1
-            levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level1.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level1.json"), LevelManager.Worlds.World1);
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level2.json"));
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level3.json"));
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level4.json"));
@@ -227,7 +245,7 @@ namespace DoubleDash
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/puzzle1.json"));
 
             //World 2
-            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level1.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level1.json"), LevelManager.Worlds.World2);
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level2.json"));
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level3.json"));
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level4.json"));
@@ -271,28 +289,70 @@ namespace DoubleDash
         private void SetupMainMenu()
         {
             mainMenuState = world.AddMenuState(MainMenu.MainMenuName);
-            mainMenuState.MenuFont = World.FontManager["Fonts/Montserrat_Ultra_Light_36"];
-            mainMenuState.UnselectedColor = Color.Gray;
-            mainMenuState.SelectedColor = Color.White;
-            mainMenuState.AddMenuItems("Play", "Exit");
+            SetMenuStateItems(mainMenuState);
+            mainMenuState.AddMenuItems("Play", "World Select", "Exit");
             mainMenuState.SetMenuAction("Play", () => { State = States.Game; });
+            mainMenuState.SetMenuAction("World Select", () => { State = States.WorldSelectMenu; });
             mainMenuState.SetMenuAction("Exit", () => { this.Exit(); });
-            mainMenu = new MainMenu(mainMenuState, world.virtualResolutionRenderer, graphics);
+            mainMenu = new MainMenu(mainMenuState, world.virtualResolutionRenderer, menuCamera, graphics);
             mainMenuState.AddTime(new GameTimeWrapper(mainMenu.Update, this, 1));
+        }
+
+        private void SetUpWorldSelectMenu()
+        {
+            worldSelectMenuState = world.AddMenuState(WorldSelectMenu.WorldSelectMenuName);
+            SetMenuStateItems(worldSelectMenuState);
+            worldSelectMenuState.AddMenuItems("World 1", "World 2", "Back");
+            worldSelectMenuState.SetMenuAction("World 1", () =>
+            {
+                SwitchToGame(LevelManager.Worlds.World1);
+            });
+            worldSelectMenuState.SetMenuAction("World 2", () =>
+            {
+                SwitchToGame(LevelManager.Worlds.World2);
+            });
+            worldSelectMenuState.SetMenuAction("Back", () => { State = States.MainMenu; });
+            worldSelectMenu = new WorldSelectMenu(worldSelectMenuState, world.virtualResolutionRenderer, menuCamera, graphics);
+            worldSelectMenuState.AddTime(new GameTimeWrapper(worldSelectMenu.Update, this, 1));
         }
 
         private void SetupPauseMenu()
         {
             pauseMenuState = world.AddMenuState(PauseMenu);
-            pauseMenuState.MenuFont = World.FontManager["Fonts/Montserrat_Ultra_Light_36"];
-            pauseMenuState.UnselectedColor = Color.Gray;
-            pauseMenuState.SelectedColor = Color.White;
+            SetMenuStateItems(pauseMenuState);
             pauseMenuState.AddMenuItems("Resume", "Main Menu", "Quit");
             pauseMenuState.SetMenuAction("Resume", () => { State = States.Game; });
             pauseMenuState.SetMenuAction("Main Menu", () => { State = States.MainMenu; });
             pauseMenuState.SetMenuAction("Quit", () => { this.Exit(); });
             pauseMenu = new PauseMenu(pauseMenuState, world.virtualResolutionRenderer, world.Cameras[World.Camera1Name], graphics);
             pauseMenuState.AddTime(new GameTimeWrapper(pauseMenu.Update, this, 1));
+        }
+
+        private void SetMenuStateItems(MenuState menuState)
+        {
+            menuState.MenuFont = World.FontManager["Fonts/Montserrat_Ultra_Light_36"];
+            menuState.UnselectedColor = Color.Gray;
+            menuState.SelectedColor = Color.White;
+        }
+
+        private void SwitchToGame()
+        {
+            SwitchToGame(LevelManager.Worlds.World1);
+        }
+
+        private void SwitchToGame(LevelManager.Worlds startingWorld)
+        {
+            world.CurrentCameraName = World.Camera1Name;
+            MediaPlayer.Play(bgMusic);
+            world.DeactivateMenuState(MainMenu.MainMenuName);
+            world.DeactivateMenuState(WorldSelectMenu.WorldSelectMenuName);
+            world.ActivateGameState(MainGame);
+            levelManager.SetLevel(startingWorld, player, world.Cameras[World.Camera1Name], gameTimer);
+            mainGameTime.GameSpeed = 1;
+            collisionGameTime.GameSpeed = 0.1m;
+            endGameTime.GameSpeed = 1;
+            timerGameTime.GameSpeed = 1;
+            state = States.Game;
         }
 
         /// <summary>

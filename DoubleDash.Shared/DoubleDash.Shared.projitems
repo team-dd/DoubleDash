@@ -23,8 +23,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Level.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LevelManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LevelReader.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MainMenu.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)PauseMenu.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Menus\MainMenu.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Menus\PauseMenu.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Menus\WorldSelectMenu.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Player.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rain.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RainManager.cs" />
