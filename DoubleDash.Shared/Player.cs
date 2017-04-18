@@ -470,7 +470,21 @@ namespace DoubleDash
             polygon = new Polygon(vertices);
         }
 
-        public void CheckCollisions(List<Block> walls)
+        public float getGameSpeedMultiplier(CurrentTime currentTime)
+        {
+            if (currentTime.speed == CurrentTime.Speeds.Slow)
+            {
+                return 0.5f;
+            } else if (currentTime.speed == CurrentTime.Speeds.Normal)
+            {
+                return 1.0f;
+            } else
+            {
+                return 1.25f;
+            }
+        }
+
+        public void CheckCollisions(List<Block> walls, CurrentTime currentTime)
         {
             bool anyCollision = false;
             bool onGround = false;
@@ -529,7 +543,7 @@ namespace DoubleDash
                             {
                                 if (wall.isMovingLeft)
                                 {
-                                    position.X -= .3f;
+                                    position.X -= .3f * getGameSpeedMultiplier(currentTime);
                                 }
                             }
                         }
@@ -541,7 +555,7 @@ namespace DoubleDash
                             {
                                 if (!wall.isMovingLeft)
                                 {
-                                    position.X += .3f;
+                                    position.X += .3f * getGameSpeedMultiplier(currentTime);
                                 }
                             }
                         }
@@ -558,11 +572,11 @@ namespace DoubleDash
                         {
                             if (wall.isMovingLeft)
                             {
-                                position.X -= .3f;
+                                position.X -= .3f * getGameSpeedMultiplier(currentTime);
                             }
                             else
                             {
-                                position.X += .3f;
+                                position.X += .3f * getGameSpeedMultiplier(currentTime);
                             }
                         }
 

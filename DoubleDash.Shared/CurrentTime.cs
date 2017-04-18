@@ -24,7 +24,7 @@ namespace DoubleDash
         /// </summary>
         private List<Tuple<GameTimeWrapper, decimal>> gameTimes;
         public TextItem text;
-        private Speeds speed;
+        public Speeds speed;
         private SoundEffect speedUp;
         private SoundEffect speedUpSlower;
         private SoundEffect slowDown;

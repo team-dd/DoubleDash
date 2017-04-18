@@ -508,7 +508,7 @@ namespace DoubleDash
 
             player.Update(gameTime);
             levelManager.Update(gameTime, player, world.CurrentCamera, gameTimer);
-            player.CheckCollisions(levelManager.levels[levelManager.currentLevel].blocks);
+            player.CheckCollisions(levelManager.levels[levelManager.currentLevel].blocks, currentTime);
 
             if (GameHelpers.Rain)
             {
