@@ -547,7 +547,7 @@ namespace DoubleDash
         void TimerUpdate(GameTimeWrapper gameTime)
         {
             gameTimer.timerText.position = Vector2.Transform(
-                new Vector2(world.virtualResolutionRenderer.WindowResolution.Width/2 - gameTimer.timerText.textSize.X/2,
+                new Vector2(world.virtualResolutionRenderer.WindowResolution.Width/2 - gameTimer.timerText.textSize.X/2 - 35,
                 100),
                 world.CurrentCamera.InverseTransform);
             gameTimer.Update(gameTime);
