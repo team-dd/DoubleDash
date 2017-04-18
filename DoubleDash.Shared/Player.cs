@@ -422,6 +422,7 @@ namespace DoubleDash
             acceleration.X = MathHelper.Clamp(acceleration.X, -1.8f, 1.8f);
 
             velocity.X = MathHelper.Clamp(velocity.X, -14f, 14f);
+            velocity.Y = MathHelper.Clamp(velocity.Y, -100, 30);
 
             base.Update(gameTime);
 
