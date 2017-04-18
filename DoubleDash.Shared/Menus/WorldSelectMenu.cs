@@ -1,33 +1,25 @@
-﻿using GLX;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.Xna.Framework.Input;
+using GLX;
+using Microsoft.Xna.Framework;
 
-namespace DoubleDash
+namespace DoubleDash.Menus
 {
-    public class MainMenu
+    public class WorldSelectMenu
     {
-        public const string MainMenuName = "mainMenu";
-        public const string MainMenuCamera = "mainMenuCamera";
+        public const string WorldSelectMenuName = "wordSelectMenu";
 
         public StarBackgroundManager starBackground;
-
-        private KeyboardState previousKeyboardState;
-        private GamePadState previousGamePadState;
 
         private MenuState menuState;
         public Camera Camera { get; private set; }
         private TextItem title;
 
-        public MainMenu(MenuState menuState, VirtualResolutionRenderer vrr, GraphicsDeviceManager graphics)
+        public WorldSelectMenu(MenuState menuState, VirtualResolutionRenderer vrr, Camera camera, GraphicsDeviceManager graphics)
         {
-            previousKeyboardState = Keyboard.GetState();
-            previousGamePadState = GamePad.GetState(PlayerIndex.One);
-            Camera = new Camera(vrr, Camera.CameraFocus.Center);
-            title = new TextItem(menuState.MenuFont, "Double Dash");
+            Camera = camera;
+            title = new TextItem(menuState.MenuFont, "World Select");
             title.position = new Vector2(vrr.VirtualResolution.Width / 2, vrr.VirtualResolution.Height / 2);
             menuState.initialPosition = new Vector2(vrr.VirtualResolution.Width / 2, vrr.VirtualResolution.Height * 0.66f);
             starBackground = new StarBackgroundManager(graphics);
