@@ -168,6 +168,10 @@ namespace DoubleDash
             World.SoundManager.Load("Audio/Sounds/doorsound");
             World.SoundManager.Load("Audio/Sounds/death");
             World.SoundManager.Load("Audio/Sounds/fail");
+            World.SoundManager.Load("Audio/Sounds/speedup");
+            World.SoundManager.Load("Audio/Sounds/slowdown");
+            World.SoundManager.Load("Audio/Sounds/speedupslower");
+            World.SoundManager.Load("Audio/Sounds/slowdownslower");
 
             // Load songs
             World.SongManager.Load("Audio/Music/newmusic2");
@@ -194,7 +198,13 @@ namespace DoubleDash
             world.AddGameState(mainGameState);
             world.CurrentCamera.Focus = Camera.CameraFocus.Center;
             world.CurrentCamera.Zoom = 0.75f;
-            currentTime = new CurrentTime(World.FontManager["Fonts/Arial_24"]);
+            currentTime = new CurrentTime(
+                World.FontManager["Fonts/Arial_24"], 
+                World.SoundManager["Audio/Sounds/speedup"],
+                World.SoundManager["Audio/Sounds/slowdown"],
+                World.SoundManager["Audio/Sounds/speedupslower"],
+                World.SoundManager["Audio/Sounds/slowdownslower"]
+            );
             currentTime.AddGameTime(mainGameTime, 1);
             currentTime.AddGameTime(collisionGameTime, 0.1m);
             currentTime.AddGameTime(endGameTime, 1);
@@ -537,7 +547,7 @@ namespace DoubleDash
         void TimerUpdate(GameTimeWrapper gameTime)
         {
             gameTimer.timerText.position = Vector2.Transform(
-                new Vector2(world.virtualResolutionRenderer.WindowResolution.Width - gameTimer.timerText.textSize.X,
+                new Vector2(world.virtualResolutionRenderer.WindowResolution.Width/2 - gameTimer.timerText.textSize.X/2,
                 100),
                 world.CurrentCamera.InverseTransform);
             gameTimer.Update(gameTime);

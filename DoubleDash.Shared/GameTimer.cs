@@ -17,6 +17,7 @@ namespace DoubleDash
         {
             timerText = new TextItem(spriteFont);
             timerText.origin = Vector2.Zero;
+            timerText.scale = 2f;
             timer = TimeSpan.Zero;
             active = false;
         }
@@ -42,7 +43,7 @@ namespace DoubleDash
             {
                 timer += gameTime.ElapsedGameTime;
             }
-            timerText.text = timer.ToString();
+            timerText.text = timer.ToString().Substring(4, timer.ToString().Length - 8);
         }
 
         public void Draw(SpriteBatch spriteBatch)

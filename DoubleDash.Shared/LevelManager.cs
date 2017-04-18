@@ -54,6 +54,8 @@ namespace DoubleDash
             currentLevel = 0;
             SetupLevel(player, camera);
             player.yDeathThreshold = levels[currentLevel].highestY + 2000;
+            player.resetGameTimer = gameTimer.Reset;
+            player.startGameTimer = gameTimer.Start;
             gameTimer.Reset();
             gameTimer.Start();
         }
@@ -67,6 +69,8 @@ namespace DoubleDash
             }
             SetupLevel(player, camera);
             player.yDeathThreshold = levels[currentLevel].highestY + 2000;
+            player.resetGameTimer = gameTimer.Reset;
+            player.startGameTimer = gameTimer.Start;
             gameTimer.Reset();
             gameTimer.Start();
         }

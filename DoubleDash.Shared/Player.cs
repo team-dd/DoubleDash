@@ -67,6 +67,9 @@ namespace DoubleDash
         Sound failSound;
         Sound deathSound;
 
+        public Action resetGameTimer;
+        public Action startGameTimer;
+
         public SpriteSheetInfo spriteSheetInfo = new SpriteSheetInfo(30, 32);
 
         public Player(Texture2D dashIndicatorTex,
@@ -120,6 +123,14 @@ namespace DoubleDash
             wallJumpCounter = 0;
             dashIndicator.visible = true;
             dashIndicator.position = position + Vector2.Normalize(new Vector2(0, 1)) * DashDistance;
+            if (resetGameTimer != null)
+            {
+                resetGameTimer();
+            }
+            if (startGameTimer != null)
+            {
+                startGameTimer();
+            }
         }
 
         public void MoveLeft(GameTimeWrapper gameTime)
@@ -252,7 +263,7 @@ namespace DoubleDash
             hasLetGoOfJump = false;
             if (canJump && jumpTime == maxJumpTime)
             {
-                velocity.Y = -16f;
+                velocity.Y = -14f;
                 
                 if (jumpState == JumpStates.WallLeft)
                 {

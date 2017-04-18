@@ -289,3 +289,27 @@
 #begin Levels/World 2/puzzle2.json
 /copy:Levels/World 2/puzzle2.json
 
+#begin Audio/Sounds/slowdown.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Sounds/slowdown.wav
+
+#begin Audio/Sounds/speedup.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Sounds/speedup.wav
+
+#begin Audio/Sounds/slowdownslower.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Sounds/slowdownslower.wav
+
+#begin Audio/Sounds/speedupslower.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Sounds/speedupslower.wav
+

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using GLX;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace DoubleDash
@@ -24,13 +25,21 @@ namespace DoubleDash
         private List<Tuple<GameTimeWrapper, decimal>> gameTimes;
         public TextItem text;
         private Speeds speed;
+        private SoundEffect speedUp;
+        private SoundEffect speedUpSlower;
+        private SoundEffect slowDown;
+        private SoundEffect slowDownSlower;
         
-        public CurrentTime(SpriteFont spriteFont)
+        public CurrentTime(SpriteFont spriteFont, SoundEffect speedUp, SoundEffect slowDown, SoundEffect speedUpSlower, SoundEffect slowDownSlower)
         {
             gameTimes = new List<Tuple<GameTimeWrapper, decimal>>();
             text = new TextItem(spriteFont, "Normal");
             text.color = Color.White;
             speed = Speeds.Normal;
+            this.speedUp = speedUp;
+            this.speedUpSlower = speedUpSlower;
+            this.slowDown = slowDown;
+            this.slowDownSlower = slowDownSlower;
         }
 
         public void AddGameTime(GameTimeWrapper gameTime, decimal baseTime)
@@ -45,7 +54,7 @@ namespace DoubleDash
             {
                 time.Item1.GameSpeed = time.Item2 * 0.5m;
             }
-            text.text = "Slow";
+            text.text = "Speed: Slow";
             text.alpha = 1;
             text.visible = true;
         }
@@ -57,7 +66,7 @@ namespace DoubleDash
             {
                 time.Item1.GameSpeed = time.Item2;
             }
-            text.text = "Normal";
+            text.text = "Speed: Normal";
             text.alpha = 1;
             text.visible = true;
         }
@@ -69,7 +78,7 @@ namespace DoubleDash
             {
                 time.Item1.GameSpeed = time.Item2 * 1.25m;
             }
-            text.text = "Fast";
+            text.text = "Speed: Fast";
             text.alpha = 1;
             text.visible = true;
         }
@@ -78,10 +87,12 @@ namespace DoubleDash
         {
             if (speed == Speeds.Fast)
             {
+                slowDown.Play();
                 SetToNormal();
             }
             else if (speed == Speeds.Normal)
             {
+                slowDownSlower.Play();
                 SetToSlow();
             }
         }
@@ -90,10 +101,12 @@ namespace DoubleDash
         {
             if (speed == Speeds.Slow)
             {
+                speedUpSlower.Play();
                 SetToNormal();
             }
             else if (speed == Speeds.Normal)
             {
+                speedUp.Play();
                 SetToFast();
             }
         }
