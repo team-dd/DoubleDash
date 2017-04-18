@@ -315,10 +315,4 @@
 
 #begin Levels/World 1/level0.json
 /copy:Levels/World 1/level0.json
-<<<<<<< Updated upstream
-=======
-
-#begin Levels/World 2/level4 new.json
-/copy:Levels/World 2/level4 new.json
->>>>>>> Stashed changes
 
