@@ -236,6 +236,7 @@ namespace DoubleDash
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/collisiontest.json"));
 
             //World 1
+<<<<<<< Updated upstream
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level0.json"), LevelManager.Worlds.World1);
             levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level1.json"));
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level2.json"));
