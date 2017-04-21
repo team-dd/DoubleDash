@@ -84,6 +84,8 @@ namespace DoubleDash
             player.resetGameTimer = gameTimer.Reset;
             player.startGameTimer = gameTimer.Start;
             gameTimer.Reset();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
             gameTimer.Start();
         }
 
