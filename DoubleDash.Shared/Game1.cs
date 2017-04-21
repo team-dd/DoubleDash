@@ -535,7 +535,15 @@ namespace DoubleDash
                     player.LetGo();
                 }
 
-                player.SetDashCircle(gamePadState.ThumbSticks.Left);
+                if (gamePadState.ThumbSticks.Right.X > -0.05f && gamePadState.ThumbSticks.Right.X < 0.05f &&
+                    gamePadState.ThumbSticks.Right.Y > -0.05f && gamePadState.ThumbSticks.Right.Y < 0.05f)
+                {
+                    player.SetDashCircle(gamePadState.ThumbSticks.Left);
+                }
+                else
+                {
+                    player.SetDashCircle(gamePadState.ThumbSticks.Right);
+                }
             }
             else
             {
