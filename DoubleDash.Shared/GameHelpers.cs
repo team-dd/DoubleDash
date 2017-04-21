@@ -20,5 +20,22 @@ namespace DoubleDash
 
         public static Color BlockColor1 { get { return Color.Black; } }
         public static Color BlockColor2 { get { return new Color(45, 45, 45); } }
+
+        public static Color[] Rainbow =
+        {
+            // Red
+            new Color(231, 76, 60),
+            // Orange
+            new Color(230, 126, 34),
+            // Yellow
+            new Color(241, 196, 15),
+            // Green
+            new Color(46, 204, 113),
+            // Blue
+            new Color(52, 152, 219),
+            // Purple
+            new Color(155, 89, 182),
+            Color.Violet
+        };
     }
 }

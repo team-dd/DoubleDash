@@ -277,7 +277,10 @@ namespace DoubleDash
             starBackgroundManager = new StarBackgroundManager(graphics);
             starBackgroundManager.Create(5, world.virtualResolutionRenderer);
 
-            rainManager = new RainManager(graphics);
+            if (GameHelpers.Rain)
+            {
+                rainManager = new RainManager(graphics);
+            }
 
             bgMusic = World.SongManager["Audio/Music/newmusic2"];
             song = World.SongManager["Audio/Music/intro2"];

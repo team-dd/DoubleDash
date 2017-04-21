@@ -19,19 +19,6 @@ namespace DoubleDash
         private bool zoomingIn;
         public float highestY;
         public Color color;
-
-        static Random r = new Random();
-
-        static Color[] RAINBOW = {
-            Color.Red,
-            Color.Orange,
-            Color.Yellow,
-            Color.Green,
-            Color.Blue,
-            Color.Indigo,
-            Color.Violet
-        };
-
         public Color[] palette;
 
         public Level(int levelIndex)
@@ -39,7 +26,7 @@ namespace DoubleDash
             blocksDescription = new List<BlockDescription>();
             blocks = new List<Block>();
             zoomingIn = false;
-            palette = RAINBOW;
+            palette = GameHelpers.Rainbow;
             highestY = 0;
         }
 
