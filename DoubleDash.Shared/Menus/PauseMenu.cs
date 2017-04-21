@@ -10,6 +10,8 @@ namespace DoubleDash.Menus
 {
     public class PauseMenu
     {
+        public const string PauseMenuName = "pauseMenu";
+
         private MenuState menuState;
         private VirtualResolutionRenderer vrr;
         private Camera gameCamera;

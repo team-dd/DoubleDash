@@ -19,6 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Game1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GameHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GameSave.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameTimeManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GameTimer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Level.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LevelManager.cs" />
@@ -34,7 +35,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)ShapeNPoints.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StarBackground.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StarBackgroundManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StateManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TileDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TimeManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Vector2Converter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Wall.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Walls.cs" />

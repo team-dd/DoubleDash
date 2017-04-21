@@ -17,12 +17,7 @@ namespace DoubleDash
             Fast
         }
 
-        /// <summary>
-        /// List of Tuples of GameTimeWrappers
-        /// Item1 - GameTimeWrapper
-        /// Item2 - GameTimeWrapper original speed
-        /// </summary>
-        private List<Tuple<GameTimeWrapper, decimal>> gameTimes;
+        private List<GameTimeManager> gameTimes;
         public TextItem text;
         public Speeds speed;
         private SoundEffect speedUp;
@@ -32,8 +27,8 @@ namespace DoubleDash
         
         public CurrentTime(SpriteFont spriteFont, SoundEffect speedUp, SoundEffect slowDown, SoundEffect speedUpSlower, SoundEffect slowDownSlower)
         {
-            gameTimes = new List<Tuple<GameTimeWrapper, decimal>>();
-            text = new TextItem(spriteFont, "Normal");
+            gameTimes = new List<GameTimeManager>();
+            text = new TextItem(spriteFont, "Speed: Normal");
             text.color = Color.White;
             speed = Speeds.Normal;
             this.speedUp = speedUp;
@@ -42,9 +37,9 @@ namespace DoubleDash
             this.slowDownSlower = slowDownSlower;
         }
 
-        public void AddGameTime(GameTimeWrapper gameTime, decimal baseTime)
+        public void AddGameTime(GameTimeManager gameTimeManager)
         {
-            gameTimes.Add(new Tuple<GameTimeWrapper, decimal>(gameTime, baseTime));
+            gameTimes.Add(gameTimeManager);
         }
 
         public void SetToSlow()
@@ -52,7 +47,7 @@ namespace DoubleDash
             speed = Speeds.Slow;
             foreach (var time in gameTimes)
             {
-                time.Item1.GameSpeed = time.Item2 * 0.5m;
+                time.SetSpeed(0.5m);
             }
             text.text = "Speed: Slow";
             text.alpha = 1;
@@ -64,7 +59,7 @@ namespace DoubleDash
             speed = Speeds.Normal;
             foreach (var time in gameTimes)
             {
-                time.Item1.GameSpeed = time.Item2;
+                time.Reset();
             }
             text.text = "Speed: Normal";
             text.alpha = 1;
@@ -76,7 +71,7 @@ namespace DoubleDash
             speed = Speeds.Fast;
             foreach (var time in gameTimes)
             {
-                time.Item1.GameSpeed = time.Item2 * 1.25m;
+                time.SetSpeed(1.25m);
             }
             text.text = "Speed: Fast";
             text.alpha = 1;
@@ -109,16 +104,6 @@ namespace DoubleDash
                 speedUp.Play();
                 SetToFast();
             }
-        }
-
-        public void Update(GameTimeWrapper gameTime)
-        {
-            /*text.alpha -= 0.01f;
-            if (text.alpha <= 0)
-            {
-                text.visible = false;
-                text.alpha = 0;
-            }*/
         }
 
         public void Draw(SpriteBatch spriteBatch)

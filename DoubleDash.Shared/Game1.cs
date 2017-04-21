@@ -15,111 +15,26 @@ namespace DoubleDash
     /// </summary>
     public class Game1 : Game
     {
-        const string MainGame = "game1";
-        const string PauseMenu = "pauseMenu";
-        const string MenuCamera = "menuCamera";
-
-        public enum States
-        {
-            TitleScreen,
-            Game,
-            MainMenu,
-            WorldSelectMenu,
-            PauseMenu
-        }
-
-        private States state;
-        States State
-        {
-            get
-            {
-                return state;
-            }
-            set
-            {
-                if (value == States.TitleScreen)
-                {
-                    world.CurrentCameraName = MenuCamera;
-                    world.ActivateMenuState(TitleScreen.TitleScreenName);
-                }
-                else if (value == States.MainMenu)
-                {
-                    if (state == States.WorldSelectMenu)
-                    {
-                        world.DeactivateMenuState(WorldSelectMenu.WorldSelectMenuName);
-                        world.ActivateMenuState(MainMenu.MainMenuName);
-                    }
-                    else if (state == States.TitleScreen)
-                    {
-                        world.DeactivateMenuState(TitleScreen.TitleScreenName);
-                        world.ActivateMenuState(MainMenu.MainMenuName);
-                        MediaPlayer.Play(song);
-                    }
-                    else
-                    {
-                        MediaPlayer.Play(song);
-                        world.DeactivateGameState(MainGame);
-                        world.DeactivateMenuState(PauseMenu);
-                        world.ActivateMenuState(MainMenu.MainMenuName);
-                        world.CurrentCameraName = MenuCamera;
-                    }
-                }
-                else if (value == States.WorldSelectMenu)
-                {
-                    world.DeactivateMenuState(MainMenu.MainMenuName);
-                    world.ActivateMenuState(WorldSelectMenu.WorldSelectMenuName);
-                }
-                else if (value == States.Game)
-                {
-                    world.CurrentCameraName = World.Camera1Name;
-                    if (state == States.MainMenu ||
-                        state == States.WorldSelectMenu)
-                    {
-                        SwitchToGame();
-                    }
-                    else if (state == States.PauseMenu)
-                    {
-                        world.DeactivateMenuState(PauseMenu);
-                        mainGameTime.GameSpeed = 1;
-                        collisionGameTime.GameSpeed = 0.1m;
-                        endGameTime.GameSpeed = 1;
-                        timerGameTime.GameSpeed = 1;
-                    }
-                }
-                else if (value == States.PauseMenu)
-                {
-                    world.CurrentCameraName = World.Camera1Name;
-                    world.ActivateMenuState(PauseMenu);
-                    mainGameTime.GameSpeed = 0;
-                    collisionGameTime.GameSpeed = 0;
-                    endGameTime.GameSpeed = 0;
-                    timerGameTime.GameSpeed = 0;
-                }
-                state = value;
-            }
-        }
+        public const string MainGame = "game1";
 
         GraphicsDeviceManager graphics;
         World world;
 
-        Camera menuCamera;
-
-        MenuState titleScreenState;
-        TitleScreen titleScreen;
-
-        MenuState mainMenuState;
-        MainMenu mainMenu;
-
-        MenuState worldSelectMenuState;
-        WorldSelectMenu worldSelectMenu;
-
-        MenuState pauseMenuState;
-        PauseMenu pauseMenu;
+        StateManager stateManager;
+        TimeManager timeManager;
 
         GameTimeWrapper mainGameTime;
+        GameTimeManager mainGameTimeManager;
+
         GameTimeWrapper collisionGameTime;
+        GameTimeManager collisionGameTimeManager;
+
         GameTimeWrapper endGameTime;
+        GameTimeManager endGameTimeManager;
+
         GameTimeWrapper timerGameTime;
+        GameTimeManager timerGameTimeManager;
+
         GameState mainGameState;
 
         GameTimer gameTimer;
@@ -211,20 +126,42 @@ namespace DoubleDash
 
             DebugText.Initialize(World.FontManager["Fonts/Courier_New_12"]);
 
-            menuCamera = new Camera(world.virtualResolutionRenderer, Camera.CameraFocus.Center);
-
-            SetupTitleScreen();
-            SetupMainMenu();
-            SetUpWorldSelectMenu();
-            SetupPauseMenu();
-            
-            world.AddCamera(MenuCamera, mainMenu.Camera);
+            player = new Player(World.TextureManager["dash_indicator"],
+                World.SoundManager["Audio/Sounds/jumpsound"],
+                World.SoundManager["Audio/Sounds/blinksound"],
+                World.SoundManager["Audio/Sounds/fail"],
+                World.SoundManager["Audio/Sounds/death"],
+                graphics);
+            player.animations["demoanimation"] = player.animations.AddSpriteSheet(World.TextureManager["demoanimation"], player.spriteSheetInfo, 2, 2, 1, SpriteSheet.Direction.LeftToRight, 10, true);
+            player.animations["dashAnimation"] = player.animations.AddSpriteSheet(World.TextureManager["blink_animation"], player.spriteSheetInfo, 3, 3, 1, SpriteSheet.Direction.LeftToRight, 10, false);
+            player.animations.CurrentAnimationName = "demoanimation";
+            player.Ready();
 
             mainGameTime = new GameTimeWrapper(MainUpdate, this, 1);
+            mainGameTimeManager = new GameTimeManager(mainGameTime, 1);
             collisionGameTime = new GameTimeWrapper(CollisionUpdate, this, 0.1m);
             collisionGameTime.NormalUpdate = false;
+            collisionGameTimeManager = new GameTimeManager(collisionGameTime, 0.1m);
             endGameTime = new GameTimeWrapper(EndUpdate, this, 1);
+            endGameTimeManager = new GameTimeManager(endGameTime, 1);
             timerGameTime = new GameTimeWrapper(TimerUpdate, this, 1);
+            timerGameTimeManager = new GameTimeManager(timerGameTime, 1);
+
+            timeManager = new TimeManager();
+            timeManager.AddTimes(mainGameTimeManager, collisionGameTimeManager, endGameTimeManager, timerGameTimeManager);
+
+            doorSound = World.SoundManager["Audio/Sounds/doorsound"];
+            shapeManager = new ShapeBackground(graphics, Color.Red);
+            levelManager = new LevelManager(World.TextureManager["door"], graphics, doorSound, shapeManager);
+
+            gameTimer = new GameTimer(World.FontManager["Fonts/Arial_24"]);
+
+            bgMusic = World.SongManager["Audio/Music/newmusic2"];
+            song = World.SongManager["Audio/Music/intro2"];
+            MediaPlayer.IsRepeating = true;
+
+            stateManager = new StateManager(this, world, graphics, timeManager, levelManager, gameTimer, player, song, bgMusic);
+
             mainGameState = new GameState(MainGame, graphics);
             mainGameState.AddTime(mainGameTime);
             mainGameState.AddTime(collisionGameTime);
@@ -232,8 +169,8 @@ namespace DoubleDash
             mainGameState.AddTime(timerGameTime);
             mainGameState.AddDraw(MainDraw);
             world.AddGameState(mainGameState);
-            world.CurrentCamera.Focus = Camera.CameraFocus.Center;
-            world.CurrentCamera.Zoom = 0.75f;
+            world.Cameras[World.Camera1Name].Focus = Camera.CameraFocus.Center;
+            world.Cameras[World.Camera1Name].Zoom = 0.75f;
             currentTime = new CurrentTime(
                 World.FontManager["Fonts/Arial_24"], 
                 World.SoundManager["Audio/Sounds/speedup"],
@@ -241,15 +178,9 @@ namespace DoubleDash
                 World.SoundManager["Audio/Sounds/speedupslower"],
                 World.SoundManager["Audio/Sounds/slowdownslower"]
             );
-            currentTime.AddGameTime(mainGameTime, 1);
-            currentTime.AddGameTime(collisionGameTime, 0.1m);
-            currentTime.AddGameTime(endGameTime, 1);
-
-            gameTimer = new GameTimer(World.FontManager["Fonts/Arial_24"]);
-
-            doorSound = World.SoundManager["Audio/Sounds/doorsound"];
-            shapeManager = new ShapeBackground(graphics, Color.Red);
-            levelManager = new LevelManager(World.TextureManager["door"], graphics, doorSound, shapeManager);
+            currentTime.AddGameTime(mainGameTimeManager);
+            currentTime.AddGameTime(collisionGameTimeManager);
+            currentTime.AddGameTime(endGameTimeManager);
 
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/collisiontest.json"));
 
@@ -279,19 +210,6 @@ namespace DoubleDash
 
             levelManager.FinishLoading();
 
-
-
-            player = new Player(World.TextureManager["dash_indicator"],
-                World.SoundManager["Audio/Sounds/jumpsound"],
-                World.SoundManager["Audio/Sounds/blinksound"],
-                World.SoundManager["Audio/Sounds/fail"],
-                World.SoundManager["Audio/Sounds/death"],
-                graphics);
-            player.animations["demoanimation"] = player.animations.AddSpriteSheet(World.TextureManager["demoanimation"], player.spriteSheetInfo, 2, 2, 1, SpriteSheet.Direction.LeftToRight, 10, true);
-            player.animations["dashAnimation"] = player.animations.AddSpriteSheet(World.TextureManager["blink_animation"], player.spriteSheetInfo, 3, 3, 1, SpriteSheet.Direction.LeftToRight, 10, false);
-            player.animations.CurrentAnimationName = "demoanimation";
-            player.Ready();
-
             starBackgroundManager = new StarBackgroundManager(graphics);
             starBackgroundManager.Create(5, world.virtualResolutionRenderer);
 
@@ -300,88 +218,7 @@ namespace DoubleDash
                 rainManager = new RainManager(graphics);
             }
 
-            bgMusic = World.SongManager["Audio/Music/newmusic2"];
-            song = World.SongManager["Audio/Music/intro2"];
-            MediaPlayer.IsRepeating = true;
-
-            State = States.TitleScreen;
-        }
-
-        private void SetupTitleScreen()
-        {
-            titleScreenState = world.AddMenuState(TitleScreen.TitleScreenName);
-            titleScreen = new TitleScreen(titleScreenState, world.virtualResolutionRenderer, menuCamera, World.TextureManager["title_screen"], graphics);
-            titleScreenState.AddTime(new GameTimeWrapper(titleScreen.Update, this, 1));
-        }
-
-        private void SetupMainMenu()
-        {
-            mainMenuState = world.AddMenuState(MainMenu.MainMenuName);
-            SetMenuStateItems(mainMenuState);
-            mainMenuState.AddMenuItems("Play", "World Select", "Quit");
-            mainMenuState.SetMenuAction("Play", () => { State = States.Game; });
-            mainMenuState.SetMenuAction("World Select", () => { State = States.WorldSelectMenu; });
-            mainMenuState.SetMenuAction("Quit", () => { this.Exit(); });
-            mainMenu = new MainMenu(mainMenuState, world.virtualResolutionRenderer, menuCamera, graphics);
-            mainMenuState.AddTime(new GameTimeWrapper(mainMenu.Update, this, 1));
-        }
-
-        private void SetUpWorldSelectMenu()
-        {
-            worldSelectMenuState = world.AddMenuState(WorldSelectMenu.WorldSelectMenuName);
-            SetMenuStateItems(worldSelectMenuState);
-            worldSelectMenuState.AddMenuItems("World 1", "World 2", "Back");
-            worldSelectMenuState.SetMenuAction("World 1", () =>
-            {
-                SwitchToGame(LevelManager.Worlds.World1);
-            });
-            worldSelectMenuState.SetMenuAction("World 2", () =>
-            {
-                SwitchToGame(LevelManager.Worlds.World2);
-            });
-            worldSelectMenuState.SetMenuAction("Back", () => { State = States.MainMenu; });
-            worldSelectMenuState.BackAction = new Action(() => { State = States.MainMenu; });
-            worldSelectMenu = new WorldSelectMenu(worldSelectMenuState, world.virtualResolutionRenderer, menuCamera, graphics);
-            worldSelectMenuState.AddTime(new GameTimeWrapper(worldSelectMenu.Update, this, 1));
-        }
-
-        private void SetupPauseMenu()
-        {
-            pauseMenuState = world.AddMenuState(PauseMenu);
-            SetMenuStateItems(pauseMenuState);
-            pauseMenuState.AddMenuItems("Resume", "Main Menu");
-            pauseMenuState.SetMenuAction("Resume", () => { State = States.Game; });
-            pauseMenuState.SetMenuAction("Main Menu", () => { State = States.MainMenu; });
-            pauseMenuState.BackAction = new Action(() => { State = States.Game; });
-            pauseMenu = new PauseMenu(pauseMenuState, world.virtualResolutionRenderer, world.Cameras[World.Camera1Name], graphics);
-            pauseMenuState.AddTime(new GameTimeWrapper(pauseMenu.Update, this, 1));
-        }
-
-        private void SetMenuStateItems(MenuState menuState)
-        {
-            menuState.MenuFont = World.FontManager["Fonts/Montserrat_Ultra_Light_36"];
-            menuState.UnselectedColor = Color.Gray;
-            menuState.SelectedColor = Color.White;
-        }
-
-        private void SwitchToGame()
-        {
-            SwitchToGame(LevelManager.Worlds.World1);
-        }
-
-        private void SwitchToGame(LevelManager.Worlds startingWorld)
-        {
-            world.CurrentCameraName = World.Camera1Name;
-            MediaPlayer.Play(bgMusic);
-            world.DeactivateMenuState(MainMenu.MainMenuName);
-            world.DeactivateMenuState(WorldSelectMenu.WorldSelectMenuName);
-            world.ActivateGameState(MainGame);
-            levelManager.SetLevel(startingWorld, player, world.Cameras[World.Camera1Name], gameTimer);
-            mainGameTime.GameSpeed = 1;
-            collisionGameTime.GameSpeed = 0.1m;
-            endGameTime.GameSpeed = 1;
-            timerGameTime.GameSpeed = 1;
-            state = States.Game;
+            stateManager.State = StateManager.States.TitleScreen;
         }
 
         /// <summary>
@@ -406,9 +243,9 @@ namespace DoubleDash
             if (keyboardState.IsKeyDownAndUp(Keys.Escape, previousKeyboardState) ||
                 gamePadState.IsButtonDownAndUp(Buttons.Start, previousGamePadState))
             {
-                if (State == States.Game)
+                if (stateManager.State == StateManager.States.Game)
                 {
-                    State = States.PauseMenu;
+                    stateManager.State = StateManager.States.PauseMenu;
                 }
             }
 
@@ -443,32 +280,17 @@ namespace DoubleDash
                 currentTime.SetFaster();
             }
 
-            if (titleScreen.Done && State == States.TitleScreen)
-            {
-                State = States.MainMenu;
-            }
+            stateManager.Update();
 
             world.Update(gameTime);
 
-            if (State != States.Game)
+            if (stateManager.State != StateManager.States.Game)
             {
                 previousKeyboardState = keyboardState;
                 previousGamePadState = gamePadState;
             }
 
             base.Update(gameTime);
-        }
-
-        private void TogglePauseMenu()
-        {
-            if (State == States.PauseMenu)
-            {
-                State = States.Game;
-            }
-            else if (State == States.Game)
-            {
-                State = States.PauseMenu;
-            }
         }
 
         void MainUpdate(GameTimeWrapper gameTime)
@@ -635,7 +457,6 @@ namespace DoubleDash
             currentTime.text.position = Vector2.Transform(
                 new Vector2(100),
                 world.CurrentCamera.InverseTransform);
-            currentTime.Update(gameTime);
         }
 
         void TimerUpdate(GameTimeWrapper gameTime)
@@ -653,14 +474,7 @@ namespace DoubleDash
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            if (State == States.MainMenu)
-            {
-                GraphicsDevice.Clear(GameHelpers.GameBackgroundColor);
-            }
-            else
-            {
-                GraphicsDevice.Clear(GameHelpers.GameBackgroundColor);
-            }
+            GraphicsDevice.Clear(GameHelpers.GameBackgroundColor);
 
             world.DrawWorld();
 
