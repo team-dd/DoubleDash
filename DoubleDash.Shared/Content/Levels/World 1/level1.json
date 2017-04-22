@@ -1,48 +1,13 @@
 {
   "rectangles": [
     {
-      "X": 805,
-      "Y": 285,
-      "Width": 205,
-      "Height": 275,
-      "IsMoving": false
-    },
-    {
-      "X": 385,
-      "Y": 315,
-      "Width": 225,
-      "Height": 245,
-      "IsMoving": false
-    },
-    {
       "X": 0,
-      "Y": 350,
-      "Width": 225,
-      "Height": 210,
-      "IsMoving": false
-    },
-    {
-      "X": 1195,
-      "Y": 220,
-      "Width": 140,
-      "Height": 340,
-      "IsMoving": false
-    },
-    {
-      "X": 1335,
       "Y": 0,
-      "Width": 110,
-      "Height": 220,
-      "IsMoving": false
-    },
-    {
-      "X": 1335,
-      "Y": 220,
-      "Width": 110,
-      "Height": 340,
+      "Width": 360,
+      "Height": 120,
       "IsMoving": false
     }
   ],
-  "start": "10, 340",
-  "end": "1310, 205"
+  "start": "50, -70",
+  "end": "315, -10"
 }

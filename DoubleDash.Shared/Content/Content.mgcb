@@ -226,9 +226,6 @@
 #begin Levels/World 2/level3.json
 /copy:Levels/World 2/level3.json
 
-#begin Levels/World 2/level4.json
-/copy:Levels/World 2/level4.json
-
 #begin Levels/World 2/level5.json
 /copy:Levels/World 2/level5.json
 
@@ -241,35 +238,17 @@
 #begin Levels/World 1/level2.json
 /copy:Levels/World 1/level2.json
 
-#begin Levels/World 1/level2old.json
-/copy:Levels/World 1/level2old.json
-
 #begin Levels/World 1/level3.json
 /copy:Levels/World 1/level3.json
 
-#begin Levels/World 1/level3old.json
-/copy:Levels/World 1/level3old.json
-
 #begin Levels/World 1/level4.json
 /copy:Levels/World 1/level4.json
-
-#begin Levels/World 1/level4old.json
-/copy:Levels/World 1/level4old.json
 
 #begin Levels/World 1/level5.json
 /copy:Levels/World 1/level5.json
 
 #begin Levels/World 1/level6.json
 /copy:Levels/World 1/level6.json
-
-#begin Levels/World 1/puzzle1.json
-/copy:Levels/World 1/puzzle1.json
-
-#begin Levels/World 1/level5old.json
-/copy:Levels/World 1/level5old.json
-
-#begin Levels/World 1/puzzle1old.json
-/copy:Levels/World 1/puzzle1old.json
 
 #begin Levels/Test Levels/collisiontest.json
 /copy:Levels/Test Levels/collisiontest.json
@@ -313,9 +292,6 @@
 /processorParam:Quality=Best
 /build:Audio/Sounds/speedupslower.wav
 
-#begin Levels/World 1/level0.json
-/copy:Levels/World 1/level0.json
-
 #begin title_screen.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -327,4 +303,10 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:title_screen.png
+
+#begin Levels/World 1/level7.json
+/copy:Levels/World 1/level7.json
+
+#begin Levels/World 2/level4 .json
+/copy:Levels/World 2/level4 .json
 
