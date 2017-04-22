@@ -24,6 +24,12 @@ namespace DoubleDash
             gameTimeWrapper.GameSpeed = currentSpeed;
         }
 
+        public void MultiplyOriginalSpeed(decimal multiplier)
+        {
+            currentSpeed = originalSpeed * multiplier;
+            gameTimeWrapper.GameSpeed = currentSpeed;
+        }
+
         public void Play()
         {
             gameTimeWrapper.GameSpeed = currentSpeed;

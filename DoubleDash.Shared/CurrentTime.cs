@@ -47,7 +47,7 @@ namespace DoubleDash
             speed = Speeds.Slow;
             foreach (var time in gameTimes)
             {
-                time.SetSpeed(0.5m);
+                time.MultiplyOriginalSpeed(0.5m);
             }
             text.text = "Speed: Slow";
             text.alpha = 1;
@@ -71,7 +71,7 @@ namespace DoubleDash
             speed = Speeds.Fast;
             foreach (var time in gameTimes)
             {
-                time.SetSpeed(1.25m);
+                time.MultiplyOriginalSpeed(1.25m);
             }
             text.text = "Speed: Fast";
             text.alpha = 1;
