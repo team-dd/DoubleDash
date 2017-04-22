@@ -1,6 +1,20 @@
 {
   "rectangles": [
     {
+      "X": 3000,
+      "Y": 50,
+      "Width": 1010,
+      "Height": 730,
+      "IsMoving": false
+    },
+    {
+      "X": 2780,
+      "Y": 50,
+      "Width": 220,
+      "Height": 730,
+      "IsMoving": false
+    },
+    {
       "X": 1725,
       "Y": 1300,
       "Width": 5,
@@ -141,13 +155,6 @@
       "IsMoving": false
     },
     {
-      "X": 3005,
-      "Y": 570,
-      "Width": 65,
-      "Height": 35,
-      "IsMoving": false
-    },
-    {
       "X": 3140,
       "Y": 1445,
       "Width": 30,
@@ -187,13 +194,6 @@
       "Y": 1100,
       "Width": 140,
       "Height": 200,
-      "IsMoving": false
-    },
-    {
-      "X": 2755,
-      "Y": 755,
-      "Width": 310,
-      "Height": 80,
       "IsMoving": false
     },
     {
@@ -614,6 +614,20 @@
       "Y": 555,
       "Width": 35,
       "Height": 15,
+      "IsMoving": false
+    },
+    {
+      "X": 2710,
+      "Y": 780,
+      "Width": 70,
+      "Height": 45,
+      "IsMoving": false
+    },
+    {
+      "X": 2780,
+      "Y": 780,
+      "Width": 220,
+      "Height": 45,
       "IsMoving": false
     }
   ],
