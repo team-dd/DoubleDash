@@ -310,3 +310,9 @@
 #begin Levels/World 2/level4 .json
 /copy:Levels/World 2/level4 .json
 
+#begin Audio/Music/title.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/Music/title.wav
+

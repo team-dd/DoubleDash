@@ -123,6 +123,7 @@ namespace DoubleDash
             // Load songs
             World.SongManager.Load("Audio/Music/newmusic2");
             World.SongManager.Load("Audio/Music/intro2");
+            World.SongManager.Load("Audio/Music/title");
 
             DebugText.Initialize(World.FontManager["Fonts/Courier_New_12"]);
 
@@ -160,7 +161,8 @@ namespace DoubleDash
             song = World.SongManager["Audio/Music/intro2"];
             MediaPlayer.IsRepeating = true;
 
-            stateManager = new StateManager(this, world, graphics, timeManager, levelManager, gameTimer, player, song, bgMusic);
+            stateManager = new StateManager(this, world, graphics, timeManager, levelManager, gameTimer, player, song, bgMusic, World.SongManager["Audio/Music/title"]);
+            MediaPlayer.Play(World.SongManager["Audio/Music/title"]);
 
             mainGameState = new GameState(MainGame, graphics);
             mainGameState.AddTime(mainGameTime);

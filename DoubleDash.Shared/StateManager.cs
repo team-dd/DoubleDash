@@ -30,7 +30,7 @@ namespace DoubleDash
         private Player player;
         private Song menuMusic;
         private Song gameMusic;
-        
+        private Song titleMusic;
 
         private States state;
         public States State
@@ -119,7 +119,8 @@ namespace DoubleDash
             GameTimer gameTimer,
             Player player,
             Song menuMusic,
-            Song gameMusic)
+            Song gameMusic,
+            Song titleMusic)
         {
             this.game = game;
             this.world = world;
