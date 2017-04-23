@@ -1,6 +1,20 @@
 {
   "rectangles": [
     {
+      "X": 4540,
+      "Y": 715,
+      "Width": 780,
+      "Height": 90,
+      "IsMoving": false
+    },
+    {
+      "X": 4015,
+      "Y": 715,
+      "Width": 525,
+      "Height": 90,
+      "IsMoving": false
+    },
+    {
       "X": 4015,
       "Y": 560,
       "Width": 525,

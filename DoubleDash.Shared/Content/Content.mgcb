@@ -307,9 +307,6 @@
 #begin Levels/World 1/level7.json
 /copy:Levels/World 1/level7.json
 
-#begin Levels/World 2/level4 .json
-/copy:Levels/World 2/level4 .json
-
 #begin Levels/World 3/level1.json
 /copy:Levels/World 3/level1.json
 
@@ -318,4 +315,7 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:Audio/Music/title.wav
+
+#begin Levels/World 2/level4.json
+/copy:Levels/World 2/level4.json
 
