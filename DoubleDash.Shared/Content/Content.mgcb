@@ -319,3 +319,9 @@
 /processorParam:Quality=Best
 /build:Audio/Music/title.wav
 
+#begin Levels/World 3/level2.json
+/copy:Levels/World 3/level2.json
+
+#begin Levels/World 3/test.json
+/copy:Levels/World 3/test.json
+

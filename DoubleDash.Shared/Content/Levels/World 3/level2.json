@@ -1,0 +1,62 @@
+{
+  "rectangles": [
+    {
+      "X": 450,
+      "Y": 0,
+      "Width": 405,
+      "Height": 155,
+      "IsMoving": false
+    },
+    {
+      "X": 780,
+      "Y": 685,
+      "Width": 35,
+      "Height": 75,
+      "IsMoving": true
+    },
+    {
+      "X": 1085,
+      "Y": 570,
+      "Width": 20,
+      "Height": 20,
+      "IsMoving": false
+    },
+    {
+      "X": 2360,
+      "Y": 745,
+      "Width": 145,
+      "Height": 45,
+      "IsMoving": false
+    },
+    {
+      "X": 1935,
+      "Y": 570,
+      "Width": 20,
+      "Height": 20,
+      "IsMoving": false
+    },
+    {
+      "X": 1510,
+      "Y": 745,
+      "Width": 20,
+      "Height": 20,
+      "IsMoving": false
+    },
+    {
+      "X": 340,
+      "Y": 685,
+      "Width": 35,
+      "Height": 75,
+      "IsMoving": false
+    },
+    {
+      "X": 0,
+      "Y": 255,
+      "Width": 55,
+      "Height": 210,
+      "IsMoving": false
+    }
+  ],
+  "start": "2380, 735",
+  "end": "715, -10"
+}
