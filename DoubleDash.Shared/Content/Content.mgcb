@@ -310,14 +310,6 @@
 #begin Levels/World 2/level4 .json
 /copy:Levels/World 2/level4 .json
 
-<<<<<<< Updated upstream
-#begin Audio/Music/title.wav
-/importer:WavImporter
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:Audio/Music/title.wav
-=======
 #begin Levels/World 3/level1.json
 /copy:Levels/World 3/level1.json
->>>>>>> Stashed changes
 
