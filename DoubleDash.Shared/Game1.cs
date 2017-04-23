@@ -248,7 +248,7 @@ namespace DoubleDash
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
 
             if (keyboardState.GetPressedKeys().Length > 0
-                || gamePadState.PacketNumber != previousGamePadState.PacketNumber)
+                || anyButtonDown(gamePadState))
             {
                 if (stateManager.State == StateManager.States.TitleScreen)
                 {
@@ -455,6 +455,17 @@ namespace DoubleDash
 
             previousKeyboardState = keyboardState;
             previousGamePadState = gamePadState;
+        }
+
+        bool anyButtonDown(GamePadState gamePadState)
+        {
+            return gamePadState.Buttons.A == ButtonState.Pressed
+                || gamePadState.Buttons.B == ButtonState.Pressed
+                || gamePadState.Buttons.X == ButtonState.Pressed
+                || gamePadState.Buttons.Y == ButtonState.Pressed
+                || gamePadState.Buttons.Start == ButtonState.Pressed
+                || gamePadState.Buttons.Back == ButtonState.Pressed
+                || gamePadState.Buttons.BigButton == ButtonState.Pressed;
         }
 
         void EndUpdate(GameTimeWrapper gameTime)
