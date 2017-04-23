@@ -11,6 +11,18 @@ namespace DoubleDash
     {
         private const int NumberOfLines = 120;
 
+        private readonly int[] PossibleNs = new int[] {
+            6,
+            8,
+            10,
+            12,
+            14,
+            20,
+            24,
+            36,
+            38
+        };
+
         private GraphicsDeviceManager graphics;
         private List<ShapeNPoints> shapes;
         public Color color;
@@ -20,8 +32,7 @@ namespace DoubleDash
         public ShapeBackground(GraphicsDeviceManager graphics, Color color)
         {
             this.graphics = graphics;
-            //n = rand.Next(24, 40);
-            n = 26;
+            n = PossibleNs[rand.Next(PossibleNs.Length)];
             CreateShapes();
         }
 
@@ -38,9 +49,8 @@ namespace DoubleDash
 
         public void ChangeMode()
         {
-            int pren = rand.Next(24, 40);
-            //n = pren - pren % 2;
-            n = 26;
+            int[] PossibleNsMinusCurrentN = (int[]) PossibleNs.Clone();
+            n = PossibleNsMinusCurrentN[rand.Next(PossibleNsMinusCurrentN.Length)];
             CreateShapes();
         }
 

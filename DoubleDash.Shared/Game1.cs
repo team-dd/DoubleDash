@@ -240,6 +240,15 @@ namespace DoubleDash
             KeyboardState keyboardState = Keyboard.GetState();
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
 
+            if (keyboardState.GetPressedKeys().Length > 0
+                || gamePadState.PacketNumber != previousGamePadState.PacketNumber)
+            {
+                if (stateManager.State == StateManager.States.TitleScreen)
+                {
+                    stateManager.State = StateManager.States.MainMenu;
+                }
+            }
+
             if (keyboardState.IsKeyDownAndUp(Keys.Escape, previousKeyboardState) ||
                 gamePadState.IsButtonDownAndUp(Buttons.Start, previousGamePadState))
             {
@@ -278,6 +287,11 @@ namespace DoubleDash
             else if (gamePadState.IsButtonDownAndUp(Buttons.RightShoulder, previousGamePadState))
             {
                 currentTime.SetFaster();
+            }
+            
+            if (keyboardState.IsKeyDownAndUp(Keys.O, previousKeyboardState))
+            {
+                shapeManager.ChangeMode();
             }
 
             stateManager.Update();
