@@ -13,12 +13,14 @@ namespace DoubleDash
         public enum Worlds
         {
             World1,
-            World2
+            World2,
+            World3
         }
 
         // this is so bad
         private int world1StartIndex;
         private int world2StartIndex;
+        private int world3StartIndex;
 
         public List<Level> levels;
         public int currentLevel;
@@ -52,6 +54,10 @@ namespace DoubleDash
             else if (worldStartTag == Worlds.World2)
             {
                 world2StartIndex = levels.Count - 1;
+            }
+            else if (worldStartTag == Worlds.World3)
+            {
+                world3StartIndex = levels.Count - 1;
             }
         }
 
@@ -130,6 +136,10 @@ namespace DoubleDash
             else if (world == Worlds.World2)
             {
                 SetLevel(world2StartIndex, player, camera, gameTimer);
+            }
+            else if (world == Worlds.World3)
+            {
+                SetLevel(world3StartIndex, player, camera, gameTimer);
             }
         }
 
