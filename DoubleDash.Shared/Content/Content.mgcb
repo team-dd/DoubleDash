@@ -310,3 +310,6 @@
 #begin Levels/World 2/level4 .json
 /copy:Levels/World 2/level4 .json
 
+#begin Levels/Test Levels/empty.json
+/copy:Levels/Test Levels/empty.json
+

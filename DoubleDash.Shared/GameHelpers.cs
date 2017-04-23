@@ -8,7 +8,7 @@ namespace DoubleDash
 {
     public static class GameHelpers
     {
-        public const float Gravity = 0.5f;
+        public const float Gravity = 0.0f;
 
         public static Color GameBackgroundColor { get { return new Color(25, 25, 30); } }
         public const bool Rain = false;

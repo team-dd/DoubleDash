@@ -185,7 +185,8 @@ namespace DoubleDash
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/collisiontest.json"));
 
             //World 1
-            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level0.json"), LevelManager.Worlds.World1);
+            levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/empty.json"), LevelManager.Worlds.World1);
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level0.json"));
             levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level1.json"));
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level2.json"));
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level4.json"));
@@ -260,15 +261,31 @@ namespace DoubleDash
 
             if (keyboardState.IsKeyDownAndUp(Keys.D1, previousKeyboardState))
             {
-                currentTime.SetToSlow();
+                shapeManager.UpdateColor(GameHelpers.Rainbow[0]);
             }
             else if (keyboardState.IsKeyDownAndUp(Keys.D2, previousKeyboardState))
             {
-                currentTime.SetToNormal();
+                shapeManager.UpdateColor(GameHelpers.Rainbow[1]);
             }
             else if (keyboardState.IsKeyDownAndUp(Keys.D3, previousKeyboardState))
             {
-                currentTime.SetToFast();
+                shapeManager.UpdateColor(GameHelpers.Rainbow[2]);
+            }
+            else if (keyboardState.IsKeyDownAndUp(Keys.D4, previousKeyboardState))
+            {
+                shapeManager.UpdateColor(GameHelpers.Rainbow[3]);
+            }
+            else if (keyboardState.IsKeyDownAndUp(Keys.D5, previousKeyboardState))
+            {
+                shapeManager.UpdateColor(GameHelpers.Rainbow[4]);
+            }
+            else if (keyboardState.IsKeyDownAndUp(Keys.D6, previousKeyboardState))
+            {
+                shapeManager.UpdateColor(GameHelpers.Rainbow[5]);
+            }
+            else if (keyboardState.IsKeyDownAndUp(Keys.D7, previousKeyboardState))
+            {
+                shapeManager.UpdateColor(GameHelpers.Rainbow[6]);
             }
 
             if (gamePadState.IsButtonDownAndUp(Buttons.LeftShoulder, previousGamePadState))
@@ -492,8 +509,8 @@ namespace DoubleDash
             //world.Draw(starBackgroundManager.Draw);
             world.Draw(levelManager.Draw);
             world.Draw(player.Draw);
-            world.Draw(currentTime.Draw);
-            world.Draw(gameTimer.Draw);
+            //world.Draw(currentTime.Draw);
+            //world.Draw(gameTimer.Draw);
             //world.Draw(DebugText.Draw);
 
             world.EndDraw();

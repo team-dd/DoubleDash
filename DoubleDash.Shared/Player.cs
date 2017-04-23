@@ -670,11 +670,11 @@ namespace DoubleDash
                 }
             }
             base.Draw(spriteBatch);
-            dashBar.Draw(spriteBatch);
-            if (dashIndicator.visible)
-            {
-                dashIndicator.Draw(spriteBatch);
-            }
+            //dashBar.Draw(spriteBatch);
+            //if (dashIndicator.visible)
+            //{
+            //    dashIndicator.Draw(spriteBatch);
+            //}
         }
     }
 }
