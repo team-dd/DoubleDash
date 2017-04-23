@@ -4,6 +4,7 @@ using System.Text;
 using GLX;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 
 namespace DoubleDash.Menus
 {
@@ -25,6 +26,9 @@ namespace DoubleDash.Menus
             }
         }
 
+        private TimeSpan delay;
+        private bool startedIntro;
+
         public TitleScreen(MenuState menuState, VirtualResolutionRenderer vrr, Camera camera, Texture2D texture, GraphicsDeviceManager graphics)
         {
             Camera = camera;
@@ -38,6 +42,8 @@ namespace DoubleDash.Menus
             fade = 1;
             fadingIn = true;
             displayTime = TimeSpan.FromSeconds(3);
+            delay = TimeSpan.FromSeconds(5);
+            startedIntro = false;
         }
 
         private void SetUpMenuState()
@@ -47,6 +53,16 @@ namespace DoubleDash.Menus
 
         public void Update(GameTimeWrapper gameTime)
         {
+            if (delay > TimeSpan.Zero)
+            {
+                delay -= gameTime.ElapsedGameTime;
+                return;
+            }
+            if (!startedIntro)
+            {
+                MediaPlayer.Play(World.SongManager["Audio/Music/title"]);
+                startedIntro = true;
+            }
             if (fadingIn)
             {
                 fade -= 0.01f;

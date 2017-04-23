@@ -348,7 +348,7 @@ namespace DoubleDash
             }
         }
 
-        public override void Update(GameTimeWrapper gameTime)
+        public void Update(GameTimeWrapper gameTime, bool hasStartedLevel)
         {
             if (isOutOfBounds())
             {
@@ -406,30 +406,33 @@ namespace DoubleDash
                 canJump = false;
             }
 
-            if (jumpState == JumpStates.WallLeft || jumpState == JumpStates.WallRight)
+            if (hasStartedLevel)
             {
-                float lowestWallSlideSpeed = 20;
-                if (velocity.Y <= lowestWallSlideSpeed)
+                if (jumpState == JumpStates.WallLeft || jumpState == JumpStates.WallRight)
                 {
-                    velocity.Y += (GameHelpers.Gravity / 1.7f) * (float)gameTime.GameSpeed;
+                    float lowestWallSlideSpeed = 20;
+                    if (velocity.Y <= lowestWallSlideSpeed)
+                    {
+                        velocity.Y += (GameHelpers.Gravity / 1.7f) * (float)gameTime.GameSpeed;
+                    }
+                    else
+                    {
+                        velocity.Y = lowestWallSlideSpeed;
+                    }
                 }
                 else
                 {
-                    velocity.Y = lowestWallSlideSpeed;
+                    if (!hasLetGoOfJump && canJump)
+                    {
+                        velocity.Y += (GameHelpers.Gravity / 3f) * (float)gameTime.GameSpeed;
+                    }
+                    else
+                    {
+                        velocity.Y += GameHelpers.Gravity * (float)gameTime.GameSpeed;
+                    }
                 }
             }
-            else
-            {
-                if (!hasLetGoOfJump && canJump)
-                {
-                    velocity.Y += (GameHelpers.Gravity / 3f) * (float)gameTime.GameSpeed;
-                }
-                else
-                {
-                    velocity.Y += GameHelpers.Gravity * (float)gameTime.GameSpeed;
-                }
-            }
-            
+
             acceleration.X = MathHelper.Clamp(acceleration.X, -1.8f, 1.8f);
 
             velocity.X = MathHelper.Clamp(velocity.X, -14f, 14f);

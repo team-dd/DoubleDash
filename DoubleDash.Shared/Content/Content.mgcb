@@ -307,8 +307,26 @@
 #begin Levels/World 1/level7.json
 /copy:Levels/World 1/level7.json
 
-#begin Levels/World 2/level4 .json
-/copy:Levels/World 2/level4 .json
+#begin Levels/World 3/level1.json
+/copy:Levels/World 3/level1.json
+
+#begin Audio/Music/title.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/Music/title.wav
+
+#begin Levels/World 3/level2.json
+/copy:Levels/World 3/level2.json
+
+#begin Levels/World 2/level4.json
+/copy:Levels/World 2/level4.json
+
+#begin Levels/World 3/level3.json
+/copy:Levels/World 3/level3.json
+
+#begin Levels/World 3/level4.json
+/copy:Levels/World 3/level4.json
 
 #begin Levels/Test Levels/empty.json
 /copy:Levels/Test Levels/empty.json

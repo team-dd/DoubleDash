@@ -72,9 +72,9 @@ namespace DoubleDash
                     graphics,
                     palette[currentLevelIndex % 7]);
                 blocks.Add(block);
-                if (block.position.Y > highestY)
+                if (block.position.Y + block.DrawSize.Height > highestY)
                 {
-                    highestY = block.position.Y;
+                    highestY = block.position.Y + block.DrawSize.Height;
                 }
             }
             color = palette[currentLevelIndex % 7];

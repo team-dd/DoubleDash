@@ -123,6 +123,7 @@ namespace DoubleDash
             // Load songs
             World.SongManager.Load("Audio/Music/newmusic2");
             World.SongManager.Load("Audio/Music/intro2");
+            World.SongManager.Load("Audio/Music/title");
 
             DebugText.Initialize(World.FontManager["Fonts/Courier_New_12"]);
 
@@ -152,7 +153,7 @@ namespace DoubleDash
 
             doorSound = World.SoundManager["Audio/Sounds/doorsound"];
             shapeManager = new ShapeBackground(graphics, Color.Red);
-            levelManager = new LevelManager(World.TextureManager["door"], graphics, doorSound, shapeManager);
+            levelManager = new LevelManager(World.TextureManager["door"], graphics, doorSound, shapeManager, World.FontManager["Fonts/Arial_24"]);
 
             gameTimer = new GameTimer(World.FontManager["Fonts/Arial_24"]);
 
@@ -186,23 +187,28 @@ namespace DoubleDash
 
             //World 1
             levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/empty.json"), LevelManager.Worlds.World1);
-            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level0.json"));
-            levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level1.json"));
-            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level2.json"));
-            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level4.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level1.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level2.json"));
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level3.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level4.json"));
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level5.json"));
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level6.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level7.json"));
 
             //World 2
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level1.json"), LevelManager.Worlds.World2);
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level2.json"));
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level3.json"));
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level4.json"));
-            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level6.json"));
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level5.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level6.json"));
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/puzzle2.json"));
 
+            //World 3
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level1.json"), LevelManager.Worlds.World3);
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level2.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level3.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level4.json"));
             //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 1.json"));
             //levelManager.AddLevel(LevelReader.Load("content/levels/test Levels/testlevevl9.json"));
             //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 5.json"));
@@ -240,6 +246,15 @@ namespace DoubleDash
         {
             KeyboardState keyboardState = Keyboard.GetState();
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+
+            //if (keyboardState.GetPressedKeys().Length > 0
+            //    || anyButtonDown(gamePadState))
+            //{
+            //    if (stateManager.State == StateManager.States.TitleScreen)
+            //    {
+            //        stateManager.State = StateManager.States.MainMenu;
+            //    }
+            //}
 
             if (keyboardState.IsKeyDownAndUp(Keys.Escape, previousKeyboardState) ||
                 gamePadState.IsButtonDownAndUp(Buttons.Start, previousGamePadState))
@@ -295,6 +310,11 @@ namespace DoubleDash
             else if (gamePadState.IsButtonDownAndUp(Buttons.RightShoulder, previousGamePadState))
             {
                 currentTime.SetFaster();
+            }
+            
+            if (keyboardState.IsKeyDownAndUp(Keys.O, previousKeyboardState))
+            {
+                shapeManager.ChangeMode();
             }
 
             stateManager.Update();
@@ -359,88 +379,91 @@ namespace DoubleDash
             KeyboardState keyboardState = Keyboard.GetState();
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
 
-            if (gamePadState.IsConnected)
+            if (levelManager.hasStartedLevel)
             {
-                if (gamePadState.ThumbSticks.Left.X < 0)
+                if (gamePadState.IsConnected)
                 {
-                    player.MoveLeft(gamePadState.ThumbSticks.Left.X * -1, gameTime);
-                }
-                else if (gamePadState.ThumbSticks.Left.X > 0)
-                {
-                    player.MoveRight(gamePadState.ThumbSticks.Left.X, gameTime);
+                    if (gamePadState.ThumbSticks.Left.X < 0)
+                    {
+                        player.MoveLeft(gamePadState.ThumbSticks.Left.X * -1, gameTime);
+                    }
+                    else if (gamePadState.ThumbSticks.Left.X > 0)
+                    {
+                        player.MoveRight(gamePadState.ThumbSticks.Left.X, gameTime);
+                    }
+                    else
+                    {
+                        player.LetGo();
+                    }
+
+                    if (gamePadState.ThumbSticks.Right.X > -0.05f && gamePadState.ThumbSticks.Right.X < 0.05f &&
+                        gamePadState.ThumbSticks.Right.Y > -0.05f && gamePadState.ThumbSticks.Right.Y < 0.05f)
+                    {
+                        player.SetDashCircle(gamePadState.ThumbSticks.Left);
+                    }
+                    else
+                    {
+                        player.SetDashCircle(gamePadState.ThumbSticks.Right);
+                    }
                 }
                 else
                 {
-                    player.LetGo();
+                    if (keyboardState.IsKeyDown(Keys.Left))
+                    {
+                        player.MoveLeft(gameTime);
+                    }
+                    else if (keyboardState.IsKeyDown(Keys.Right))
+                    {
+                        player.MoveRight(gameTime);
+                    }
+                    else
+                    {
+                        player.LetGo();
+                    }
                 }
 
-                if (gamePadState.ThumbSticks.Right.X > -0.05f && gamePadState.ThumbSticks.Right.X < 0.05f &&
-                    gamePadState.ThumbSticks.Right.Y > -0.05f && gamePadState.ThumbSticks.Right.Y < 0.05f)
+                if (gamePadState.IsConnected)
                 {
-                    player.SetDashCircle(gamePadState.ThumbSticks.Left);
+                    if (gamePadState.Triggers.Right >= 0.5f &&
+                        previousGamePadState.Triggers.Right < 0.5f)
+                    {
+                        player.Dash();
+                    }
                 }
                 else
                 {
-                    player.SetDashCircle(gamePadState.ThumbSticks.Right);
+                    if (keyboardState.IsKeyDownAndUp(Keys.X, previousKeyboardState))
+                    {
+                        player.Dash();
+                    }
                 }
-            }
-            else
-            {
-                if (keyboardState.IsKeyDown(Keys.Left))
+
+                if (gamePadState.IsConnected)
                 {
-                    player.MoveLeft(gameTime);
-                }
-                else if (keyboardState.IsKeyDown(Keys.Right))
-                {
-                    player.MoveRight(gameTime);
+                    if (gamePadState.IsButtonDown(Buttons.A))
+                    {
+                        player.Jump();
+                    }
+                    else
+                    {
+                        player.CancelJump();
+                    }
                 }
                 else
                 {
-                    player.LetGo();
+                    if (keyboardState.IsKeyDown(Keys.Z))
+                    {
+                        player.Jump();
+                    }
+                    else
+                    {
+                        player.CancelJump();
+                    }
                 }
             }
 
-            if (gamePadState.IsConnected)
-            {
-                if (gamePadState.Triggers.Right >= 0.5f &&
-                    previousGamePadState.Triggers.Right < 0.5f)
-                {
-                    player.Dash();
-                }
-            }
-            else
-            {
-                if (keyboardState.IsKeyDownAndUp(Keys.X, previousKeyboardState))
-                {
-                    player.Dash();
-                }
-            }
-
-            if (gamePadState.IsConnected)
-            {
-                if (gamePadState.IsButtonDown(Buttons.A))
-                {
-                    player.Jump();
-                }
-                else
-                {
-                    player.CancelJump();
-                }
-            }
-            else
-            {
-                if (keyboardState.IsKeyDown(Keys.Z))
-                {
-                    player.Jump();
-                }
-                else
-                {
-                    player.CancelJump();
-                }
-            }
-
-            player.Update(gameTime);
-            levelManager.Update(gameTime, player, world.CurrentCamera, gameTimer);
+            player.Update(gameTime, levelManager.hasStartedLevel);
+            levelManager.Update(gameTime, player, world.CurrentCamera, gameTimer, gamePadState);
             player.CheckCollisions(levelManager.levels[levelManager.currentLevel].blocks, currentTime);
 
             if (GameHelpers.Rain)
@@ -451,6 +474,17 @@ namespace DoubleDash
 
             previousKeyboardState = keyboardState;
             previousGamePadState = gamePadState;
+        }
+
+        bool anyButtonDown(GamePadState gamePadState)
+        {
+            return gamePadState.Buttons.A == ButtonState.Pressed
+                || gamePadState.Buttons.B == ButtonState.Pressed
+                || gamePadState.Buttons.X == ButtonState.Pressed
+                || gamePadState.Buttons.Y == ButtonState.Pressed
+                || gamePadState.Buttons.Start == ButtonState.Pressed
+                || gamePadState.Buttons.Back == ButtonState.Pressed
+                || gamePadState.Buttons.BigButton == ButtonState.Pressed;
         }
 
         void EndUpdate(GameTimeWrapper gameTime)
@@ -474,6 +508,14 @@ namespace DoubleDash
             currentTime.text.position = Vector2.Transform(
                 new Vector2(100),
                 world.CurrentCamera.InverseTransform);
+
+            if (!levelManager.hasStartedLevel)
+            {
+                levelManager.prePostMessage.position = Vector2.Transform(
+                new Vector2(world.virtualResolutionRenderer.WindowResolution.Width / 2 - levelManager.prePostMessage.textSize.X / 2 - 50,
+                world.virtualResolutionRenderer.WindowResolution.Height / 2 - levelManager.prePostMessage.textSize.Y / 2 - 100),
+                world.CurrentCamera.InverseTransform);
+            }
         }
 
         void TimerUpdate(GameTimeWrapper gameTime)
@@ -505,7 +547,10 @@ namespace DoubleDash
             {
                 world.Draw(rainManager.Draw);
             }
-            shapeManager.Draw();
+            if (levelManager.hasStartedLevel)
+            {
+                shapeManager.Draw();
+            }
             //world.Draw(starBackgroundManager.Draw);
             world.Draw(levelManager.Draw);
             world.Draw(player.Draw);

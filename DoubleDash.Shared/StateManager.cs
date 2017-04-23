@@ -30,7 +30,6 @@ namespace DoubleDash
         private Player player;
         private Song menuMusic;
         private Song gameMusic;
-        
 
         private States state;
         public States State
@@ -163,7 +162,7 @@ namespace DoubleDash
         {
             worldSelectMenuState = world.AddMenuState(WorldSelectMenu.WorldSelectMenuName);
             SetMenuStateItems(worldSelectMenuState);
-            worldSelectMenuState.AddMenuItems("World 1", "World 2", "Back");
+            worldSelectMenuState.AddMenuItems("World 1", "World 2", "World 3", "Back");
             worldSelectMenuState.SetMenuAction("World 1", () =>
             {
                 SwitchToGame(LevelManager.Worlds.World1);
@@ -171,6 +170,10 @@ namespace DoubleDash
             worldSelectMenuState.SetMenuAction("World 2", () =>
             {
                 SwitchToGame(LevelManager.Worlds.World2);
+            });
+            worldSelectMenuState.SetMenuAction("World 3", () =>
+            {
+                SwitchToGame(LevelManager.Worlds.World3);
             });
             worldSelectMenuState.SetMenuAction("Back", () => { State = States.MainMenu; });
             worldSelectMenuState.BackAction = new Action(() => { State = States.MainMenu; });
