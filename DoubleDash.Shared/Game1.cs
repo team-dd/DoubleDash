@@ -107,7 +107,7 @@ namespace DoubleDash
             // Load fonts
             World.FontManager.Load("Fonts/Courier_New_12");
             World.FontManager.Load("Fonts/Montserrat_Ultra_Light_36");
-            World.FontManager.Load("Fonts/Arial_24");
+            World.FontManager.Load("Fonts/8bit");
 
             // Load sounds
             World.SoundManager.Load("Audio/Sounds/jumpsound");
@@ -153,9 +153,9 @@ namespace DoubleDash
 
             doorSound = World.SoundManager["Audio/Sounds/doorsound"];
             shapeManager = new ShapeBackground(graphics, Color.Red);
-            levelManager = new LevelManager(World.TextureManager["door"], graphics, doorSound, shapeManager, World.FontManager["Fonts/Arial_24"]);
+            levelManager = new LevelManager(World.TextureManager["door"], graphics, doorSound, shapeManager, World.FontManager["Fonts/8bit"]);
 
-            gameTimer = new GameTimer(World.FontManager["Fonts/Arial_24"]);
+            gameTimer = new GameTimer(World.FontManager["Fonts/8bit"]);
 
             bgMusic = World.SongManager["Audio/Music/newmusic2"];
             song = World.SongManager["Audio/Music/intro2"];
@@ -174,7 +174,7 @@ namespace DoubleDash
             world.Cameras[World.Camera1Name].Focus = Camera.CameraFocus.Center;
             world.Cameras[World.Camera1Name].Zoom = 0.75f;
             currentTime = new CurrentTime(
-                World.FontManager["Fonts/Arial_24"], 
+                World.FontManager["Fonts/8bit"], 
                 World.SoundManager["Audio/Sounds/speedup"],
                 World.SoundManager["Audio/Sounds/slowdown"],
                 World.SoundManager["Audio/Sounds/speedupslower"],

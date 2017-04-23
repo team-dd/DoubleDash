@@ -197,7 +197,7 @@ namespace DoubleDash
 
         private void SetMenuStateItems(MenuState menuState)
         {
-            menuState.MenuFont = World.FontManager["Fonts/Montserrat_Ultra_Light_36"];
+            menuState.MenuFont = World.FontManager["Fonts/8bit"];
             menuState.UnselectedColor = Color.Gray;
             menuState.SelectedColor = Color.White;
         }

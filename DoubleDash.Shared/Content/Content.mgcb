@@ -331,3 +331,10 @@
 #begin Levels/World 3/level5.json
 /copy:Levels/World 3/level5.json
 
+#begin Fonts/8bit.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/8bit.spritefont
+
