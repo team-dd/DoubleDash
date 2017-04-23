@@ -95,6 +95,15 @@ namespace DoubleDash
             gameTimer.Start();
         }
 
+        public void MaybeZoomOut(Camera camera)
+        {
+            // world 3, level 2
+            if (world3StartIndex + 1 == currentLevel)
+            {
+                camera.Zoom = .55f;
+            }
+        }
+
         public void Start(Player player, Camera camera, GameTimer gameTimer)
         {
             currentLevel = 0;
@@ -154,6 +163,7 @@ namespace DoubleDash
             {
                 doorSound.Play();
                 IncreaseLevel(player, camera, gameTimer);
+                MaybeZoomOut(camera);
             }
         }
 
