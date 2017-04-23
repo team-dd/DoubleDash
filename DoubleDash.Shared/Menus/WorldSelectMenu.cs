@@ -20,6 +20,7 @@ namespace DoubleDash.Menus
         {
             Camera = camera;
             title = new TextItem(menuState.MenuFont, "World Select");
+            title.scale = 2.5f;
             title.position = new Vector2(vrr.VirtualResolution.Width / 2, vrr.VirtualResolution.Height / 2);
             menuState.initialPosition = new Vector2(vrr.VirtualResolution.Width / 2, vrr.VirtualResolution.Height * 0.66f);
             starBackground = new StarBackgroundManager(graphics);

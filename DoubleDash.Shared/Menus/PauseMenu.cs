@@ -26,6 +26,7 @@ namespace DoubleDash.Menus
             this.vrr = vrr;
             this.gameCamera = gameCamera;
             pauseTitle = new TextItem(menuState.MenuFont, "Paused");
+            pauseTitle.scale = 2.5f;
             pauseTitleInitialPosition = new Vector2(vrr.WindowResolution.Width / 2, vrr.WindowResolution.Height / 2);
             pauseTitle.position = pauseTitleInitialPosition;
             menuStateInitialPosition = new Vector2(vrr.WindowResolution.Width / 2, vrr.WindowResolution.Height * 0.66f);
