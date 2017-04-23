@@ -42,7 +42,7 @@ namespace DoubleDash
 
             for (int i = 1; i <= NumberOfLines; i++)
             {
-                ShapeNPoints shape = new ShapeNPoints(graphics, i*n/32.0f, color, n);
+                ShapeNPoints shape = new ShapeNPoints(graphics, i*n/32.0f, color * .35f, n);
                 shapes.Add(shape);
             }
         }

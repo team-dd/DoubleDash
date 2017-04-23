@@ -102,6 +102,10 @@ namespace DoubleDash
             {
                 camera.Zoom = .55f;
             }
+            else
+            {
+                camera.Zoom = .75f;
+            }
         }
 
         public void Start(Player player, Camera camera, GameTimer gameTimer)
