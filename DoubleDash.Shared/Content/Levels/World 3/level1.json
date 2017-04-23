@@ -1,7 +1,6 @@
 {
   "rectangles": [
     {
-<<<<<<< HEAD
       "X": 0,
       "Y": 0,
       "Width": 110,
@@ -9,12 +8,8 @@
       "IsMoving": false
     },
     {
-      "X": 370,
-      "Y": 50,
-=======
       "X": 315,
       "Y": 375,
->>>>>>> master
       "Width": 10,
       "Height": 70,
       "IsMoving": false
