@@ -410,7 +410,7 @@ namespace DoubleDash
             {
                 if (jumpState == JumpStates.WallLeft || jumpState == JumpStates.WallRight)
                 {
-                    float lowestWallSlideSpeed = 10;
+                    float lowestWallSlideSpeed = 20;
                     if (velocity.Y <= lowestWallSlideSpeed)
                     {
                         velocity.Y += (GameHelpers.Gravity / 1.7f) * (float)gameTime.GameSpeed;
