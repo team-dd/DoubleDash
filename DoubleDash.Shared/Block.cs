@@ -114,7 +114,13 @@ namespace DoubleDash
         {
             if (!isMoving || !hasStartedLevel)
             {
+                velocity.X = 0;
                 return;
+            }
+
+            if (velocity.X == 0)
+            {
+                velocity.X = -3;
             }
 
             if (isMovingLeft)
