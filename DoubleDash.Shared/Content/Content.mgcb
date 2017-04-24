@@ -328,9 +328,6 @@
 #begin Levels/World 3/level4.json
 /copy:Levels/World 3/level4.json
 
-#begin Levels/World 3/level5.json
-/copy:Levels/World 3/level5.json
-
 #begin Levels/World 3/level6.json
 /copy:Levels/World 3/level6.json
 
@@ -355,4 +352,7 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:xbox_scheme.png
+
+#begin Levels/World 2/level7.json
+/copy:Levels/World 2/level7.json
 

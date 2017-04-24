@@ -1,0 +1,125 @@
+{
+  "rectangles": [
+    {
+      "X": 2240,
+      "Y": 525,
+      "Width": 40,
+      "Height": 35,
+      "IsMoving": true
+    },
+    {
+      "X": 1930,
+      "Y": 475,
+      "Width": 15,
+      "Height": 10,
+      "IsMoving": true
+    },
+    {
+      "X": 3190,
+      "Y": 495,
+      "Width": 110,
+      "Height": 90,
+      "IsMoving": false
+    },
+    {
+      "X": 520,
+      "Y": 465,
+      "Width": 40,
+      "Height": 30,
+      "IsMoving": false
+    },
+    {
+      "X": 480,
+      "Y": 230,
+      "Width": 135,
+      "Height": 150,
+      "IsMoving": false
+    },
+    {
+      "X": 615,
+      "Y": 230,
+      "Width": 1850,
+      "Height": 150,
+      "IsMoving": false
+    },
+    {
+      "X": 480,
+      "Y": 0,
+      "Width": 135,
+      "Height": 230,
+      "IsMoving": false
+    },
+    {
+      "X": 615,
+      "Y": 0,
+      "Width": 1850,
+      "Height": 230,
+      "IsMoving": false
+    },
+    {
+      "X": 2465,
+      "Y": 230,
+      "Width": 1130,
+      "Height": 150,
+      "IsMoving": false
+    },
+    {
+      "X": 2465,
+      "Y": 0,
+      "Width": 1130,
+      "Height": 230,
+      "IsMoving": false
+    },
+    {
+      "X": 900,
+      "Y": 525,
+      "Width": 35,
+      "Height": 25,
+      "IsMoving": true
+    },
+    {
+      "X": 1300,
+      "Y": 475,
+      "Width": 55,
+      "Height": 5,
+      "IsMoving": true
+    },
+    {
+      "X": 1665,
+      "Y": 475,
+      "Width": 40,
+      "Height": 30,
+      "IsMoving": false
+    },
+    {
+      "X": 2515,
+      "Y": 480,
+      "Width": 40,
+      "Height": 30,
+      "IsMoving": false
+    },
+    {
+      "X": 2875,
+      "Y": 495,
+      "Width": 25,
+      "Height": 5,
+      "IsMoving": true
+    },
+    {
+      "X": 0,
+      "Y": 230,
+      "Width": 480,
+      "Height": 150,
+      "IsMoving": false
+    },
+    {
+      "X": 0,
+      "Y": 0,
+      "Width": 480,
+      "Height": 230,
+      "IsMoving": false
+    }
+  ],
+  "start": "540, 440",
+  "end": "3245, 485"
+}
