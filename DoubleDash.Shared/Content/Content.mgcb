@@ -334,6 +334,9 @@
 #begin Levels/World 3/level6.json
 /copy:Levels/World 3/level6.json
 
+#begin Levels/World 3/level7.json
+/copy:Levels/World 3/level7.json
+
 #begin Fonts/8bit.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
