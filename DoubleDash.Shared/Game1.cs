@@ -162,7 +162,18 @@ namespace DoubleDash
             song = World.SongManager["Audio/Music/intro2"];
             MediaPlayer.IsRepeating = true;
 
-            stateManager = new StateManager(this, world, graphics, timeManager, levelManager, gameTimer, player, song, bgMusic, World.SongManager["Audio/Music/title"]);
+            currentTime = new CurrentTime(
+                World.FontManager["Fonts/8bit"],
+                World.SoundManager["Audio/Sounds/speedup"],
+                World.SoundManager["Audio/Sounds/slowdown"],
+                World.SoundManager["Audio/Sounds/speedupslower"],
+                World.SoundManager["Audio/Sounds/slowdownslower"]
+            );
+            currentTime.AddGameTime(mainGameTimeManager);
+            currentTime.AddGameTime(collisionGameTimeManager);
+            currentTime.AddGameTime(endGameTimeManager);
+
+            stateManager = new StateManager(this, world, graphics, timeManager, levelManager, gameTimer, currentTime, player, song, bgMusic, World.SongManager["Audio/Music/title"]);
             MediaPlayer.Play(World.SongManager["Audio/Music/title"]);
 
             mainGameState = new GameState(MainGame, graphics);
@@ -174,16 +185,6 @@ namespace DoubleDash
             world.AddGameState(mainGameState);
             world.Cameras[World.Camera1Name].Focus = Camera.CameraFocus.Center;
             world.Cameras[World.Camera1Name].Zoom = 0.75f;
-            currentTime = new CurrentTime(
-                World.FontManager["Fonts/8bit"], 
-                World.SoundManager["Audio/Sounds/speedup"],
-                World.SoundManager["Audio/Sounds/slowdown"],
-                World.SoundManager["Audio/Sounds/speedupslower"],
-                World.SoundManager["Audio/Sounds/slowdownslower"]
-            );
-            currentTime.AddGameTime(mainGameTimeManager);
-            currentTime.AddGameTime(collisionGameTimeManager);
-            currentTime.AddGameTime(endGameTimeManager);
 
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/collisiontest.json"));
 
@@ -329,7 +330,7 @@ namespace DoubleDash
 
             if (keyboardState.IsKeyDownAndUp(Keys.OemTilde, previousKeyboardState))
             {
-                levelManager.Start(player, world.CurrentCamera, gameTimer);
+                levelManager.Start(player, world.CurrentCamera, gameTimer, currentTime);
             }
 
             if (gamePadState.IsConnected)
@@ -458,7 +459,7 @@ namespace DoubleDash
 
             player.Update(gameTime, levelManager.hasStartedLevel);
 
-            levelManager.Update(gameTime, player, world.CurrentCamera, gameTimer, gamePadState, previousGamePadState, stateManager.justStartedGame);
+            levelManager.Update(gameTime, player, world.CurrentCamera, gameTimer, gamePadState, previousGamePadState, stateManager.justStartedGame, currentTime);
 
             if (stateManager.justStartedGame)
             {

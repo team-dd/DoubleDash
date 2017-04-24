@@ -28,6 +28,7 @@ namespace DoubleDash
         private TimeManager timeManager;
         private LevelManager levelManager;
         private GameTimer gameTimer;
+        private CurrentTime currentTime;
         private Player player;
         private Song menuMusic;
         private Song gameMusic;
@@ -134,6 +135,7 @@ namespace DoubleDash
             TimeManager timeManager,
             LevelManager levelManager,
             GameTimer gameTimer,
+            CurrentTime currentTime,
             Player player,
             Song menuMusic,
             Song gameMusic,
@@ -145,6 +147,7 @@ namespace DoubleDash
             this.timeManager = timeManager;
             this.levelManager = levelManager;
             this.gameTimer = gameTimer;
+            this.currentTime = currentTime;
             this.player = player;
             this.menuMusic = menuMusic;
             this.gameMusic = gameMusic;
@@ -247,7 +250,7 @@ namespace DoubleDash
             world.DeactivateMenuState(MainMenu.MainMenuName);
             world.DeactivateMenuState(WorldSelectMenu.WorldSelectMenuName);
             world.ActivateGameState(Game1.MainGame);
-            levelManager.SetLevel(startingWorld, player, world.Cameras[World.Camera1Name], gameTimer);
+            levelManager.SetLevel(startingWorld, player, world.Cameras[World.Camera1Name], gameTimer, currentTime);
             timeManager.Reset();
             state = States.Game;
         }

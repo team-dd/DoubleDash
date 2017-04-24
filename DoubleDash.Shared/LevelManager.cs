@@ -97,7 +97,7 @@ namespace DoubleDash
             }
         }
 
-        public void SetupLevel(Player player, Camera camera, GameTimer gameTimer)
+        public void SetupLevel(Player player, Camera camera, GameTimer gameTimer, CurrentTime currenTime)
         {
             hasStartedLevel = false;
             levelMessage.text = ((currentLevel / 7) + 1).ToString() + " - " + ((currentLevel % 7) + 1).ToString();
@@ -112,6 +112,7 @@ namespace DoubleDash
             player.startGameTimer = gameTimer.Start;
             gameTimer.Stop();
             gameTimer.Reset();
+            currenTime.SetToNormal();
             GC.Collect();
             GC.WaitForPendingFinalizers();
         }
@@ -144,55 +145,55 @@ namespace DoubleDash
             }
         }
 
-        public void Start(Player player, Camera camera, GameTimer gameTimer)
+        public void Start(Player player, Camera camera, GameTimer gameTimer, CurrentTime currentTime)
         {
             currentLevel = 0;
-            SetupLevel(player, camera, gameTimer);
+            SetupLevel(player, camera, gameTimer, currentTime);
         }
 
-        public void IncreaseLevel(Player player, Camera camera, GameTimer gameTimer)
+        public void IncreaseLevel(Player player, Camera camera, GameTimer gameTimer, CurrentTime currentTime)
         {
             currentLevel++;
             if (currentLevel >= levels.Count)
             {
                 currentLevel = 0;
             }
-            SetupLevel(player, camera, gameTimer);
+            SetupLevel(player, camera, gameTimer, currentTime);
         }
 
-        public void DecreaseLevel(Player player, Camera camera, GameTimer gameTimer)
+        public void DecreaseLevel(Player player, Camera camera, GameTimer gameTimer, CurrentTime currentTime)
         {
             currentLevel--;
             if (currentLevel < 0)
             {
                 currentLevel = levels.Count - 1;
             }
-            SetupLevel(player, camera, gameTimer);
+            SetupLevel(player, camera, gameTimer, currentTime);
         }
 
-        public void SetLevel(int levelIndex, Player player, Camera camera, GameTimer gameTimer)
+        public void SetLevel(int levelIndex, Player player, Camera camera, GameTimer gameTimer, CurrentTime currentTime)
         {
             currentLevel = levelIndex;
-            SetupLevel(player, camera, gameTimer);
+            SetupLevel(player, camera, gameTimer, currentTime);
         }
 
-        public void SetLevel(Worlds world, Player player, Camera camera, GameTimer gameTimer)
+        public void SetLevel(Worlds world, Player player, Camera camera, GameTimer gameTimer, CurrentTime currentTime)
         {
             if (world == Worlds.World1)
             {
-                SetLevel(world1StartIndex, player, camera, gameTimer);
+                SetLevel(world1StartIndex, player, camera, gameTimer, currentTime);
             }
             else if (world == Worlds.World2)
             {
-                SetLevel(world2StartIndex, player, camera, gameTimer);
+                SetLevel(world2StartIndex, player, camera, gameTimer, currentTime);
             }
             else if (world == Worlds.World3)
             {
-                SetLevel(world3StartIndex, player, camera, gameTimer);
+                SetLevel(world3StartIndex, player, camera, gameTimer, currentTime);
             }
         }
 
-        public void Update(GameTimeWrapper gameTime, Player player, Camera camera, GameTimer gameTimer, GamePadState gamePadState, GamePadState previousGamePadState, bool justStartedLevel)
+        public void Update(GameTimeWrapper gameTime, Player player, Camera camera, GameTimer gameTimer, GamePadState gamePadState, GamePadState previousGamePadState, bool justStartedLevel, CurrentTime currentTime)
         {
             if (levels.Count != 0)
             {
@@ -202,7 +203,7 @@ namespace DoubleDash
             if (player.rectangle.Intersects(levels[currentLevel].endPointIndicator.rectangle))
             {
                 doorSound.Play();
-                IncreaseLevel(player, camera, gameTimer);
+                IncreaseLevel(player, camera, gameTimer, currentTime);
                 MaybeZoomOut(camera);
             }
 
