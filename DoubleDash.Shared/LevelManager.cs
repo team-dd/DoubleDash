@@ -99,6 +99,7 @@ namespace DoubleDash
 
         public void SetupLevel(Player player, Camera camera, GameTimer gameTimer, CurrentTime currenTime)
         {
+            currenTime.SetToNormal();
             hasStartedLevel = false;
             levelMessage.text = ((currentLevel / 7) + 1).ToString() + " - " + ((currentLevel % 7) + 1).ToString();
             prePostMessage.text = "Press A to start";
@@ -112,7 +113,6 @@ namespace DoubleDash
             player.startGameTimer = gameTimer.Start;
             gameTimer.Stop();
             gameTimer.Reset();
-            currenTime.SetToNormal();
             GC.Collect();
             GC.WaitForPendingFinalizers();
         }

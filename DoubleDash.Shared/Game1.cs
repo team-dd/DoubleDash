@@ -457,9 +457,8 @@ namespace DoubleDash
                 }
             }
 
-            player.Update(gameTime, levelManager.hasStartedLevel);
-
             levelManager.Update(gameTime, player, world.CurrentCamera, gameTimer, gamePadState, previousGamePadState, stateManager.justStartedGame, currentTime);
+            player.Update(gameTime, levelManager.hasStartedLevel);
 
             if (stateManager.justStartedGame)
             {
