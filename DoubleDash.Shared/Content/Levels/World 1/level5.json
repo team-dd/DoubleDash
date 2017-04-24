@@ -85,17 +85,17 @@
       "IsMoving": false
     },
     {
-      "X": 475,
-      "Y": 700,
-      "Width": 20,
-      "Height": 110,
-      "IsMoving": false
-    },
-    {
       "X": 625,
       "Y": 700,
       "Width": 295,
       "Height": 30,
+      "IsMoving": false
+    },
+    {
+      "X": 475,
+      "Y": 740,
+      "Width": 20,
+      "Height": 110,
       "IsMoving": false
     }
   ],

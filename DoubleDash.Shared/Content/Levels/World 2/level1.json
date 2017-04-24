@@ -1,17 +1,17 @@
 {
   "rectangles": [
     {
+      "X": 785,
+      "Y": 1905,
+      "Width": 815,
+      "Height": 170,
+      "IsMoving": false
+    },
+    {
       "X": 1450,
       "Y": 1525,
       "Width": 50,
       "Height": 130,
-      "IsMoving": false
-    },
-    {
-      "X": 785,
-      "Y": 1905,
-      "Width": 595,
-      "Height": 565,
       "IsMoving": false
     },
     {
@@ -97,13 +97,6 @@
       "Width": 10,
       "Height": 10,
       "IsMoving": false
-    },
-    {
-      "X": 1520,
-      "Y": 1900,
-      "Width": 120,
-      "Height": 5,
-      "IsMoving": true
     },
     {
       "X": 1325,
