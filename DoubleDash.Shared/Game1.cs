@@ -210,6 +210,7 @@ namespace DoubleDash
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level3.json"));
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level4.json"));
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level5.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level6.json"));
             //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 1.json"));
             //levelManager.AddLevel(LevelReader.Load("content/levels/test Levels/testlevevl9.json"));
             //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 5.json"));
