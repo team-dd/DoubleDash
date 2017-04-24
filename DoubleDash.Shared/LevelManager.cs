@@ -31,6 +31,7 @@ namespace DoubleDash
         public Color currentColor;
         private ShapeBackground shapeManager;
         public bool hasStartedLevel;
+        public TextItem levelMessage;
         public TextItem prePostMessage;
         public Sprite background;
         private VirtualResolutionRenderer vrr;
@@ -44,6 +45,9 @@ namespace DoubleDash
             this.doorSound = doorSound;
             this.shapeManager = shapeManager;
             this.hasStartedLevel = false;
+            levelMessage = new TextItem(font);
+            levelMessage.scale = 3.5f;
+            levelMessage.origin = Vector2.Zero;
             prePostMessage = new TextItem(font);
             //prePostMessage.position = new Vector2(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
             prePostMessage.origin = Vector2.Zero;
@@ -96,6 +100,7 @@ namespace DoubleDash
         public void SetupLevel(Player player, Camera camera, GameTimer gameTimer)
         {
             hasStartedLevel = false;
+            levelMessage.text = ((currentLevel / 7) + 1).ToString() + " - " + ((currentLevel % 7) + 1).ToString();
             prePostMessage.text = "Press A to start";
             currentColor = levels[currentLevel].color;
             shapeManager.ChangeMode();
@@ -227,6 +232,7 @@ namespace DoubleDash
             if (!hasStartedLevel)
             {
                 background.Draw(spriteBatch);
+                levelMessage.Draw(spriteBatch);
                 prePostMessage.Draw(spriteBatch);
             }
         }
