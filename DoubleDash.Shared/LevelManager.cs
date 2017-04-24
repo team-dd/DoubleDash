@@ -32,9 +32,12 @@ namespace DoubleDash
         private ShapeBackground shapeManager;
         public bool hasStartedLevel;
         public TextItem prePostMessage;
+        public Sprite background;
+        private VirtualResolutionRenderer vrr;
 
-        public LevelManager(Texture2D endPointTex, GraphicsDeviceManager graphics, SoundEffect doorSound, ShapeBackground shapeManager, SpriteFont font)
+        public LevelManager(Texture2D endPointTex, GraphicsDeviceManager graphics, SoundEffect doorSound, ShapeBackground shapeManager, SpriteFont font, VirtualResolutionRenderer vrr)
         {
+            this.vrr = vrr;
             levels = new List<Level>();
             this.endPointTex = endPointTex;
             this.graphics = graphics;
@@ -45,6 +48,9 @@ namespace DoubleDash
             //prePostMessage.position = new Vector2(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
             prePostMessage.origin = Vector2.Zero;
             prePostMessage.scale = 2f;
+            background = new Sprite(graphics);
+            background.DrawSize = new Size(vrr.WindowResolution.Width, vrr.WindowResolution.Height);
+            background.color = new Color(0, 0, 0, 128);
         }
 
         public void AddLevel(Level level)
@@ -176,11 +182,11 @@ namespace DoubleDash
             }
         }
 
-        public void Update(GameTimeWrapper gameTime, Player player, Camera camera, GameTimer gameTimer, GamePadState gamePadState)
+        public void Update(GameTimeWrapper gameTime, Player player, Camera camera, GameTimer gameTimer, GamePadState gamePadState, GamePadState previousGamePadState, bool justStartedLevel)
         {
             if (levels.Count != 0)
             {
-                levels[currentLevel].Update(gameTime, camera);
+                levels[currentLevel].Update(gameTime, camera, hasStartedLevel, justStartedLevel);
             }
 
             if (player.rectangle.Intersects(levels[currentLevel].endPointIndicator.rectangle))
@@ -190,7 +196,16 @@ namespace DoubleDash
                 MaybeZoomOut(camera);
             }
 
-            if (!hasStartedLevel && gamePadState.Buttons.A == ButtonState.Pressed)
+            if (!hasStartedLevel)
+            {
+                background.position = Vector2.Transform(Vector2.Zero, camera.InverseTransform);
+                background.DrawSize = new Vector2(
+                    vrr.WindowResolution.Width * (1 / camera.Zoom),
+                    vrr.WindowResolution.Height * (1 / camera.Zoom));
+                background.Update(gameTime);
+            }
+
+            if (!hasStartedLevel && gamePadState.IsButtonDownAndUp(Buttons.A, previousGamePadState) && !justStartedLevel)
             {
                 hasStartedLevel = true;
                 gameTimer.Start();
@@ -206,6 +221,7 @@ namespace DoubleDash
 
             if (!hasStartedLevel)
             {
+                background.Draw(spriteBatch);
                 prePostMessage.Draw(spriteBatch);
             }
         }

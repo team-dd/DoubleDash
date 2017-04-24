@@ -153,7 +153,7 @@ namespace DoubleDash
 
             doorSound = World.SoundManager["Audio/Sounds/doorsound"];
             shapeManager = new ShapeBackground(graphics, Color.Red);
-            levelManager = new LevelManager(World.TextureManager["door"], graphics, doorSound, shapeManager, World.FontManager["Fonts/8bit"]);
+            levelManager = new LevelManager(World.TextureManager["door"], graphics, doorSound, shapeManager, World.FontManager["Fonts/8bit"], world.virtualResolutionRenderer);
 
             gameTimer = new GameTimer(World.FontManager["Fonts/8bit"]);
 
@@ -186,29 +186,29 @@ namespace DoubleDash
 
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/collisiontest.json"));
 
-            ////World 1
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level1.json"), LevelManager.Worlds.World1);
-            //levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level2.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level3.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level4.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level5.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level6.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level7.json"));
+            //World 1
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level1.json"), LevelManager.Worlds.World1);
+            levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level2.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level3.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level4.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level5.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level6.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level7.json"));
 
-            ////World 2
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level1.json"), LevelManager.Worlds.World2);
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level2.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level3.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level4.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level5.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level6.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/puzzle2.json"));
+            //World 2
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level1.json"), LevelManager.Worlds.World2);
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level2.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level3.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level4.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level5.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level6.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/puzzle2.json"));
 
-            ////World 3
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level1.json"), LevelManager.Worlds.World3);
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level2.zjson"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level3.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level4.json"));
+            //World 3
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level1.json"), LevelManager.Worlds.World3);
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level2.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level3.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level4.json"));
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level5.json"));
             //levelManager.AddLevel(LevelReader.Load("content/levels/demo world/demo level 1.json"));
             //levelManager.AddLevel(LevelReader.Load("content/levels/test Levels/testlevevl9.json"));
@@ -355,8 +355,10 @@ namespace DoubleDash
                     starBackgroundManager.MoveLeft(2);
                 }
             }
-
-            shapeManager.Update(gameTime);
+            if (levelManager.hasStartedLevel)
+            {
+                shapeManager.Update();
+            }
         }
 
         void CollisionUpdate(GameTimeWrapper gameTime)
@@ -448,7 +450,14 @@ namespace DoubleDash
             }
 
             player.Update(gameTime, levelManager.hasStartedLevel);
-            levelManager.Update(gameTime, player, world.CurrentCamera, gameTimer, gamePadState);
+
+            levelManager.Update(gameTime, player, world.CurrentCamera, gameTimer, gamePadState, previousGamePadState, stateManager.justStartedGame);
+
+            if (stateManager.justStartedGame)
+            {
+                stateManager.justStartedGame = false;
+            }
+
             player.CheckCollisions(levelManager.levels[levelManager.currentLevel].blocks, currentTime);
 
             if (GameHelpers.Rain)
@@ -476,7 +485,14 @@ namespace DoubleDash
         {
             if (world.CurrentCamera.Focus == Camera.CameraFocus.Center)
             {
-                world.CurrentCamera.Pan = Vector2.Lerp(world.CurrentCamera.Pan, player.position, .075f);
+                if (!levelManager.hasStartedLevel)
+                {
+                    world.CurrentCamera.Pan = player.position;
+                }
+                else
+                {
+                    world.CurrentCamera.Pan = Vector2.Lerp(world.CurrentCamera.Pan, player.position, .075f);
+                }
             }
             world.UpdateCurrentCamera(gameTime);
 
@@ -532,15 +548,15 @@ namespace DoubleDash
             {
                 world.Draw(rainManager.Draw);
             }
+            shapeManager.Draw();
+            world.Draw(levelManager.Draw);
+            world.Draw((spriteBatch) => { player.Draw(spriteBatch, levelManager.hasStartedLevel); });
             if (levelManager.hasStartedLevel)
             {
-                shapeManager.Draw();
+                world.Draw(currentTime.Draw);
+                world.Draw(gameTimer.Draw);
             }
-            //world.Draw(starBackgroundManager.Draw);
-            world.Draw(levelManager.Draw);
-            world.Draw(player.Draw);
-            world.Draw(currentTime.Draw);
-            world.Draw(gameTimer.Draw);
+            
             //world.Draw(DebugText.Draw);
 
             world.EndDraw();

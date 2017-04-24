@@ -636,7 +636,7 @@ namespace DoubleDash
             animations.CurrentAnimationName = "demoanimation";
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, bool hasStartedLevel)
         {
             if (jumpState == JumpStates.Ground && acceleration.X != 0) {
                 if (acceleration.X > 0)
@@ -673,10 +673,13 @@ namespace DoubleDash
                 }
             }
             base.Draw(spriteBatch);
-            dashBar.Draw(spriteBatch);
-            if (dashIndicator.visible)
+            if (hasStartedLevel)
             {
-                dashIndicator.Draw(spriteBatch);
+                dashBar.Draw(spriteBatch);
+                if (dashIndicator.visible)
+                {
+                    dashIndicator.Draw(spriteBatch);
+                }
             }
         }
     }

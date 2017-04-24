@@ -95,9 +95,9 @@ namespace DoubleDash
             return line;
         }
 
-        public override void Update(GameTimeWrapper gameTime)
+        public void Update(GameTimeWrapper gameTime, bool hasStartedLevel)
         {
-            MoveBlock();
+            MoveBlock(hasStartedLevel);
             if (GameHelpers.LerpBlockColor)
             {
                 UpdateColor(gameTime);
@@ -110,9 +110,9 @@ namespace DoubleDash
             UpdatePolygon();
         }
 
-        public void MoveBlock()
+        public void MoveBlock(bool hasStartedLevel)
         {
-            if (!isMoving)
+            if (!isMoving || !hasStartedLevel)
             {
                 return;
             }

@@ -52,9 +52,10 @@ namespace DoubleDash
             int[] PossibleNsMinusCurrentN = (int[]) PossibleNs.Clone();
             n = PossibleNsMinusCurrentN[rand.Next(PossibleNsMinusCurrentN.Length)];
             CreateShapes();
+            Update();
         }
 
-        public void Update(GameTimeWrapper gameTime)
+        public void Update()
         {
             for (int i = 0; i < NumberOfLines; i++)
             {

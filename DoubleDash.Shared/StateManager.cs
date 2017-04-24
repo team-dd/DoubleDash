@@ -79,6 +79,7 @@ namespace DoubleDash
                     if (state == States.MainMenu ||
                         state == States.WorldSelectMenu)
                     {
+                        justStartedGame = true;
                         SwitchToGame();
                     }
                     else if (state == States.PauseMenu)
@@ -111,6 +112,8 @@ namespace DoubleDash
         private MenuState pauseMenuState;
         private PauseMenu pauseMenu;
 
+        public bool justStartedGame;
+
         public StateManager(Game game,
             World world,
             GraphicsDeviceManager graphics,
@@ -139,6 +142,8 @@ namespace DoubleDash
             SetupMainMenu();
             SetUpWorldSelectMenu();
             SetupPauseMenu();
+
+            justStartedGame = false;
         }
 
         private void SetupTitleScreen()

@@ -91,7 +91,7 @@ namespace DoubleDash
             camera.Zoom = 0.01f;
         }
 
-        public void Update(GameTimeWrapper gameTime, Camera camera)
+        public void Update(GameTimeWrapper gameTime, Camera camera, bool hasStartedLevel, bool justStartedLevel)
         {
             if (zoomingIn)
             {
@@ -107,8 +107,9 @@ namespace DoubleDash
             }
             foreach (var block in blocks)
             {
-                block.Update(gameTime);
+                block.Update(gameTime, hasStartedLevel);
             }
+
             endPointIndicator.Update(gameTime);
         }
 
