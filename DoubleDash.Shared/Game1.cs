@@ -310,6 +310,11 @@ namespace DoubleDash
                 shapeManager.ChangeMode();
             }
 
+            if (!levelManager.hasStartedLevel)
+            {
+                currentTime.SetToNormal();
+            }
+
             stateManager.Update();
 
             world.Update(gameTime);
