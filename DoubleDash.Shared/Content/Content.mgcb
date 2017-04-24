@@ -341,3 +341,6 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/8bit.spritefont
 
+#begin Levels/World 3/level7.json
+/copy:Levels/World 3/level7.json
+
