@@ -103,6 +103,7 @@ namespace DoubleDash
             World.TextureManager.Load("demoanimation");
             World.TextureManager.Load("blink_animation");
             World.TextureManager.Load("title_screen");
+            World.TextureManager.Load("xbox_scheme");
 
             // Load fonts
             World.FontManager.Load("Fonts/Courier_New_12");
