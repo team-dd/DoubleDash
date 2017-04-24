@@ -119,23 +119,23 @@ namespace DoubleDash
 
         public void MaybeZoomOut(Camera camera)
         {
-            // world 3, level 2
-            if (world3StartIndex + 1 == currentLevel)
+            // world 3, level 1
+            if (world3StartIndex == currentLevel)
             {
                 camera.Zoom = .55f;
             }
+            // world 3, level 2
+            else if (world3StartIndex + 1 == currentLevel)
+            {
+                camera.Zoom = .60f;
+            }
             // world 3, level 3
-            else if (world3StartIndex + 2 == currentLevel)
+            else if  (world3StartIndex + 2 == currentLevel)
             {
                 camera.Zoom = .60f;
             }
-            // world 3, level 4
-            else if  (world3StartIndex + 3 == currentLevel)
-            {
-                camera.Zoom = .60f;
-            }
-            // World 3, level 6
-            else if (world3StartIndex + 5 == currentLevel)
+            // World 3, level 4
+            else if (world3StartIndex + 3 == currentLevel)
             {
                 camera.Zoom = .65f;
             }
