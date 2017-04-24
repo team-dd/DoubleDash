@@ -188,31 +188,31 @@ namespace DoubleDash
 
             //levelManager.AddLevel(LevelReader.Load("Content/Levels/Test Levels/collisiontest.json"));
 
-            ////World 1
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level1.json"), LevelManager.Worlds.World1);
-            //levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level2.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level3.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level4.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level5.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level6.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level7.json"));
+            //World 1
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level1.json"), LevelManager.Worlds.World1);
+            levelManager.AddLevel(LevelReader.Load("Content/Levels/World 1/level2.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level3.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level4.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level5.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level6.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 1/level7.json"));
 
-            ////World 2
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level1.json"), LevelManager.Worlds.World2);
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level2.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level3.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level4.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level5.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level6.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/puzzle2.json"));
+            //World 2
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level1.json"), LevelManager.Worlds.World2);
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level2.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level3.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level4.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level5.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/level6.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 2/puzzle2.json"));
 
-            ////World 3
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level1.json"), LevelManager.Worlds.World3);
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level2.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level3.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level4.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level5.json"));
-            //levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level6.json"));
+            //World 3
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level1.json"), LevelManager.Worlds.World3);
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level2.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level3.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level4.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level5.json"));
+            levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level6.json"));
             levelManager.AddLevel(LevelReader.Load("Content/levels/World 3/level7.json"));
 
 
