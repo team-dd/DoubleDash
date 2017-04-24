@@ -513,6 +513,10 @@ namespace DoubleDash
 
             if (!levelManager.hasStartedLevel)
             {
+                levelManager.levelMessage.position = Vector2.Transform(
+                new Vector2(world.virtualResolutionRenderer.WindowResolution.Width / 2 - levelManager.prePostMessage.textSize.X / 2 + 30,
+                world.virtualResolutionRenderer.WindowResolution.Height / 2 - levelManager.prePostMessage.textSize.Y / 2 - 200),
+                world.CurrentCamera.InverseTransform);
                 levelManager.prePostMessage.position = Vector2.Transform(
                 new Vector2(world.virtualResolutionRenderer.WindowResolution.Width / 2 - levelManager.prePostMessage.textSize.X / 2 - 50,
                 world.virtualResolutionRenderer.WindowResolution.Height / 2 - levelManager.prePostMessage.textSize.Y / 2 - 100),
