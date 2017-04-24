@@ -127,7 +127,7 @@ namespace DoubleDash
             // world 3, level 2
             else if (world3StartIndex + 1 == currentLevel)
             {
-                camera.Zoom = .60f;
+                camera.Zoom = .55f;
             }
             // world 3, level 3
             else if  (world3StartIndex + 2 == currentLevel)
