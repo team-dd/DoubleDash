@@ -1,0 +1,4 @@
+[[actions]]
+name = "play"
+path = "DoubleDash.Windows.exe"
+sandbox = true
