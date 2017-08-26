@@ -19,7 +19,8 @@ namespace DoubleDash
             MainMenu,
             WorldSelectMenu,
             ControlMenu,
-            PauseMenu
+            PauseMenu,
+            SettingsMenu
         }
 
         private Game game;
@@ -55,6 +56,11 @@ namespace DoubleDash
                         world.DeactivateMenuState(WorldSelectMenu.WorldSelectMenuName);
                         world.ActivateMenuState(MainMenu.MainMenuName);
                     }
+                    else if (state == States.SettingsMenu)
+                    {
+                        world.DeactivateMenuState(SettingsMenu.SettingsMenuName);
+                        world.ActivateMenuState(MainMenu.MainMenuName);
+                    }
                     else if (state == States.ControlMenu)
                     {
                         world.DeactivateMenuState(ControlsMenu.ControlMenuName);
@@ -85,6 +91,20 @@ namespace DoubleDash
                     world.DeactivateMenuState(MainMenu.MainMenuName);
                     world.ActivateMenuState(ControlsMenu.ControlMenuName);
                 }
+                else if (value == States.SettingsMenu)
+                {
+                    if (state == States.MainMenu)
+                    {
+                        world.DeactivateMenuState(MainMenu.MainMenuName);
+                    }
+                    else if (state == States.PauseMenu)
+                    {
+                        world.DeactivateGameState(Game1.MainGame);
+                        world.DeactivateMenuState(PauseMenu.PauseMenuName);
+                        world.CurrentCameraName = MenuCamera;
+                    }
+                    world.ActivateMenuState(SettingsMenu.SettingsMenuName);
+                }
                 else if (value == States.Game)
                 {
                     world.CurrentCameraName = World.Camera1Name;
@@ -103,12 +123,21 @@ namespace DoubleDash
                 else if (value == States.PauseMenu)
                 {
                     world.CurrentCameraName = World.Camera1Name;
+                    if (state == States.SettingsMenu)
+                    {
+                        world.DeactivateMenuState(SettingsMenu.SettingsMenuName);
+                        world.ActivateGameState(Game1.MainGame);
+                    }
                     world.ActivateMenuState(PauseMenu.PauseMenuName);
-                    timeManager.Pause();
+                    if (state == States.Game)
+                    {
+                        timeManager.Pause();
+                    }
                 }
                 state = value;
             }
         }
+        private Stack<States> stateStack;
 
         private Camera menuCamera;
 
@@ -126,6 +155,9 @@ namespace DoubleDash
 
         private MenuState pauseMenuState;
         private PauseMenu pauseMenu;
+
+        private MenuState settingsMenuState;
+        private SettingsMenu settingsMenu;
 
         public bool justStartedGame;
 
@@ -154,11 +186,13 @@ namespace DoubleDash
 
             menuCamera = new Camera(world.virtualResolutionRenderer, Camera.CameraFocus.Center);
             world.AddCamera(MenuCamera, menuCamera);
+            stateStack = new Stack<States>();
 
             SetupTitleScreen();
             SetupMainMenu();
             SetUpWorldSelectMenu();
             SetUpControlsMenu();
+            SetUpSettingsMenu();
             SetupPauseMenu();
 
             justStartedGame = false;
@@ -175,10 +209,11 @@ namespace DoubleDash
         {
             mainMenuState = world.AddMenuState(MainMenu.MainMenuName);
             SetMenuStateItems(mainMenuState);
-            mainMenuState.AddMenuItems("Play", "World Select", "Controls", "Quit");
+            mainMenuState.AddMenuItems("Play", "World Select", "Controls", "Settings", "Quit");
             mainMenuState.SetMenuAction("Play", () => { State = States.Game; });
             mainMenuState.SetMenuAction("World Select", () => { State = States.WorldSelectMenu; });
             mainMenuState.SetMenuAction("Controls", () => { State = States.ControlMenu; });
+            mainMenuState.SetMenuAction("Settings", () => { ForwardState(States.SettingsMenu); });
             mainMenuState.SetMenuAction("Quit", () => { game.Exit(); });
             mainMenu = new MainMenu(mainMenuState, world.virtualResolutionRenderer, menuCamera, graphics);
             mainMenuState.AddTime(new GameTimeWrapper(mainMenu.Update, game, 1));
@@ -219,13 +254,38 @@ namespace DoubleDash
             controlMenuState.AddTime(new GameTimeWrapper(controlsMenu.Update, game, 1));
         }
 
+        private void SetUpSettingsMenu()
+        {
+            settingsMenuState = world.AddMenuState(SettingsMenu.SettingsMenuName);
+            SetMenuStateItems(settingsMenuState);
+            settingsMenuState.AddMenuItem("Background Effects", false);
+            settingsMenuState.AddMenuItems("On", "Off", "Back");
+            settingsMenuState.SetMenuAction("On", () =>
+            {
+                Settings.BackgroundOn = true;
+            });
+            settingsMenuState.SetMenuAction("Off", () =>
+            {
+                Settings.BackgroundOn = false;
+            });
+            Action backAction = new Action(() =>
+            {
+                GoBack();
+            });
+            settingsMenuState.SetMenuAction("Back", backAction);
+            settingsMenuState.BackAction = backAction;
+            settingsMenu = new SettingsMenu(settingsMenuState, world.virtualResolutionRenderer, menuCamera, graphics);
+            settingsMenuState.AddTime(new GameTimeWrapper(settingsMenu.Update, game, 1));
+        }
+
         private void SetupPauseMenu()
         {
             pauseMenuState = world.AddMenuState(PauseMenu.PauseMenuName);
             SetMenuStateItems(pauseMenuState);
-            pauseMenuState.AddMenuItems("Resume", "Main Menu");
+            pauseMenuState.AddMenuItems("Resume", "Settings", "Main Menu");
             pauseMenuState.SetMenuAction("Resume", () => { State = States.Game; });
             pauseMenuState.SetMenuAction("Main Menu", () => { State = States.MainMenu; });
+            pauseMenuState.SetMenuAction("Settings", () => { ForwardState(States.SettingsMenu); });
             pauseMenuState.BackAction = new Action(() => { State = States.Game; });
             pauseMenu = new PauseMenu(pauseMenuState, world.virtualResolutionRenderer, world.Cameras[World.Camera1Name], graphics);
             pauseMenuState.AddTime(new GameTimeWrapper(pauseMenu.Update, game, 1));
@@ -236,6 +296,26 @@ namespace DoubleDash
             menuState.MenuFont = World.FontManager["Fonts/8bit"];
             menuState.UnselectedColor = Color.Gray;
             menuState.SelectedColor = Color.White;
+        }
+
+        private void ForwardState(States state)
+        {
+            stateStack.Push(State);
+            State = state;
+        }
+
+        private bool CanGoBack()
+        {
+            return stateStack.Count > 0;
+        }
+
+        private void GoBack()
+        {
+            if (CanGoBack())
+            {
+                States previousState = stateStack.Pop();
+                State = previousState;
+            }
         }
 
         private void SwitchToGame()

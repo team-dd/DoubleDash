@@ -370,7 +370,10 @@ namespace DoubleDash
             }
             if (levelManager.hasStartedLevel)
             {
-                shapeManager.Update();
+                if (Settings.BackgroundOn)
+                {
+                    shapeManager.Update();
+                }
             }
         }
 
@@ -564,7 +567,10 @@ namespace DoubleDash
             {
                 world.Draw(rainManager.Draw);
             }
-            shapeManager.Draw();
+            if (Settings.BackgroundOn)
+            {
+                shapeManager.Draw();
+            }
             world.Draw(levelManager.Draw);
             world.Draw((spriteBatch) => { player.Draw(spriteBatch, levelManager.hasStartedLevel); });
             if (levelManager.hasStartedLevel)

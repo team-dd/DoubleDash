@@ -27,11 +27,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Menus\ControlsMenu.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menus\MainMenu.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menus\PauseMenu.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Menus\SettingsMenu.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menus\TitleScreen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menus\WorldSelectMenu.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Player.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rain.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RainManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShapeBackground.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShapeNPoints.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StarBackground.cs" />
